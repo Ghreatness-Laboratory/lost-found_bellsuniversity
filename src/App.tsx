@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import './App.css';
 import backgroundImage from './assets/images/9886321 2.png';
+import LostItemImage2 from './assets/images/male-hand-holding-glasses-isolated 1.png';
 import BLFStep3 from './assets/images/man_10428848 1.svg';
 import BLFStep2 from './assets/images/report.svg';
 import BLFStep1 from './assets/images/scan_7026205 1.svg';
@@ -13,7 +15,16 @@ const items = [
       month: 11,
       year: 24
     },
-    image: ''
+    image: LostItemImage2
+  },
+  {
+    name: 'Found Iphone At Football Field',
+    date: {
+      day: 13,
+      month: 11,
+      year: 24
+    },
+    image: LostItemImage2
   },
   {
     name: 'Found wristwatch At Classroom',
@@ -22,7 +33,16 @@ const items = [
       month: 11,
       year: 24
     },
-    image: ''
+    image: LostItemImage2
+  },
+  {
+    name: 'Found Iphone At Football Field',
+    date: {
+      day: 13,
+      month: 11,
+      year: 24
+    },
+    image: LostItemImage2
   },
   {
     name: 'Found wristwatch At Classroom',
@@ -31,41 +51,46 @@ const items = [
       month: 11,
       year: 24
     },
-    image: ''
+    image: LostItemImage2
   },
   {
-    name: 'Found wristwatch At Classroom',
+    name: 'Found Iphone At Football Field',
     date: {
       day: 13,
       month: 11,
       year: 24
     },
-    image: ''
-  },
-  {
-    name: 'Found wristwatch At Classroom',
-    date: {
-      day: 13,
-      month: 11,
-      year: 24
-    },
-    image: ''
-  },
-  {
-    name: 'Found wristwatch At Classroom',
-    date: {
-      day: 13,
-      month: 11,
-      year: 24
-    },
-    image: ''
+    image: LostItemImage2
   },
 ]
 
 function App() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 3;
+
+  const filteredItems = items.filter((item) =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+
+  const paginatedItems = filteredItems.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+  };
+
   return (
     <div>
-      <section className='flex flex-col md:flex-row gap-10 md:justify-between max-w-[1300px] mx-auto px-4 sm:px-8 lg:px-10 pt-5'>
+      <section className='flex flex-col md:flex-row gap-4 md:justify-between max-w-[1300px] mx-auto px-4 sm:px-8 lg:px-10 pt-5'>
         <header className='flex flex-col justify-center gap-5 md:max-w-[700px] w-full text-center md:text-left'>
           <p className='text-3xl sm:text-4xl md:text-5xl leading-10 md:leading-[50px] lg:leading-[60px] font-bold'>Welcome to Bells University Lost and Found</p>
           <p className='text-xl lg:text-2xl leading-20 font-normal'>At Bells Lost and Found, we can help you find items lost on campus.</p>
@@ -97,17 +122,17 @@ function App() {
           </div>
         </header>
 
-        <div className='md:max-w-[500px] w-full rounded-md'>
+        <div className='hidden sm:block md:max-w-[500px] w-full'>
           <img
             src={backgroundImage}
-            className='rounded-[20px]'
+            className='rounded-0 md:rounded-[20px]'
           />
         </div>
       </section>
 
       <section className='my-10 md:my-20 mx-4 md:mx-10 px-0 md:px-10 '>
-        <div className='flex flex-col gap-6 items-center'>
-          <h1 className='text-2xl sm:text-4xl md:text-5xl font-semibold text-center '>Checkout the latest reports</h1>
+        <div className='flex flex-col gap-4 md:gap-6 items-center'>
+          <h1 className='text-2xl sm:text-4xl md:text-5xl font-semibold text-center '>Check out the latest reports</h1>
           <div className='relative max-w-[700px] w-full'>
             <span className='sr-only'>Search Bar</span>
             <div className='absolute top-1/2 left-5 -translate-y-1/2 '>
@@ -119,14 +144,16 @@ function App() {
             <input
               className="bg-[#222630] w-full pl-12 py-3 outline-none text-white rounded-full border-2 transition-colors duration-100 border-solid focus:border-[#596A95] border-[#2B3040]"
               name="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search..."
               type="text"
             />
           </div>
         </div>
 
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-10 pt-12'>
-          {items.map((item, index) => (
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8 px-0 md:px-10 pt-8 md:pt-12'>
+          {paginatedItems.map((item, index) => (
             <div key={index}>
               <LostItem
                 name={item.name}
@@ -135,6 +162,26 @@ function App() {
               />
             </div>
           ))}
+        </div>
+
+        <div className="flex items-center justify-center gap-4 mt-4">
+          <button
+            className="px-4 py-2 bg-blue-400 text-white rounded-full max-w-[90px] w-full"
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          <span className="text-lg font-semibold">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            className="px-4 py-2 bg-blue-400 text-white rounded-full max-w-[90px] w-full"
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
         </div>
       </section>
     </div>

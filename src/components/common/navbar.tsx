@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import bellsLogo from '../../assets/images/bells-university-of-technology-logo-transparent 1.svg';
+import defaultLogo from '../../assets/images/WhatsApp Image 2024-11-19 at 09.25.06_0f465b57.jpg';
 
 interface NavbarProps {
   uni?: string,
@@ -11,12 +12,16 @@ interface NavbarMenuProps {
   href: string
 }
 
-const uni: NavbarProps[] = [
+const universities: NavbarProps[] = [
   {
     uni: 'bells',
     logo: bellsLogo,
   },
-]
+  {
+    uni: 'babcock',
+    logo: defaultLogo,
+  },
+];
 
 const navbarMenu: NavbarMenuProps[] = [
   {
@@ -43,6 +48,7 @@ const navbarMenu: NavbarMenuProps[] = [
 
 const Navbar = ({ }: NavbarProps) => {
   const [selectedMenu, setSelectedMenu] = useState<number | null>(null)
+  const [currentLogo, setCurrentLogo] = useState<string>(defaultLogo);
   const [mobileMenu, setMobileMenu] = useState(false)
   const pathName = window.location.pathname
   const isMenuActive = "text-blue-600 transition ease duration-100ms"
@@ -54,19 +60,30 @@ const Navbar = ({ }: NavbarProps) => {
   const handleCloseForMobileMenu = () => {
     setMobileMenu(false)
   }
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const userUniversity = ''
+      const university = universities.find((uni) => uni.uni === userUniversity);
+      setCurrentLogo(university?.logo || defaultLogo);
+    };
+
+    fetchUserData();
+  }, []);
+
   return (
     <nav className="py-3 sm:py-5 px-4 sm:px-10">
       <div className="flex items-center justify-between">
         <div className='flex items-center gap-1.5'>
-          <span className="sr-only">Bells Logo</span>
+          <span className="sr-only">University Logo</span>
           <img
-            src={bellsLogo}
-            alt="Bells Logo"
+            src={currentLogo}
+            alt="University Logo"
             width={100}
             height={90}
-            className='w-10 h-10 lg:w-16 lg:h-16'
+            className='w-10 h-10 lg:w-16 lg:h-16 rounded-full'
           />
-          <p className="hidden sm:block font-bold text-xl lg:text-2xl text-center lg:pl-[19px] lg:pr-[29px]">BELLS LOST and FOUND</p>
+          <p className="hidden sm:block font-bold text-xl lg:text-2xl text-center lg:pl-[19px] lg:pr-[29px]">MisplaceMe</p>
         </div>
 
         <div className="flex items-center py-1 md:py-[22px] gap-5">

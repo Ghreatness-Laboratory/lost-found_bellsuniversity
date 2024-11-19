@@ -11,15 +11,15 @@ interface LostItemProps {
 
 const LostItem = ({ name, date, image }: LostItemProps) => {
   return (
-    <div className='p-4 w-full rounded-lg'>
-      <div className='flex flex-col gap-5'>
+    <div className='p-2 md:p-4 w-full rounded-lg'>
+      <div className='flex flex-col gap-2 md:gap-5'>
         <img
           src={image}
           alt="Lost and Found Item"
-          className='object-cover w-full h-[200px] rounded-md'
+          className='object-cover w-full h-[180px] md:h-[200px] rounded-xl'
         />
 
-        <div className='flex flex-col items-center gap-2'>
+        <div className='flex flex-col items-center gap-1 md:gap-2'>
           <h3>{name}</h3>
           <div className='flex items-center gap-2'>
             <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 27 27" fill="none">
