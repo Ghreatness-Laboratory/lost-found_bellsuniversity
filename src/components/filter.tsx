@@ -1,12 +1,28 @@
-import { useState } from "react";
-import Select, { components, MultiValue, OptionProps } from "react-select";
+import { useEffect, useRef, useState } from "react";
+import Select, { ActionMeta, components, OptionProps, SingleValue } from "react-select";
 
-type Option = { value: string; label: string };
+interface FilterProps {
+  onFilterChange: (selectedLocation: string) => void,
+}
+
+type Option = {
+  value: string,
+  label: string,
+};
 
 const options: Option[] = [
-  { value: "Gazebo", label: "Gazebo" },
   { value: "Uptown", label: "Uptown" },
+  { value: "Classroom", label: "Classroom" },
   { value: "Downtown", label: "Downtown" },
+  { value: "Best Man", label: "Best Man" },
+  { value: "Coleng Gazebo", label: "Coleng Gazebo" },
+  { value: "Colnas Gazebo", label: "Colnas Gazebo" },
+  { value: "Colmans Gazebo", label: "Colmans Gazebo" },
+  { value: "Football field/Pavilion", label: "Football field/Pavilion" },
+  { value: "Ekorupa & Sons", label: "Ekorupa & Sons" },
+  { value: "Exceeding Grace Cafeteria", label: "Exceeding Grace Cafeteria" },
+  { value: "Library", label: "Library" },
+  { value: "Marque", label: "Marque" },
 ];
 
 const CustomOption = (props: OptionProps<Option>) => {
@@ -14,32 +30,46 @@ const CustomOption = (props: OptionProps<Option>) => {
   return (
     <components.Option {...props}>
       <label className="flex items-center">
-        <input
-          type="checkbox"
-          checked={isSelected}
-          onChange={() => null}
-          className="mr-2"
-        />
         {label}
       </label>
     </components.Option>
   );
 };
 
-const Filter = () => {
-  const [selectedOptions, setSelectedOptions] = useState<MultiValue<Option>>([]);
+const Filter = ({ onFilterChange }: FilterProps) => {
+  const [selectedOption, setSelectedOption] = useState<SingleValue<Option>>(null);
   const [showSelect, setShowSelect] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const handleSelectChange = (selected: MultiValue<Option>) => {
-    setSelectedOptions(selected);
+  const handleSelectChange = (
+    selected: SingleValue<Option>,
+    actionMeta: ActionMeta<Option>
+  ) => {
+    setSelectedOption(selected);
+    if (selected) {
+      onFilterChange(selected.value);
+    }
   };
 
   const toggleSelect = () => {
     setShowSelect((prev) => !prev);
   };
 
+  const handleClickOutside = (event: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      setShowSelect(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="relative flex flex-col items-center">
+    <div className="relative flex flex-col items-center" ref={dropdownRef}>
       <button
         title="filter"
         onClick={toggleSelect}
@@ -51,15 +81,15 @@ const Filter = () => {
       </button>
 
       {showSelect && (
-        <div className="absolute top-14 right-0 w-80 bg-white shadow-lg border rounded z-10">
+        <div className="absolute top-14 right-0 w-[300px] sm:w-[360px] bg-white shadow-lg border rounded z-10">
           <Select
             options={options}
-            isMulti
             components={{ Option: CustomOption }}
-            value={selectedOptions}
+            value={selectedOption}
             onChange={handleSelectChange}
             placeholder="Filter by location..."
             className="text-gray-800"
+            isMulti={false}
           />
         </div>
       )}

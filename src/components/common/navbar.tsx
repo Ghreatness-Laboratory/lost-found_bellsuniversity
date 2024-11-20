@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react';
+import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import bellsLogo from '../../assets/images/bells-university-of-technology-logo-transparent 1.svg';
 import defaultLogo from '../../assets/images/WhatsApp Image 2024-11-19 at 09.25.06_0f465b57.jpg';
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+
+interface NavbarProps {
+  isNavbarOpen: boolean,
+  handleNavClick: () => void,
+  closeNavbar: () => void,
+}
 
 interface NavbarMenuProps {
   menu: string,
-  href: string
+  href: string,
 }
 
 const navbarMenu: NavbarMenuProps[] = [
@@ -55,7 +61,7 @@ const universities = [
   },
 ];
 
-const Navbar = () => {
+const Navbar = ({ isNavbarOpen, handleNavClick, closeNavbar }: NavbarProps) => {
   const [selectedMenu, setSelectedMenu] = useState<number | null>(null);
   const [currentLogo, setCurrentLogo] = useState<string>(defaultLogo);
   const [currentEmail, setCurrentEmail] = useState<string>('');
@@ -65,8 +71,15 @@ const Navbar = () => {
   const pathName = window.location.pathname;
   const isMenuActive = 'text-blue-600 transition ease duration-100ms'
 
-  const handleOpenForMobileMenu = () => setMobileMenu(true);
-  const handleCloseForMobileMenu = () => setMobileMenu(false);
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        closeNavbar();
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [closeNavbar]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -95,6 +108,7 @@ const Navbar = () => {
             width={100}
             height={90}
             className='w-10 h-10 lg:w-16 lg:h-16 rounded-full'
+            aria-required
           />
           <p className="hidden sm:block font-bold text-xl lg:text-2xl text-center lg:pl-[19px] lg:pr-[29px]">MisplaceMe</p>
         </div>
@@ -117,18 +131,18 @@ const Navbar = () => {
             })}
           </ul>
 
-          {mobileMenu &&
-            <nav className='fixed h-full top-0 left-0 bg-white z-10 w-full flex flex-col justify-between py-8'>
+          {isNavbarOpen &&
+            <nav className='fixed h-full top-0 right-0 bg-white z-20 w-[305px] flex flex-col justify-between py-8 pt-8 md:pt-12'>
               <div>
                 <div
-                  onClick={handleCloseForMobileMenu}
+                  onClick={handleNavClick}
                   className='block lg:hidden cursor-pointer'
                 >
                   <svg className="absolute right-4 md:right-8 top-5 md:top-12" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none">
                     <path d="M6.4 19L5 17.6L10.6 12L5 6.4L6.4 5L12 10.6L17.6 5L19 6.4L13.4 12L19 17.6L17.6 19L12 13.4L6.4 19Z" fill="#1E1E1E" />
                   </svg>
                 </div>
-                <ul className="flex flex-col gap-6 pl-4 md:py-20">
+                <ul className="flex flex-col gap-4 md:gap-6 pl-4 md:py-20">
                   <span className="sr-only">Mobile Menu</span>
                   {navbarMenu.map((menu, index) => {
                     const isActive = pathName === menu.href
@@ -148,7 +162,7 @@ const Navbar = () => {
                 </ul>
               </div>
 
-              <div className='flex flex-col gap-10 pl-10'>
+              <div className='flex flex-col gap-10 pl-8'>
                 <div className='flex flex-col gap-2'>
                   <p className='font-semibold text-[18px]'>Contact us</p>
                   <span className='flex items-center gap-2 active:text-blue-600'>
@@ -208,15 +222,22 @@ const Navbar = () => {
               </svg>
               <p className='hidden sm:block'>Login</p>
             </button>
-            <div
-              onClick={handleOpenForMobileMenu}
-              className='block lg:hidden cursor-pointer'
-            >
-              ☰
+
+            <div className="block lg:hidden cursor-pointer">
+              <div onClick={handleNavClick} className="cursor-pointer">
+                {isNavbarOpen ? (
+                  <svg width="18" height="15" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 1L17 17M17 1L1 17" stroke="black" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+                ) : (
+                  <svg width="18" height="15" viewBox="0 0 18 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0.0683594 1.50454C0.0683594 1.14162 0.362565 0.847412 0.725486 0.847412H16.4965C16.8594 0.847412 17.1536 1.14162 17.1536 1.50454C17.1536 1.86746 16.8594 2.16166 16.4965 2.16166H0.725486C0.362565 2.16166 0.0683594 1.86746 0.0683594 1.50454ZM0.0683594 7.63772C0.0683594 7.2748 0.362565 6.98059 0.725486 6.98059H16.4965C16.8594 6.98059 17.1536 7.2748 17.1536 7.63772C17.1536 8.00064 16.8594 8.29484 16.4965 8.29484H0.725486C0.362565 8.29484 0.0683594 8.00064 0.0683594 7.63772ZM0.725486 13.1138C0.362565 13.1138 0.0683594 13.408 0.0683594 13.7709C0.0683594 14.1338 0.362565 14.428 0.725486 14.428H16.4965C16.8594 14.428 17.1536 14.1338 17.1536 13.7709C17.1536 13.408 16.8594 13.1138 16.4965 13.1138H0.725486Z" fill="black" />
+                  </svg>
+                )}
+              </div>
             </div>
           </div>
         </div>
-
       </div>
     </nav>
   )
