@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import bellsLogo from '../../assets/images/bells-university-of-technology-logo-transparent 1.svg';
 import defaultLogo from '../../assets/images/WhatsApp Image 2024-11-19 at 09.25.06_0f465b57.jpg';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 interface NavbarMenuProps {
   menu: string,
@@ -109,7 +110,7 @@ const Navbar = () => {
                   onClick={() => { setSelectedMenu(index) }}
                   className={`py-2 font-normal text-base cursor-pointer border-b-2 border-b-white hover:border-b-2 hover:border-b-blue-600 hover:text-blue-600 transition ease duration-200ms ${isActive ? isMenuActive : ""}`}
                 >
-                  {menu.menu}
+                  <Link to={menu.href}>{menu.menu}</Link>
                 </li>
               )
             })}
@@ -136,7 +137,7 @@ const Navbar = () => {
                         onClick={() => { setSelectedMenu(index) }}
                         className={`py-1 md:py-2 pl-4 font-normal text-base cursor-pointer border-l-2 border-l-white md:border-b-2 md:border-b-white active:border-l-blue-600 md:hover:border-b-blue-600 active:text-blue-600 md:hover:text-blue-600 transition ease duration-200ms ${isActive ? isMenuActive : ""}`}
                       >
-                        {menu.menu}
+                        <Link to={menu.href}>{menu.menu}</Link>
                       </li>
                     )
                   })}
