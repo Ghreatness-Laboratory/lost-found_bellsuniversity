@@ -2,6 +2,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import App from '../App';
 import AboutUs from '../pages/aboutUs';
 import ContactUs from '../pages/contactUs';
+import Home from '../pages/home';
 import Login from '../pages/login';
 import MakeAReport from '../pages/makeReport';
 import Register from '../pages/register';
@@ -14,6 +15,10 @@ function AppRouter() {
         <Route
           path='/'
           element={<App />}
+        />
+        <Route
+          path='/home'
+          element={<Home />}
         />
         <Route
           path='/login'

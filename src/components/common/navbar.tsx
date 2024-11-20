@@ -1,27 +1,12 @@
 import { useEffect, useState } from 'react';
 import bellsLogo from '../../assets/images/bells-university-of-technology-logo-transparent 1.svg';
 import defaultLogo from '../../assets/images/WhatsApp Image 2024-11-19 at 09.25.06_0f465b57.jpg';
-
-interface NavbarProps {
-  uni?: string,
-  logo?: string,
-}
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
 interface NavbarMenuProps {
   menu: string,
   href: string
 }
-
-const universities: NavbarProps[] = [
-  {
-    uni: 'bells',
-    logo: bellsLogo,
-  },
-  {
-    uni: 'babcock',
-    logo: defaultLogo,
-  },
-];
 
 const navbarMenu: NavbarMenuProps[] = [
   {
@@ -40,32 +25,59 @@ const navbarMenu: NavbarMenuProps[] = [
     menu: 'About Us',
     href: '/about-us'
   },
-  {
-    menu: 'Contact us',
-    href: '/contact-us'
-  }
 ]
 
-const Navbar = ({ }: NavbarProps) => {
-  const [selectedMenu, setSelectedMenu] = useState<number | null>(null)
+const universities = [
+  {
+    uni: 'bells',
+    logo: bellsLogo,
+    email: 'info@blf.com',
+    phoneNumber: '+234 903 876 5498',
+    socialMedia: {
+      facebook: 'https://facebook.com/bellsuniversity',
+      twitter: 'https://twitter.com/bellsuniversity',
+      instagram: 'https://instagram.com/bellsuniversity',
+      linkedin: 'https://linkedin.com/company/bellsuniversity',
+    },
+  },
+  {
+    uni: 'babcock',
+    logo: defaultLogo,
+    email: 'info@blf.com',
+    phoneNumber: '+234 707 266 8014',
+    socialMedia: {
+      facebook: 'https://facebook.com/babcockuniversity',
+      twitter: 'https://twitter.com/babcockuniversity',
+      instagram: 'https://instagram.com/babcockuniversity',
+      linkedin: 'https://linkedin.com/company/babcockuniversity',
+    },
+  },
+];
+
+const Navbar = () => {
+  const [selectedMenu, setSelectedMenu] = useState<number | null>(null);
   const [currentLogo, setCurrentLogo] = useState<string>(defaultLogo);
-  const [mobileMenu, setMobileMenu] = useState(false)
-  const pathName = window.location.pathname
-  const isMenuActive = "text-blue-600 transition ease duration-100ms"
+  const [currentEmail, setCurrentEmail] = useState<string>('');
+  const [currentPhone, setCurrentPhone] = useState<string>('');
+  const [currentSocialMedia, setCurrentSocialMedia] = useState<any>({});
+  const [mobileMenu, setMobileMenu] = useState(false);
+  const pathName = window.location.pathname;
+  const isMenuActive = 'text-blue-600 transition ease duration-100ms'
 
-  const handleOpenForMobileMenu = () => {
-    setMobileMenu(true)
-  }
-
-  const handleCloseForMobileMenu = () => {
-    setMobileMenu(false)
-  }
+  const handleOpenForMobileMenu = () => setMobileMenu(true);
+  const handleCloseForMobileMenu = () => setMobileMenu(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const userUniversity = ''
-      const university = universities.find((uni) => uni.uni === userUniversity);
-      setCurrentLogo(university?.logo || defaultLogo);
+      const userUniversity = 'bells';
+      const currentUniversity = universities.find((uni) => uni.uni === userUniversity);
+
+      if (currentUniversity) {
+        setCurrentLogo(currentUniversity.logo);
+        setCurrentEmail(currentUniversity.email);
+        setCurrentPhone(currentUniversity.phoneNumber);
+        setCurrentSocialMedia(currentUniversity.socialMedia);
+      }
     };
 
     fetchUserData();
@@ -74,7 +86,7 @@ const Navbar = ({ }: NavbarProps) => {
   return (
     <nav className="py-3 sm:py-5 px-4 sm:px-10">
       <div className="flex items-center justify-between">
-        <div className='flex items-center gap-1.5'>
+        <div className='flex items-center gap-1'>
           <span className="sr-only">University Logo</span>
           <img
             src={currentLogo}
@@ -104,31 +116,77 @@ const Navbar = ({ }: NavbarProps) => {
           </ul>
 
           {mobileMenu &&
-            <nav className='fixed top-0 left-0 bg-white z-10 w-full'>
-              <div
-                onClick={handleCloseForMobileMenu}
-                className='block lg:hidden cursor-pointer'
-              >
-                <svg className="absolute right-3 md:right-8  top-5 md:top-12" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none">
-                  <path d="M6.4 19L5 17.6L10.6 12L5 6.4L6.4 5L12 10.6L17.6 5L19 6.4L13.4 12L19 17.6L17.6 19L12 13.4L6.4 19Z" fill="#1E1E1E" />
-                </svg>
-              </div>
-              <ul className="flex flex-col gap-6 pl-4 py-8 md:py-20">
-                <span className="sr-only">Mobile Menu</span>
-                {navbarMenu.map((menu, index) => {
-                  const isActive = pathName === menu.href
-                  return (
-                    <li
-                      key={index}
-                      onClick={() => { setSelectedMenu(index) }}
-                      className={`py-1 md:py-2 pl-4 font-normal text-base cursor-pointer border-l-2 border-l-white md:border-b-2 md:border-b-white active:border-l-blue-600 md:hover:border-b-blue-600 active:text-blue-600 md:hover:text-blue-600 transition ease duration-200ms ${isActive ? isMenuActive : ""}`}
-                    >
-                      {menu.menu}
-                    </li>
-                  )
-                })}
-              </ul>
+            <nav className='fixed h-full top-0 left-0 bg-white z-10 w-full flex flex-col justify-between py-8'>
               <div>
+                <div
+                  onClick={handleCloseForMobileMenu}
+                  className='block lg:hidden cursor-pointer'
+                >
+                  <svg className="absolute right-4 md:right-8 top-5 md:top-12" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none">
+                    <path d="M6.4 19L5 17.6L10.6 12L5 6.4L6.4 5L12 10.6L17.6 5L19 6.4L13.4 12L19 17.6L17.6 19L12 13.4L6.4 19Z" fill="#1E1E1E" />
+                  </svg>
+                </div>
+                <ul className="flex flex-col gap-6 pl-4 md:py-20">
+                  <span className="sr-only">Mobile Menu</span>
+                  {navbarMenu.map((menu, index) => {
+                    const isActive = pathName === menu.href
+                    return (
+                      <li
+                        key={index}
+                        onClick={() => { setSelectedMenu(index) }}
+                        className={`py-1 md:py-2 pl-4 font-normal text-base cursor-pointer border-l-2 border-l-white md:border-b-2 md:border-b-white active:border-l-blue-600 md:hover:border-b-blue-600 active:text-blue-600 md:hover:text-blue-600 transition ease duration-200ms ${isActive ? isMenuActive : ""}`}
+                      >
+                        {menu.menu}
+                      </li>
+                    )
+                  })}
+                  <p className={`py-1 md:py-2 pl-4 font-normal text-base cursor-pointer border-l-2 border-l-white md:border-b-2 md:border-b-white active:border-l-blue-600 md:hover:border-b-blue-600 active:text-blue-600 md:hover:text-blue-600 transition ease duration-200ms ${pathName === '/login' ? isMenuActive : ""}`}>Register</p>
+                  <p className={`py-1 md:py-2 pl-4 font-normal text-base cursor-pointer border-l-2 border-l-white md:border-b-2 md:border-b-white active:border-l-blue-600 md:hover:border-b-blue-600 active:text-blue-600 md:hover:text-blue-600 transition ease duration-200ms ${pathName === '/register' ? isMenuActive : ""}`}>Login</p>
+                </ul>
+              </div>
+
+              <div className='flex flex-col gap-10 pl-10'>
+                <div className='flex flex-col gap-2'>
+                  <p className='font-semibold text-[18px]'>Contact us</p>
+                  <span className='flex items-center gap-2 active:text-blue-600'>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="17" viewBox="0 0 13 17" fill="none">
+                      <path d="M9.1445 10.9569L8.73493 11.2862C8.73493 11.2862 7.76042 12.0682 6.06446 9.10916C4.3685 6.15013 5.34302 5.36817 5.34302 5.36817L5.60067 5.16006C6.23677 4.64996 6.47108 3.68132 6.15149 2.88094L5.49888 1.2462C5.10309 0.255397 4.03824 -0.0671961 3.25079 0.565153L1.83804 1.69888C1.44812 2.01308 1.14293 2.45645 1.06707 2.99886C0.873207 4.38732 0.842765 7.44643 3.1406 11.4568C5.57817 15.7091 8.48731 16.4101 9.7127 16.5053C10.1008 16.5356 10.4739 16.3709 10.799 16.1091L12.0769 15.0827C12.9406 14.3903 13.0097 12.9351 12.2141 12.1857L10.9769 11.0187C10.4546 10.5275 9.71141 10.5019 9.1445 10.9569Z" fill="#0D99FF" />
+                    </svg>
+                    <p className='cursor-pointer'>{currentPhone}</p>
+                  </span>
+                  <span className='flex items-center gap-3 active:text-blue-600'>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 15 12" fill="none">
+                      <path d="M15 1.5C15 0.675 14.325 0 13.5 0H1.5C0.675 0 0 0.675 0 1.5V10.5C0 11.325 0.675 12 1.5 12H13.5C14.325 12 15 11.325 15 10.5V1.5ZM13.5 1.5L7.5 5.25L1.5 1.5H13.5ZM13.5 10.5H1.5V3L7.5 6.75L13.5 3V10.5Z" fill="#0D99FF" />
+                    </svg>
+                    <p className='cursor-pointer'>{currentEmail}</p>
+                  </span>
+                </div>
+
+                <div className='flex flex-col gap-2'>
+                  <p className='font-semibold text-[18px]'>Follow us on</p>
+                  <div className='flex items-center gap-4'>
+                    {currentSocialMedia.facebook && (
+                      <a href={currentSocialMedia.facebook} target="_blank" rel="noopener noreferrer">
+                        <FaFacebook className="text-blue-600 hover:text-blue-800" size={20} />
+                      </a>
+                    )}
+                    {currentSocialMedia.twitter && (
+                      <a href={currentSocialMedia.twitter} target="_blank" rel="noopener noreferrer">
+                        <FaTwitter className="text-blue-400 hover:text-blue-600" size={20} />
+                      </a>
+                    )}
+                    {currentSocialMedia.instagram && (
+                      <a href={currentSocialMedia.instagram} target="_blank" rel="noopener noreferrer">
+                        <FaInstagram className="text-pink-500 hover:text-pink-700" size={20} />
+                      </a>
+                    )}
+                    {currentSocialMedia.linkedin && (
+                      <a href={currentSocialMedia.linkedin} target="_blank" rel="noopener noreferrer">
+                        <FaLinkedin className="text-blue-700 hover:text-blue-900" size={20} />
+                      </a>
+                    )}
+                  </div>
+                </div>
               </div>
             </nav>
           }
@@ -151,9 +209,7 @@ const Navbar = ({ }: NavbarProps) => {
               onClick={handleOpenForMobileMenu}
               className='block lg:hidden cursor-pointer'
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M11 3H14V6H11V3ZM11 10.5H14V13.5H11V10.5ZM11 18H14V21H11V18Z" fill="#1E1E1E" />
-              </svg>
+              ☰
             </div>
           </div>
         </div>

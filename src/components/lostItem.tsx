@@ -11,7 +11,7 @@ interface LostItemProps {
 
 const LostItem = ({ name, date, image }: LostItemProps) => {
   return (
-    <div className='p-2 md:p-4 w-full rounded-lg'>
+    <div className='p-0 md:p-4 w-full rounded-lg'>
       <div className='flex flex-col gap-2 md:gap-5'>
         <img
           src={image}
@@ -22,7 +22,7 @@ const LostItem = ({ name, date, image }: LostItemProps) => {
         <div className='flex flex-col items-center gap-1 md:gap-2'>
           <h3>{name}</h3>
           <div className='flex items-center gap-2'>
-            <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 27 27" fill="none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 27 27" fill="none">
               <path d="M21.375 6.75H5.625C4.38236 6.75 3.375 7.75736 3.375 9V21.375C3.375 22.6176 4.38236 23.625 5.625 23.625H21.375C22.6176 23.625 23.625 22.6176 23.625 21.375V9C23.625 7.75736 22.6176 6.75 21.375 6.75Z" stroke="#1E1E1E" stroke-width="2.66667" />
               <path d="M3.375 11.25C3.375 9.12825 3.375 8.0685 4.03425 7.40925C4.6935 6.75 5.75325 6.75 7.875 6.75H19.125C21.2467 6.75 22.3065 6.75 22.9657 7.40925C23.625 8.0685 23.625 9.12825 23.625 11.25H3.375Z" fill="#1E1E1E" />
               <path d="M7.875 3.375V6.75M19.125 3.375V6.75" stroke="#1E1E1E" stroke-width="2.66667" stroke-linecap="round" />

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
+import LostItem from '../components/lostItem';
 import './App.css';
 import backgroundImage from './assets/images/9886321 2.png';
 import LostItemImage2 from './assets/images/male-hand-holding-glasses-isolated 1.png';
 import BLFStep3 from './assets/images/man_10428848 1.svg';
 import BLFStep2 from './assets/images/report.svg';
 import BLFStep1 from './assets/images/scan_7026205 1.svg';
-import LostItem from './components/lostItem';
 
 const items = [
   {
@@ -67,23 +67,27 @@ const items = [
 const universities = [
   {
     uni: 'Bells University',
+    abbr: 'BLF',
   },
   {
     uni: 'Babcock University',
+    abbr: 'BUF',
   },
 ];
 
-function App() {
+function Home() {
   const [currentUni, setCurrentUni] = useState<string>('');
+  const [currentAbbr, setCurrentAbbr] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const userUniversity = 'Bells University'
+      const userUniversity = 'Bells University';
       const university = universities.find((uni) => uni.uni === userUniversity);
       setCurrentUni(university?.uni || '');
+      setCurrentAbbr(university?.abbr || '');
     };
 
     fetchUserData();
@@ -91,61 +95,67 @@ function App() {
 
   const filteredItems = items.filter((item) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  );
 
-  const totalPages = Math.ceil(filteredItems.length / itemsPerPage)
+  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
 
   const paginatedItems = filteredItems.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
-  )
+  );
 
   const handleNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1)
-  }
+    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
+  };
 
   const handlePrevPage = () => {
-    if (currentPage > 1) setCurrentPage((prev) => prev - 1)
-  }
+    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+  };
 
   return (
     <div>
-      <section className='flex flex-col md:flex-row gap-4 md:justify-between max-w-[1300px] mx-auto px-4 sm:px-8 lg:px-10 pt-5'>
-        <header className='flex flex-col justify-center gap-5 md:max-w-[650px] w-full text-center md:text-left'>
-          <p className='text-3xl sm:text-4xl md:text-5xl leading-10 md:leading-[50px] lg:leading-[60px] font-bold'>Welcome to {currentUni} Lost and Found</p>
-          <p className='text-xl lg:text-2xl leading-20 font-normal'>At {currentUni} Lost and Found, we can help you find items lost on campus.</p>
-          <div className='max-w-[500px] w-full mx-auto md:mx-0 mt-5 md:mt-10'>
-            <h3 className=' bg-blue-400 text-white py-2 text-xl font-semibold text-center rounded-full'>Use BLF in 3 simple steps</h3>
-            <div className='flex flex-col gap-3 text-xl font-semibold py-4'>
-              <p className='flex gap-4 max-w-[250px] w-full mx-auto md:mx-0'>
+      <section className="flex flex-col md:flex-row gap-4 md:justify-between max-w-[1300px] mx-auto px-4 sm:px-8 lg:px-10 pt-5">
+        <header className="flex flex-col justify-center gap-5 md:max-w-[650px] w-full text-center md:text-left">
+          <p className="text-3xl sm:text-4xl md:text-5xl leading-10 md:leading-[50px] lg:leading-[60px] font-bold">
+            Welcome to {currentUni} Lost and Found
+          </p>
+          <p className="text-xl lg:text-2xl leading-20 font-normal">
+            At {currentUni} Lost and Found, we can help you find items lost on campus.
+          </p>
+          <div className="max-w-[500px] w-full mx-auto md:mx-0 mt-5 md:mt-10">
+            <h3 className=" bg-blue-400 text-white py-2 text-xl font-semibold text-center rounded-full">
+              Use {currentAbbr} in 3 simple steps
+            </h3>
+            <div className="flex flex-col gap-3 text-xl font-semibold py-4">
+              <p className="flex gap-4 max-w-[250px] w-full mx-auto md:mx-0">
                 <img
                   src={BLFStep1}
-                  className='w-[30px h-[30px]'
+                  className="w-[30px h-[30px]"
                 />
                 Find an item?
               </p>
-              <p className='flex gap-4 max-w-[250px] w-full mx-auto md:mx-0'>
+              <p className="flex gap-4 max-w-[250px] w-full mx-auto md:mx-0">
                 <img
                   src={BLFStep2}
-                  className='w-[30px h-[30px]'
+                  className="w-[30px h-[30px]"
                 />
-                Report on BLF
+                Report on {currentAbbr}
               </p>
-              <p className='flex gap-4 max-w-[250px] w-full mx-auto md:mx-0'>
+              <p className="flex gap-4 max-w-[250px] w-full mx-auto md:mx-0">
                 <img
                   src={BLFStep3}
-                  className='w-[30px h-[30px]'
+                  className="w-[30px h-[30px]"
                 />
-                Return to it's owner
+                Return to its owner
               </p>
             </div>
           </div>
         </header>
 
-        <div className='hidden md:block md:max-w-[500px] w-full'>
+        <div className="hidden md:block md:max-w-[500px] w-full">
           <img
             src={backgroundImage}
-            className='rounded-0 md:rounded-[20px] h-full'
+            className="rounded-0 md:rounded-[20px] h-full"
           />
         </div>
       </section>
@@ -208,4 +218,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;
