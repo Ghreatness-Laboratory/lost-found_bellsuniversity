@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import LostItem from '../components/item';
-import './App.css';
-import backgroundImage from './assets/images/9886321 2.png';
-import LostItemImage2 from './assets/images/male-hand-holding-glasses-isolated 1.png';
-import BLFStep3 from './assets/images/man_10428848 1.svg';
-import BLFStep2 from './assets/images/report.svg';
-import BLFStep1 from './assets/images/scan_7026205 1.svg';
+import backgroundImage from '../assets/images/9886321 2.png';
+import LostItemImage2 from '../assets/images/male-hand-holding-glasses-isolated 1.png';
+import BLFStep3 from '../assets/images/man_10428848 1.svg';
+import BLFStep2 from '../assets/images/report.svg';
+import BLFStep1 from '../assets/images/scan_7026205 1.svg';
 
 const items = [
   {

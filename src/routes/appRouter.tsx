@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import App from '../App';
+import Index from '../pages';
 import AboutUs from '../pages/aboutUs';
 import ContactUs from '../pages/contactUs';
 import Home from '../pages/home';
@@ -11,10 +11,10 @@ import Reports from '../pages/reports';
 function AppRouter() {
   return (
     <Routes>
-      {/* <Route
-        path='/'
-        element={<App />}
-      /> */}
+      <Route
+        index
+        element={<Index />}
+      />
       <Route
         path='/home'
         element={<Home />}

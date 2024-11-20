@@ -105,13 +105,14 @@ const Navbar = () => {
             {navbarMenu.map((menu, index) => {
               const isActive = pathName === menu.href
               return (
-                <li
+                <Link
                   key={index}
+                  to={menu.href}
                   onClick={() => { setSelectedMenu(index) }}
                   className={`py-2 font-normal text-base cursor-pointer border-b-2 border-b-white hover:border-b-2 hover:border-b-blue-600 hover:text-blue-600 transition ease duration-200ms ${isActive ? isMenuActive : ""}`}
                 >
-                  <Link to={menu.href}>{menu.menu}</Link>
-                </li>
+                  {menu.menu}
+                </Link>
               )
             })}
           </ul>
@@ -132,13 +133,14 @@ const Navbar = () => {
                   {navbarMenu.map((menu, index) => {
                     const isActive = pathName === menu.href
                     return (
-                      <li
+                      <Link
                         key={index}
+                        to={menu.href}
                         onClick={() => { setSelectedMenu(index) }}
                         className={`py-1 md:py-2 pl-4 font-normal text-base cursor-pointer border-l-2 border-l-white md:border-b-2 md:border-b-white active:border-l-blue-600 md:hover:border-b-blue-600 active:text-blue-600 md:hover:text-blue-600 transition ease duration-200ms ${isActive ? isMenuActive : ""}`}
                       >
-                        <Link to={menu.href}>{menu.menu}</Link>
-                      </li>
+                        {menu.menu}
+                      </Link>
                     )
                   })}
                   <p className={`py-1 md:py-2 pl-4 font-normal text-base cursor-pointer border-l-2 border-l-white md:border-b-2 md:border-b-white active:border-l-blue-600 md:hover:border-b-blue-600 active:text-blue-600 md:hover:text-blue-600 transition ease duration-200ms ${pathName === '/login' ? isMenuActive : ""}`}>Register</p>

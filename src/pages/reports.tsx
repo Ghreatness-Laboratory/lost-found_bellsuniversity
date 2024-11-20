@@ -7,6 +7,7 @@ function Reports() {
       <ItemList
         title="Search our database for your lost properties"
         filter={<Filter />}
+        ReportItems={6}
       />
     </div>
   );

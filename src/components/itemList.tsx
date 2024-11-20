@@ -5,6 +5,7 @@ import LostItem from "./item";
 interface ItemListProps {
   title?: string,
   filter?: React.ReactNode,
+  ReportItems?: number,
 }
 const items = [
   {
@@ -64,10 +65,10 @@ const items = [
 ]
 
 
-const ItemList = ({ title, filter }: ItemListProps) => {
+const ItemList = ({ title, filter, ReportItems }: ItemListProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
+  const itemsPerPage = ReportItems ?? 3;
 
   const filteredItems = items.filter((item) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
