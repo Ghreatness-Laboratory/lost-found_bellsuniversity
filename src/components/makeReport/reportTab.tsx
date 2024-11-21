@@ -52,28 +52,28 @@ const ReportTab = () => {
               <div key={index}>
                 <Item
                   name={report.name}
+                  imageStyle="rounded-tl-lg rounded-tr-lg"
                   image={report.image}
+                  style="flex flex-col gap-0"
                   children={
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-1 p-3 border rounded-bl-lg rounded-br-lg">
                       <p>{report.name}</p>
-                      <div className="flex items-center justify-between w-full">
-                        <p>
-                          Status: {''}
-                          <span
-                            className={`font-semibold ${report.status == 'pending' ? 'text-red-500' : ''} ${report.status == 'returned' ? 'text-green-500' : ''} ${report.status == 'seen' ? 'text-green-500' : ''}`}
-                          >
-                            {report.status}
-                          </span>
-                        </p>
-                        <div className="flex gap-4 text-sm">
-                          <div className="flex items-center gap-1 cursor-pointer">
-                            <FaEdit className="w-4 h-4 text-gray-900" />
-                            <p >Edit</p>
-                          </div>
-                          <div className="flex items-center gap-1 cursor-pointer">
-                            <FaTrash className="text-gray-800" />
-                            <p>Delete</p>
-                          </div>
+                      <p>
+                        Status: {''}
+                        <span
+                          className={`font-semibold ${report.status == 'pending' ? 'text-red-500' : ''} ${report.status == 'returned' ? 'text-green-500' : ''} ${report.status == 'seen' ? 'text-green-500' : ''}`}
+                        >
+                          {report.status}
+                        </span>
+                      </p>
+                      <div className="flex gap-4 justify-between text-sm mt-1">
+                        <div className="flex items-center gap-1 cursor-pointer">
+                          <FaEdit className="w-4 h-4 text-gray-900" />
+                          <p >Edit</p>
+                        </div>
+                        <div className="flex items-center gap-1 cursor-pointer">
+                          <FaTrash className="text-gray-800" />
+                          <p>Delete</p>
                         </div>
                       </div>
                     </div>}

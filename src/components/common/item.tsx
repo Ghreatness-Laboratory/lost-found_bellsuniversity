@@ -7,17 +7,19 @@ interface LostItemProps {
     year: number
   },
   image: string,
+  style?: string,
+  imageStyle?: string,
   children?: React.ReactNode,
 }
 
-const Item = ({ name, date, image, children }: LostItemProps) => {
+const Item = ({ name, date, image, style, imageStyle, children }: LostItemProps) => {
   return (
     <div className='p-0 md:p-4 w-full rounded-lg'>
-      <div className='flex flex-col gap-2 md:gap-5'>
+      <div className={`${style}`}>
         <img
           src={image}
           alt="Lost and Found Item"
-          className='object-cover w-full h-[180px] md:h-[200px] rounded-xl'
+          className={`object-cover w-full h-[180px] md:h-[200px] ${imageStyle}`}
         />
 
         {children ? (

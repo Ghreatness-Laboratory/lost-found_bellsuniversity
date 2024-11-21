@@ -187,7 +187,9 @@ function Home() {
               <LostItem
                 name={item.name}
                 date={item.date}
+                style='flex flex-col gap-2 md:gap-5'
                 image={item.image}
+                imageStyle='rounded-lg'
               />
             </div>
           ))}

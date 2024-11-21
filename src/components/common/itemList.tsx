@@ -115,6 +115,8 @@ const ItemList = ({
             <Item
               name={item.name}
               date={item.date}
+              style='flex flex-col gap-2 md:gap-5'
+              imageStyle="rounded-lg "
               image={item.image}
             />
           </div>

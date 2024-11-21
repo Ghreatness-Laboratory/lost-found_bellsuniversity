@@ -3,7 +3,7 @@ import { reports } from "./reportTab";
 
 const MyReportsTab = () => {
   return (
-    <div className="flex flex-col gap-5 py-2">
+    <div className="flex flex-col gap-6 md:p-3">
       {reports.map((report, index) => (
         <div key={index}>
           <ReportHistory
