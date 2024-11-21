@@ -19,30 +19,31 @@ function MakeAReport() {
   }
 
   return (
-    <div className="flex px-10 mb-10">
+    <div className="flex px-4 md:px-10 my-10">
       <div className="max-w-[900px] w-full">
         <div>
-          <div className="pl-4 md:pl-8">
-            <span className='flex items-end leading-8 gap-[30px] font-medium text-xs sm:text-base cursor-pointer'>
-              <p
-                className={`sm:py-1 border-b-[2px] border-b-white hover:text-blue-400 ${activeReportTab === "Reports" ? "text-blue-400 border-b-blue-400 transition ease duration-300ms" : ""}`}
-                onClick={() => handleReportTabClick("Reports")}
-              >
-                Reports
-              </p>
-              <p
-                className={`sm:py-1 border-b-[2px] border-b-white hover:text-blue-400 ${activeReportTab === "My Reports" ? "text-blue-400 border-b-blue-400 transition ease duration-300ms" : ""}`}
-                onClick={() => handleReportTabClick("My Reports")}
-              >
-                My Reports
-              </p>
-            </span>
+          <div className="flex items-end leading-6 sm:leading-8 gap-5 md:gap-[30px] font-medium text-sm sm:text-base cursor-pointer md:pl-4">
+            <p
+              className={`sm:py-1 border-b-[2px] border-b-white hover:text-blue-400 ${activeReportTab === "Reports" ? "text-blue-400 border-b-blue-400 transition ease duration-300ms" : ""}`}
+              onClick={() => handleReportTabClick("Reports")}
+            >
+              Reports
+            </p>
+            <p
+              className={`sm:py-1 border-b-[2px] border-b-white hover:text-blue-400 ${activeReportTab === "My Reports" ? "text-blue-400 border-b-blue-400 transition ease duration-300ms" : ""}`}
+              onClick={() => handleReportTabClick("My Reports")}
+            >
+              My Reports
+            </p>
           </div>
 
           <div className="my-4">
             {activeReportTab === 'Reports' ? (
               displayReportForm ? (
-                <ReportForm />
+                <ReportForm
+                  displayReportForm={displayReportForm}
+                  setDisplayReportForm={setDisplayReportForm}
+                />
               ) : (
                 <ReportTab />
               )
@@ -52,7 +53,7 @@ function MakeAReport() {
           </div>
         </div>
 
-        <div className="fixed z-1 bottom-4 right-10">
+        <div className="fixed z-1 bottom-4 right-4 md:right-10">
           <span className="sr-only">Make a report button</span>
           <div
             onClick={handleReportForm}
@@ -66,9 +67,6 @@ function MakeAReport() {
         </div>
       </div>
 
-      <div>
-
-      </div>
     </div>
   );
 }

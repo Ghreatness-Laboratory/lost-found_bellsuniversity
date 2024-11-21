@@ -1,5 +1,10 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import Select, { components, OptionProps, SingleValue } from "react-select";
+
+interface FormProps {
+  displayReportForm: boolean,
+  setDisplayReportForm: React.Dispatch<React.SetStateAction<boolean>>,
+}
 
 type ReportType = 'Lost' | 'Found';
 
@@ -45,7 +50,7 @@ const CustomOption = (props: OptionProps<Option>) => {
   );
 };
 
-const ReportForm = () => {
+const ReportForm = ({ displayReportForm, setDisplayReportForm }: FormProps) => {
   const [isFocusedTitle, setIsFocusedTitle] = useState(false);
   const [isFocusedDescription, setIsFocusedDescription] = useState(false);
   const [selectedOption, setSelectedOption] = useState<SingleValue<Option>>(null);
@@ -128,7 +133,7 @@ const ReportForm = () => {
     if (!email) {
       newErrors.email = "Email is required";
     } else if (!email.endsWith('@gmail.com')) {
-      newErrors.email = "Only Gmail addresses are allowed";
+      newErrors.email = "Input valid email address";
     }
 
     setErrors(newErrors);
@@ -139,19 +144,16 @@ const ReportForm = () => {
     e.preventDefault();
 
     if (validateForm()) {
-      console.log('Form is valid', {
-        title, description, image, location,
-        reportType, date, phoneNumber, email
-      });
+      setDisplayReportForm(false)
     }
   };
 
   return (
-    <form onSubmit={handleReportSubmit} className="flex flex-col gap-4 md:gap-0 relative pl-4 w-full mx-auto">
-      <div className="relative w-full my-2 md:my-4 flex flex-col gap-4">
+    <form onSubmit={handleReportSubmit} className="flex flex-col gap-4 md:gap-0 relative md:pl-4 w-full mx-auto">
+      <div className="relative w-full my-2 md:my-4 flex flex-col gap-2 md:gap-4">
         <label
           htmlFor="title"
-          className="text-lg font-semibold"
+          className="text-base md:text-lg font-semibold"
         >
           Report Title <span className="text-[#F24822]">*</span>
         </label>
@@ -166,7 +168,7 @@ const ReportForm = () => {
               setErrors(prev => ({ ...prev, title: undefined }));
             }}
             autoComplete="off"
-            className="w-full px-3 py-2 text-base outline-none border border-gray-300 rounded-md focus:border-blue-300"
+            className="w-full px-3 py-2 text-sm md:text-base outline-none border border-gray-300 rounded-md focus:border-blue-300"
             onFocus={() => setIsFocusedTitle(true)}
             onBlur={() => setIsFocusedTitle(false)}
           />
@@ -174,10 +176,10 @@ const ReportForm = () => {
         </div>
       </div>
 
-      <div className="relative w-full my-2 md:my-4 flex flex-col gap-4">
+      <div className="relative w-full my-2 md:my-4 flex flex-col gap-2 md:gap-4">
         <label
           htmlFor="desccription"
-          className="text-lg font-semibold"
+          className="text-base md:text-lg font-semibold"
         >
           Description <span className="text-[#F24822]">*</span>
         </label>
@@ -192,7 +194,7 @@ const ReportForm = () => {
               setErrors(prev => ({ ...prev, description: undefined }));
             }}
             autoComplete="off"
-            className="w-full px-3 py-2 text-base outline-none border border-gray-300 rounded-md focus:border-blue-300"
+            className="w-full px-3 py-2 text-sm md:text-base outline-none border border-gray-300 rounded-md focus:border-blue-300"
             onFocus={() => setIsFocusedDescription(true)}
             onBlur={() => setIsFocusedDescription(false)}
           />
@@ -200,8 +202,8 @@ const ReportForm = () => {
         </div>
       </div>
 
-      <div className="relative w-full my-2 md:my-4 flex flex-col gap-4">
-        <p className="text-lg font-semibold">Image of Item <span className="text-[#F24822]">*</span></p>
+      <div className="relative w-full my-2 md:my-4 flex flex-col gap-2 md:gap-4">
+        <p className="text-base md:text-lg font-semibold">Image of Item <span className="text-[#F24822]">*</span></p>
         <div>
           <div className="flex items-center justify-center w-full">
             <label
@@ -236,10 +238,10 @@ const ReportForm = () => {
         </div>
       </div>
 
-      <div className="relative flex flex-col gap-4 my-2 md:my-4">
+      <div className="relative flex flex-col gap-2 md:gap-4 my-2 md:my-4">
         <label
           htmlFor="location"
-          className="text-lg font-semibold">
+          className="text-base md:text-lg font-semibold">
           Location <span className="text-[#F24822]">*</span>
         </label>
         <div>
@@ -250,16 +252,16 @@ const ReportForm = () => {
             value={selectedOption}
             onChange={handleSelectChange}
             placeholder="Filter by location..."
-            className="border-gray-300"
+            className="border-gray-300 text-sm md:text-base"
             isMulti={false}
           />
           {errors.location && <span className="absolute left-0 -bottom-5 text-red-500 text-xs mt-1">{errors.location}</span>}
         </div>
       </div>
 
-      <div className="relative flex flex-col gap-4 my-2 md:my-4">
+      <div className="relative flex flex-col gap-2 md:gap-4 my-2 md:my-4">
         <label
-          className="text-lg font-semibold">
+          className="text-base md:text-lg font-semibold">
           Report Type <span className="text-[#F24822]">*</span>
         </label>
         <div>
@@ -299,10 +301,10 @@ const ReportForm = () => {
         </div>
       </div>
 
-      <div className="relative w-full flex flex-col gap-4 my-2 md:my-4">
+      <div className="relative w-full flex flex-col gap-2 md:gap-4 my-2 md:my-4">
         <label
           htmlFor="date"
-          className="text-lg font-semibold">
+          className="text-base md:text-lg font-semibold">
           Date <span className="text-[#F24822]">*</span>
         </label>
         <div>
@@ -315,16 +317,16 @@ const ReportForm = () => {
               setDate(e.target.value);
               setErrors(prev => ({ ...prev, date: undefined }));
             }}
-            className="w-full px-3 py-2 outline-none border border-gray-300 rounded-md focus:border-blue-300"
+            className="w-full px-3 py-2 text-sm md:text-base outline-none border border-gray-300 rounded-md focus:border-blue-300"
           />
           {errors.date && <span className="absolute left-0 -bottom-5 text-red-500 text-xs mt-1">{errors.date}</span>}
         </div>
       </div>
 
-      <div className="relative w-full flex flex-col gap-4 my-2 md:my-4">
+      <div className="relative w-full flex flex-col gap-2 md:gap-4 my-2 md:my-4">
         <label
           htmlFor="phone-number"
-          className="text-lg font-semibold">
+          className="text-base md:text-lg font-semibold">
           Phone Number <span className="text-[#F24822]">*</span>
         </label>
         <div>
@@ -340,15 +342,15 @@ const ReportForm = () => {
               value={phoneNumber}
               onChange={handlePhoneNumberChange}
               placeholder="Enter 10-digit phone number"
-              className="w-full pl-[4.5rem] pr-3 py-2 appearance-none outline-none border focus:border-blue-300 rounded-lg"
+              className="w-full pl-[4.5rem] pr-3 py-2 text-sm md:text-base appearance-none outline-none border focus:border-blue-300 rounded-lg"
             />
           </div>
           {errors.phoneNumber && <span className="absolute left-0 -bottom-5 text-red-500 text-xs mt-1">{errors.phoneNumber}</span>}
         </div>
       </div>
 
-      <div className="relative w-full my-4 flex flex-col gap-4 my-2 md:my-4">
-        <p className="text-lg font-semibold">Email <span className="text-[#F24822]">*</span></p>
+      <div className="relative w-full my-4 flex flex-col gap-2 md:gap-4 my-2 md:my-4">
+        <p className="text-base md:text-lg font-semibold">Email <span className="text-[#F24822]">*</span></p>
         <div>
           <input
             type="email"
@@ -358,7 +360,7 @@ const ReportForm = () => {
               setErrors(prev => ({ ...prev, email: undefined }));
             }}
             autoComplete="email"
-            className="w-full px-3 py-2 text-base outline-none border border-gray-300 rounded-md focus:border-blue-300"
+            className="w-full px-3 py-2 text-sm md:text-base outline-none border border-gray-300 rounded-md focus:border-blue-300"
             placeholder="Enter email address"
           />
           {errors.email && <span className="absolute left-0 -bottom-5 text-red-500 text-xs mt-1">{errors.email}</span>}
@@ -367,7 +369,7 @@ const ReportForm = () => {
 
       <button
         type="submit"
-        className="bg-blue-500 hover:bg-blue-600 py-2 mt-4 rounded-md text-lg font-semibold text-white transition-colors duration-300"
+        className="bg-blue-500 active:bg-blue-600 md:hover:bg-blue-600 py-2 mt-4 rounded-md text-base md:text-lg font-semibold text-white transition-colors duration-300"
       >
         Submit Report
       </button>
