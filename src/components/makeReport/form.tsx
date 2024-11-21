@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import Select, { components, OptionProps, SingleValue } from "react-select";
 
 type ReportType = 'Lost' | 'Found';
@@ -8,7 +8,7 @@ type FormError = {
   description?: string,
   image?: string,
   location?: string,
-  reportType?: ReportType,
+  reportType?: string,
   date?: string,
   phoneNumber?: string,
   email?: string,
@@ -46,132 +46,205 @@ const CustomOption = (props: OptionProps<Option>) => {
 };
 
 const ReportForm = () => {
-  const [isFocused, setIsFocused] = useState(false);
+  const [isFocusedTitle, setIsFocusedTitle] = useState(false);
+  const [isFocusedDescription, setIsFocusedDescription] = useState(false);
   const [selectedOption, setSelectedOption] = useState<SingleValue<Option>>(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [location, setLocation] = useState('');
-  const [reportType, setReportType] = useState('');
+  const [reportType, setReportType] = useState<string>('');
   const [date, setDate] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState<FormError>({});
 
-  const handleEmailChange = () => {
-    if (errors.email) {
-      setErrors((prevErrors) => ({ prevErrors, email: undefined }))
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        setErrors(prev => ({ ...prev, image: 'File size exceeds 5MB' }));
+        return;
+      }
+
+      setImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+      setErrors(prev => ({ ...prev, image: undefined }));
     }
-  }
+  };
 
   const handleSelectChange = (selected: SingleValue<Option>) => {
     setSelectedOption(selected);
+    setLocation(selected?.value || '');
+    setErrors(prev => ({ ...prev, location: undefined }));
   };
 
-  const handleReportSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handlePhoneNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.length <= 10) {
+      setPhoneNumber(value);
+      setErrors(prev => ({ ...prev, phoneNumber: undefined }));
+    }
+  };
 
-    setErrors({});
+  const validateForm = (): boolean => {
+    const newErrors: FormError = {};
 
-    let valid = true
-    const newError: FormError = {}
+    if (!title.trim()) {
+      newErrors.title = "Title is required";
+    }
+
+    if (!description.trim()) {
+      newErrors.description = "Description is required";
+    }
+
+    if (!image) {
+      newErrors.image = "Image is required";
+    }
+
+    if (!location) {
+      newErrors.location = "Location is required";
+    }
+
+    if (!reportType) {
+      newErrors.reportType = "Report type is required";
+    }
+
+    if (!date) {
+      newErrors.date = "Date is required";
+    }
+
+    if (!phoneNumber) {
+      newErrors.phoneNumber = "Phone number is required";
+    } else if (phoneNumber.length !== 10) {
+      newErrors.phoneNumber = "Phone number must be 10 digits";
+    }
 
     if (!email) {
-      valid = false
-      newError.email = "Enter your email"
+      newErrors.email = "Email is required";
     } else if (!email.endsWith('@gmail.com')) {
-      valid = false
-      newError.email = "Invalid email!"
+      newErrors.email = "Only Gmail addresses are allowed";
     }
 
-    if (!valid) {
-      setErrors(newError)
-    } else {
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
+  const handleReportSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (validateForm()) {
+      console.log('Form is valid', {
+        title, description, image, location,
+        reportType, date, phoneNumber, email
+      });
     }
-  }
+  };
 
   return (
-    <form onSubmit={handleReportSubmit} action="" className="flex flex-col gap-5 relative">
-      <div className="relative w-full my-4 flex flex-col gap-4 ">
+    <form onSubmit={handleReportSubmit} className="flex flex-col gap-5 relative pl-4 w-full mx-auto">
+      <div className="relative w-full my-4 flex flex-col gap-4">
         <p className="text-lg font-semibold">Report Title <span className="text-[#F24822]">*</span></p>
-        <div>
+        <div className="relative">
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              setErrors(prev => ({ ...prev, title: undefined }));
+            }}
+            required
+            autoComplete="off"
+            className="w-full px-3 py-2 text-base outline-none border border-gray-300 rounded-md focus:border-blue-300"
+            onFocus={() => setIsFocusedTitle(true)}
+            onBlur={() => setIsFocusedTitle(false)}
+          />
           <label
-            className={`absolute left-0 px-3 py-2 text-base transition-all duration-300 ease-in-out ${isFocused ? "transform -translate-y-1/2 scale-90 ml-5 bg-white" : "ml-2 text-gray-500"}`}
+            className={`absolute left-3 top-1/2 transform transition-all duration-300 ease-in-out pointer-events-none ${isFocusedTitle || title
+              ? "-translate-y-full scale-75 text-xs bg-white px-1 -ml-1"
+              : "-translate-y-1/2 text-gray-500"
+              }`}
           >
             Enter title of report
           </label>
-          <input
-            type="text"
-            required
-            autoComplete="off"
-            className="w-full px-3 py-2 text-base outline-none border border-gray-300 rounded-md focus:border-blue-300"
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-          />
-          {errors.email && <span className="font-normal text-xs mt-1 text-[#FF0000]">{errors.email}</span>}
+          {errors.title && <span className="text-red-500 text-xs mt-1">{errors.title}</span>}
         </div>
       </div>
 
-      <div className="relative w-full my-4 flex flex-col gap-4 ">
+      <div className="relative w-full my-4 flex flex-col gap-4">
         <p className="text-lg font-semibold">Description <span className="text-[#F24822]">*</span></p>
-        <div>
+        <div className="relative">
+          <input
+            type="text"
+            value={description}
+            onChange={(e) => {
+              setDescription(e.target.value);
+              setErrors(prev => ({ ...prev, description: undefined }));
+            }}
+            required
+            autoComplete="off"
+            className="w-full px-3 py-2 text-base outline-none border border-gray-300 rounded-md focus:border-blue-300"
+            onFocus={() => setIsFocusedDescription(true)}
+            onBlur={() => setIsFocusedDescription(false)}
+          />
           <label
-            htmlFor="decription"
-            className={`absolute left-0 px-3 py-2 text-base transition-all duration-300 ease-in-out ${isFocused ? "transform -translate-y-1/2 scale-90 ml-5 bg-white" : "ml-2 text-gray-500"}`}
+            className={`absolute left-3 top-1/2 transform transition-all duration-300 ease-in-out pointer-events-none ${isFocusedDescription || description
+              ? "-translate-y-full scale-75 text-xs bg-white px-1 -ml-1"
+              : "-translate-y-1/2 text-gray-500"
+              }`}
           >
             Enter report description
           </label>
-          <input
-            id="description"
-            type="text"
-            required
-            autoComplete="off"
-            className="w-full px-3 py-2 text-base outline-none border border-gray-300 rounded-md focus:border-blue-300"
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-          />
-          {errors.email && <span className="font-normal text-xs mt-1 text-[#FF0000]">{errors.email}</span>}
+          {errors.description && <span className="text-red-500 text-xs mt-1">{errors.description}</span>}
         </div>
       </div>
 
-      <div className="relative w-full my-4 flex flex-col gap-4 ">
+      <div className="relative w-full my-4 flex flex-col gap-4">
         <p className="text-lg font-semibold">Image of Item <span className="text-[#F24822]">*</span></p>
         <div>
-          <div className="flex items-center justify-center w-fit h-fit">
+          <div className="flex items-center justify-center w-full">
             <label
               htmlFor="file"
-              className="cursor-pointer bg-gray-100 p-[30px] px-[70px] rounded-2xl border border-gray-300"
+              className="cursor-pointer w-full border-2 border-dashed border-gray-300 rounded-lg p-4 text-center"
             >
-              <div className="flex flex-col items-center justify-center gap-1">
-                <svg viewBox="0 0 640 512" className="h-[50px] fill-gray-600 mb-5">
-                  <path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V392c0 13.3 10.7 24 24 24s24-10.7 24-24V257.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z" />
-                </svg>
-                <p>No image chosen</p>
-                <span className="bg-gray-600 text-white py-[5px] px-[15px] rounded-[10px] transition-all duration-300 hover:bg-gray-900">
-                  Select an image
-                </span>
-              </div>
+              {imagePreview ? (
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="max-h-64 mx-auto object-contain"
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <svg viewBox="0 0 640 512" className="h-12 fill-gray-600 mb-2">
+                    <path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V392c0 13.3 10.7 24 24 24s24-10.7 24-24V257.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z" />
+                  </svg>
+                  <p>Click to select image</p>
+                </div>
+              )}
               <input
                 id="file"
                 type="file"
+                accept="image/*"
                 className="hidden"
+                onChange={handleImageChange}
               />
             </label>
           </div>
-          <span className="font-normal text-xs mt-1 text-gray-700">Maximum file size: 5 MB</span>
+          <span className="text-xs text-gray-500 mt-1">Maximum file size: 5 MB</span>
+          {errors.image && <span className="text-red-500 text-xs mt-1">{errors.image}</span>}
         </div>
       </div>
 
       <div className="flex flex-col gap-4">
-        <label
-          htmlFor="location"
-          className="text-lg font-semibold"
-        >
+        <label className="text-lg font-semibold">
           Location <span className="text-[#F24822]">*</span>
         </label>
         <Select
-          id="location"
           options={options}
           components={{ Option: CustomOption }}
           value={selectedOption}
@@ -180,70 +253,68 @@ const ReportForm = () => {
           className="border-gray-300"
           isMulti={false}
         />
+        {errors.location && <span className="text-red-500 text-xs mt-1">{errors.location}</span>}
       </div>
 
       <div className="flex flex-col gap-4">
-        <label
-          htmlFor="location"
-          className="text-lg font-semibold"
-        >
+        <label className="text-lg font-semibold">
           Report Type <span className="text-[#F24822]">*</span>
         </label>
         <div className="flex items-center gap-6">
-          <div className="relative inline-block cursor-pointer">
-            <input
-              type="radio"
-              name="radio-group"
-              id="radio1"
-              className="absolute opacity-0 w-0 h-0"
-            />
-            <label
-              htmlFor="radio1"
-              className="relative inline-block pl-[30px] mb-[10px] text-[16px] transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
-            >
-              <span className="absolute top-1/2 left-0 transform -translate-y-1/2 w-[20px] h-[20px] rounded-full border-2 border-gray-600 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"></span>
-              Lost
-            </label>
-          </div>
-          <div className="relative inline-block cursor-pointer">
-            <input
-              type="radio"
-              name="radio-group"
-              id="radio2"
-              className="absolute opacity-0 w-0 h-0"
-            />
-            <label
-              htmlFor="radio2"
-              className="relative inline-block pl-[30px] mb-[10px] text-[16px] transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
-            >
-              <span className="absolute top-1/2 left-0 transform -translate-y-1/2 w-[20px] h-[20px] rounded-full border-2 border-gray-600 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"></span>
-              Found
-            </label>
-          </div>
+          {(['Lost', 'Found'] as const).map((type) => (
+            <div key={type} className="relative inline-block cursor-pointer">
+              <input
+                type="radio"
+                name="reportType"
+                id={`radio-${type}`}
+                value={type}
+                checked={reportType === type}
+                onChange={() => {
+                  setReportType(type);
+                  setErrors(prev => ({ ...prev, reportType: undefined }));
+                }}
+                className="absolute opacity-0 w-0 h-0"
+              />
+              <label
+                htmlFor={`radio-${type}`}
+                className={`relative inline-block pl-[30px] mb-[10px] text-[16px] 
+                  ${reportType === type ? 'text-blue-500' : 'text-gray-600'}`}
+              >
+                <span
+                  className={`absolute top-1/2 left-0 transform -translate-y-1/2 
+                    w-[20px] h-[20px] rounded-full border-2 
+                    ${reportType === type
+                      ? 'border-blue-500 bg-blue-500'
+                      : 'border-gray-600'
+                    } transition-all duration-300`}
+                ></span>
+                {type}
+              </label>
+            </div>
+          ))}
         </div>
+        {errors.reportType && <span className="text-red-500 text-xs mt-1">{errors.reportType}</span>}
       </div>
 
       <div className="w-full flex flex-col gap-4">
-        <label
-          htmlFor="date"
-          className="text-lg font-semibold"
-        >
+        <label className="text-lg font-semibold">
           Date <span className="text-[#F24822]">*</span>
         </label>
         <input
           type="date"
-          placeholder="Enter birth date"
-          className="px-3 py-2 outline-none border border-gray-300 rounded-md focus:border-blue-300"
+          value={date}
+          onChange={(e) => {
+            setDate(e.target.value);
+            setErrors(prev => ({ ...prev, date: undefined }));
+          }}
+          className="w-full px-3 py-2 outline-none border border-gray-300 rounded-md focus:border-blue-300"
           required
         />
+        {errors.date && <span className="text-red-500 text-xs mt-1">{errors.date}</span>}
       </div>
 
-
       <div className="w-full flex flex-col gap-4">
-        <label
-          htmlFor="number"
-          className="text-lg font-semibold"
-        >
+        <label className="text-lg font-semibold">
           Phone Number <span className="text-[#F24822]">*</span>
         </label>
         <div className="relative">
@@ -251,44 +322,42 @@ const ReportForm = () => {
             <p>+234 </p>
           </div>
           <input
-            id="number"
-            type="number"
-            max={10}
-            placeholder=""
+            type="tel"
+            pattern="[0-9]{10}"
+            maxLength={10}
+            value={phoneNumber}
+            onChange={handlePhoneNumberChange}
+            placeholder="Enter 10-digit phone number"
             className="w-full pl-[4.5rem] pr-3 py-2 appearance-none outline-none border focus:border-blue-300 rounded-lg"
           />
         </div>
+        {errors.phoneNumber && <span className="text-red-500 text-xs mt-1">{errors.phoneNumber}</span>}
       </div>
 
-      <div className="relative w-full my-4 flex flex-col gap-4 ">
+      <div className="relative w-full my-4 flex flex-col gap-4">
         <p className="text-lg font-semibold">Email <span className="text-[#F24822]">*</span></p>
-        <div>
-          <label
-            htmlFor="email"
-            className={`absolute left-0 px-3 py-2 text-base transition-all duration-300 ease-in-out ${isFocused ? "transform -translate-y-1/2 scale-90 ml-5 bg-white" : "ml-2 text-gray-500"}`}
-          >
-            Enter email address
-          </label>
+        <div className="relative">
           <input
-            id="email"
             type="email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setErrors(prev => ({ ...prev, email: undefined }));
+            }}
             autoComplete="email"
             className="w-full px-3 py-2 text-base outline-none border border-gray-300 rounded-md focus:border-blue-300"
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter email address"
           />
-          {errors.email && <span className="font-normal text-xs mt-1 text-[#FF0000]">{errors.email}</span>}
+          {errors.email && <span className="text-red-500 text-xs mt-1">{errors.email}</span>}
         </div>
       </div>
 
       <button
         type="submit"
-        className="bg-blue-400 py-2 rounded-md text-lg font-semibold text-white"
+        className="bg-blue-500 hover:bg-blue-600 py-2 rounded-md text-lg font-semibold text-white transition-colors duration-300"
       >
-        Submit
+        Submit Report
       </button>
-
     </form>
   )
 }

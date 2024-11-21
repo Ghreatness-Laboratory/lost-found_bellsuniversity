@@ -1,32 +1,40 @@
 import { FaEdit, FaTrash } from "react-icons/fa";
-import LostItemImage from '../../assets/images/close-up-black-smartwatch 1.png';
+import LostItemImage from '../../assets/images/male-hand-holding-glasses-isolated 1.png';
 import Item from "../common/item";
 
 interface ReportsProps {
   name: string,
-  date: object,
+  date: {
+    day: number,
+    month: number,
+    year: number
+  },
   image: string,
   status: string,
+  location: string,
 }
 
-const reports: ReportsProps[] = [
+export const reports: ReportsProps[] = [
   {
     name: 'Found wristwatch At Classroom',
     date: { day: 13, month: 11, year: 24 },
     image: LostItemImage,
     status: 'pending',
+    location: 'Classroom',
   },
   {
     name: 'Found Iphone At Football Field',
     date: { day: 23, month: 8, year: 24 },
     image: LostItemImage,
     status: 'seen',
+    location: 'Football Field',
   },
   {
     name: 'Found wristwatch At Classroom',
     date: { day: 12, month: 9, year: 24 },
     image: LostItemImage,
     status: 'returned',
+    location: 'Classroom',
   },
 ]
 
@@ -39,7 +47,7 @@ const ReportTab = () => {
             Found any item? Make a report
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {reports.map((report, index) => (
               <div key={index}>
                 <Item
@@ -49,14 +57,21 @@ const ReportTab = () => {
                     <div className="flex flex-col gap-1">
                       <p>{report.name}</p>
                       <div className="flex items-center justify-between w-full">
-                        <p>Status: <span className="font-semibold">{report.status}</span></p>
+                        <p>
+                          Status: {''}
+                          <span
+                            className={`font-semibold ${report.status == 'pending' ? 'text-red-500' : ''} ${report.status == 'returned' ? 'text-green-500' : ''} ${report.status == 'seen' ? 'text-green-500' : ''}`}
+                          >
+                            {report.status}
+                          </span>
+                        </p>
                         <div className="flex gap-4 text-sm">
                           <div className="flex items-center gap-1 cursor-pointer">
-                            <FaEdit className="text-gray-500"/>
+                            <FaEdit className="w-4 h-4 text-gray-900" />
                             <p >Edit</p>
                           </div>
                           <div className="flex items-center gap-1 cursor-pointer">
-                            <FaTrash className="text-gray-500"/>
+                            <FaTrash className="text-gray-800" />
                             <p>Delete</p>
                           </div>
                         </div>
