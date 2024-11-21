@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Filter from "../components/filter";
-import ItemList from "../components/itemList";
+import Filter from "../components/reports/filter";
+import ItemList from "../components/common/itemList";
 
 const Reports: React.FC = () => {
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);

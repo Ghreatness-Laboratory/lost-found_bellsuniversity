@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import LostItemImage2 from '../assets/images/male-hand-holding-glasses-isolated 1.png';
-import LostItem from "./item";
+import LostItemImage2 from '../../assets/images/male-hand-holding-glasses-isolated 1.png';
+import Item from "./item";
 
 interface ItemListProps {
   title?: string,
@@ -112,7 +112,11 @@ const ItemList = ({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-0 md:px-10 pt-8 md:pt-12">
         {paginatedItems.map((item, index) => (
           <div key={index}>
-            <LostItem name={item.name} date={item.date} image={item.image} />
+            <Item
+              name={item.name}
+              date={item.date}
+              image={item.image}
+            />
           </div>
         ))}
       </div>
