@@ -132,7 +132,7 @@ const Navbar = ({ isNavbarOpen, handleNavClick, closeNavbar }: NavbarProps) => {
           </ul>
 
           {isNavbarOpen &&
-            <nav className='fixed h-full top-0 right-0 bg-white z-20 w-[305px] flex flex-col justify-between py-8 pt-8 md:pt-12'>
+            <nav className='fixed bottom-0 top-0 right-0 bg-white z-20 w-[305px] flex flex-col justify-between py-8 pt-8 md:pt-12'>
               <div>
                 <div
                   onClick={handleNavClick}
@@ -142,7 +142,7 @@ const Navbar = ({ isNavbarOpen, handleNavClick, closeNavbar }: NavbarProps) => {
                     <path d="M6.4 19L5 17.6L10.6 12L5 6.4L6.4 5L12 10.6L17.6 5L19 6.4L13.4 12L19 17.6L17.6 19L12 13.4L6.4 19Z" fill="#1E1E1E" />
                   </svg>
                 </div>
-                <ul className="flex flex-col gap-4 md:gap-6 pl-4 md:py-20">
+                <ul className="flex flex-col gap-4 md:gap-6 pt-5 sm:pt-10">
                   <span className="sr-only">Mobile Menu</span>
                   {navbarMenu.map((menu, index) => {
                     const isActive = pathName === menu.href
@@ -151,14 +151,14 @@ const Navbar = ({ isNavbarOpen, handleNavClick, closeNavbar }: NavbarProps) => {
                         key={index}
                         to={menu.href}
                         onClick={() => { setSelectedMenu(index) }}
-                        className={`py-1 md:py-2 pl-4 font-normal text-base cursor-pointer border-l-2 border-l-white md:border-b-2 md:border-b-white active:border-l-blue-600 md:hover:border-b-blue-600 active:text-blue-600 md:hover:text-blue-600 transition ease duration-200ms ${isActive ? isMenuActive : ""}`}
+                        className={`py-1 md:py-2 pl-8 font-normal text-base cursor-pointer border-l-2 border-l-white md:border-b-2 md:border-b-white active:border-l-blue-600 md:hover:border-b-blue-600 active:text-blue-600 md:hover:text-blue-600 transition ease duration-200ms ${isActive ? isMenuActive : ""}`}
                       >
                         {menu.menu}
                       </Link>
                     )
                   })}
-                  <p className={`py-1 md:py-2 pl-4 font-normal text-base cursor-pointer border-l-2 border-l-white md:border-b-2 md:border-b-white active:border-l-blue-600 md:hover:border-b-blue-600 active:text-blue-600 md:hover:text-blue-600 transition ease duration-200ms ${pathName === '/login' ? isMenuActive : ""}`}>Register</p>
-                  <p className={`py-1 md:py-2 pl-4 font-normal text-base cursor-pointer border-l-2 border-l-white md:border-b-2 md:border-b-white active:border-l-blue-600 md:hover:border-b-blue-600 active:text-blue-600 md:hover:text-blue-600 transition ease duration-200ms ${pathName === '/register' ? isMenuActive : ""}`}>Login</p>
+                  <p className={`py-1 md:py-2 pl-8 font-normal text-base cursor-pointer border-l-2 border-l-white md:border-b-2 md:border-b-white active:border-l-blue-600 md:hover:border-b-blue-600 active:text-blue-600 md:hover:text-blue-600 transition ease duration-200ms ${pathName === '/login' ? isMenuActive : ""}`}>Register</p>
+                  <p className={`py-1 md:py-2 pl-8 font-normal text-base cursor-pointer border-l-2 border-l-white md:border-b-2 md:border-b-white active:border-l-blue-600 md:hover:border-b-blue-600 active:text-blue-600 md:hover:text-blue-600 transition ease duration-200ms ${pathName === '/register' ? isMenuActive : ""}`}>Login</p>
                 </ul>
               </div>
 

@@ -208,7 +208,7 @@ const ReportForm = ({ displayReportForm, setDisplayReportForm }: FormProps) => {
           <div className="flex items-center justify-center w-full">
             <label
               htmlFor="file"
-              className={`cursor-pointer w-full border-2 ${imagePreview ? 'border-solid' : 'border-dashed'} border-gray-300 rounded-lg p-4 text-center`}
+              className={`cursor-pointer w-full border-2 ${imagePreview ? 'border-solid' : 'border-dashed'} border-gray-300 rounded-lg p-2 md:p-4 text-center`}
             >
               {imagePreview ? (
                 <img
@@ -332,7 +332,7 @@ const ReportForm = ({ displayReportForm, setDisplayReportForm }: FormProps) => {
         <div>
           <div className="relative">
             <div className="absolute inset-y-0 left-3 my-auto h-6 flex items-center border-r pr-2">
-              <p>+234 </p>
+              <p className="text-sm md:text-base">+234 </p>
             </div>
             <input
               id="phone-number"
