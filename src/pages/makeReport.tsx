@@ -24,13 +24,13 @@ function MakeAReport() {
         <div>
           <div className="flex items-end leading-6 sm:leading-8 gap-5 md:gap-[30px] font-medium text-sm sm:text-base cursor-pointer md:pl-4">
             <p
-              className={`sm:py-1 border-b-[2px] border-b-white hover:text-blue-400 ${activeReportTab === "Reports" ? "text-blue-400 border-b-blue-400 transition ease duration-300ms" : ""}`}
+              className={`sm:py-1 border-b-[2px] hover:text-blue-400 ${activeReportTab === "Reports" ? "text-blue-400 border-b-blue-400 transition ease duration-300ms" : "border-b-white"}`}
               onClick={() => handleReportTabClick("Reports")}
             >
               Reports
             </p>
             <p
-              className={`sm:py-1 border-b-[2px] border-b-white hover:text-blue-400 ${activeReportTab === "My Reports" ? "text-blue-400 border-b-blue-400 transition ease duration-300ms" : ""}`}
+              className={`sm:py-1 border-b-[2px] hover:text-blue-400 ${activeReportTab === "My Reports" ? "text-blue-400 border-b-blue-400 transition ease duration-300ms" : "border-b-white"}`}
               onClick={() => handleReportTabClick("My Reports")}
             >
               My Reports

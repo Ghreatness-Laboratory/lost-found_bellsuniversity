@@ -23,7 +23,7 @@ function AboutUs() {
       <div className="max-w-4xl mx-auto">
         <header className="mb-10">
           <p className="text-lg sm:text-xl text-gray-600">
-            At <span className='font-bold text-black'>MisplaceMe</span>, where we reconnect lost items with their rightful owners. Our mission is to make finding and reporting lost items easier and more effective.
+            At <span className='font-bold text-black text-xl'>MisplaceMe</span>, where we reconnect lost items with their rightful owners. Our mission is to make finding and reporting lost items easier and more effective.
           </p>
         </header>
 

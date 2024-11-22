@@ -98,7 +98,7 @@ const Navbar = ({ isNavbarOpen, handleNavClick, closeNavbar }: NavbarProps) => {
   }, []);
 
   return (
-    <nav className="py-3 sm:py-5 px-4 sm:px-10">
+    <nav className="py-3 sm:py-5 px-4 md:px-10">
       <div className="flex items-center justify-between">
         <div className='flex items-center gap-1'>
           <span className="sr-only">University Logo</span>
