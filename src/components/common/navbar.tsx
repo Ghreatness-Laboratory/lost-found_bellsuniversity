@@ -34,7 +34,7 @@ const navbarMenu: NavbarMenuProps[] = [
   },
 ]
 
-const universities = [
+export const universities = [
   {
     uni: 'bells',
     logo: bellsLogo,
