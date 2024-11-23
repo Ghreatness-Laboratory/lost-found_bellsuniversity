@@ -10,16 +10,11 @@ const ToggleNavbar = () => {
     setIsNavbarOpen(!isNavbarOpen);
   };
 
-  const closeNavbar = () => {
-    setIsNavbarOpen(false);
-  };
-
   return (
     <div>
       {!hideNavbar && <Navbar
         isNavbarOpen={isNavbarOpen}
         handleNavClick={toggleNavbar}
-        closeNavbar={closeNavbar}
       />}
       {isNavbarOpen && (
         <div

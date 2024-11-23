@@ -7,7 +7,6 @@ import defaultLogo from '../../assets/images/WhatsApp Image 2024-11-19 at 09.25.
 interface NavbarProps {
   isNavbarOpen: boolean,
   handleNavClick: () => void,
-  closeNavbar: () => void,
 }
 
 interface NavbarMenuProps {
@@ -61,7 +60,7 @@ export const universities = [
   },
 ];
 
-const Navbar = ({ isNavbarOpen, handleNavClick, closeNavbar }: NavbarProps) => {
+const Navbar = ({ isNavbarOpen, handleNavClick }: NavbarProps) => {
   const [selectedMenu, setSelectedMenu] = useState<number | null>(null);
   const [currentLogo, setCurrentLogo] = useState<string>(defaultLogo);
   const [currentEmail, setCurrentEmail] = useState<string>('');
@@ -70,16 +69,6 @@ const Navbar = ({ isNavbarOpen, handleNavClick, closeNavbar }: NavbarProps) => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const pathName = window.location.pathname;
   const isMenuActive = 'text-blue-600 transition ease duration-100ms'
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) {
-        closeNavbar();
-      }
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [closeNavbar]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -150,7 +139,7 @@ const Navbar = ({ isNavbarOpen, handleNavClick, closeNavbar }: NavbarProps) => {
                       <Link
                         key={index}
                         to={menu.href}
-                        onClick={() => { setSelectedMenu(index) }}
+                        onClick={handleNavClick}
                         className={`py-1 md:py-2 pl-8 font-normal text-base cursor-pointer border-l-2 border-l-white md:border-b-2 md:border-b-white active:border-l-blue-600 md:hover:border-b-blue-600 active:text-blue-600 md:hover:text-blue-600 transition ease duration-200ms ${isActive ? isMenuActive : ""}`}
                       >
                         {menu.menu}
