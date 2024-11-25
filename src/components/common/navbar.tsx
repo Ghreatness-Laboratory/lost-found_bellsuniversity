@@ -47,7 +47,6 @@ const Navbar = ({ isNavbarOpen, handleNavClick }: NavbarProps) => {
   const [currentEmail, setCurrentEmail] = useState<string>('');
   const [currentPhone, setCurrentPhone] = useState<string>('');
   const [currentSocialMedia, setCurrentSocialMedia] = useState<any>({});
-  const [pathname, setPathname] = useState(window.location.pathname);
   const isMenuActive = 'text-blue-600 transition ease duration-100ms'
   const [isLoggedIn,] = useState(false);
   const location = useLocation();

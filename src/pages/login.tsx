@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 
 interface LoginProps {
   username: string;
@@ -7,18 +8,19 @@ interface LoginProps {
 }
 
 function Login() {
+  const navigate = useNavigate();
+  const [errors, setErrors] = useState<Partial<LoginProps>>({});
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [state, setState] = useState<LoginProps>({
     username: "",
     password: "",
   });
 
-  const [errors, setErrors] = useState<Partial<LoginProps>>({});
-
   const validate = () => {
     const newErrors: Partial<LoginProps> = {};
 
     if (!state.username) newErrors.username = "Enter valid username";
-    if (!state.password || state.password.length < 6) newErrors.password = "Password must be at least 8 characters";
+    if (!state.password || state.password.length < 8) newErrors.password = "Password must be at least 8 characters";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -33,7 +35,7 @@ function Login() {
   };
 
   const handleSignIn = () => {
-
+    navigate('/home');
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -41,6 +43,10 @@ function Login() {
     if (validate()) {
       handleSignIn();
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -56,17 +62,18 @@ function Login() {
             <form onSubmit={handleSubmit}>
               <div className="grid gap-y-4">
                 <div>
-                  <label htmlFor="email" className="block text-sm mb-2">
+                  <label htmlFor="username" className="block text-sm mb-2">
                     Username
                   </label>
                   <div className="relative">
                     <input
-                      type="email"
-                      id="email"
-                      name="email"
+                      type="text"
+                      id="username"
+                      name="username"
+                      value={state.username}
                       onChange={handleChange}
                       placeholder="Enter username"
-                      className="py-3 px-4 block w-full border border-gray-400 rounded-lg text-sm focus:border-blue-400 focus:ring-blue-400 disabled:opacity-50 disabled:pointer-events-none"
+                      className="py-3 px-4 block w-full border border-gray-400 rounded-lg text-sm focus:border-blue-400 focus:ring-blue-400 disabled:opacity-50 disabled:pointer-events-none autofill:shadow-[inset_0_0_0px_1000px_white] autofill:text-black"
                     />
                     {errors.username && <p className="absolute text-xs text-[#F24822] mt-1">{errors.username}</p>}
                   </div>
@@ -86,14 +93,25 @@ function Login() {
                   </div>
                   <div className="relative">
                     <input
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       id="password"
                       name="password"
                       value={state.password}
                       onChange={handleChange}
                       placeholder="Enter password"
-                      className="py-3 px-4 block w-full border border-gray-400 rounded-lg text-sm focus:border-blue-400 focus:ring-blue-400 disabled:opacity-50 disabled:pointer-events-none"
+                      className="py-3 px-4 block w-full border border-gray-400 rounded-lg text-sm focus:border-blue-400 focus:ring-blue-400 disabled:opacity-50 disabled:pointer-events-none pr-10"
                     />
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="absolute inset-y-0 right-0 flex items-center px-3 focus:outline-none"
+                    >
+                      {showPassword ? (
+                        <FaEyeSlash className="h-5 w-5 text-gray-400" />
+                      ) : (
+                        <FaEye className="h-5 w-5 text-gray-400" />
+                      )}
+                    </button>
                     {errors.password && <p className="absolute text-xs text-[#F24822] mt-1">{errors.password}</p>}
                   </div>
                 </div>
@@ -116,7 +134,7 @@ function Login() {
 
                 <button
                   type="submit"
-                  className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-bawse font-bold rounded-lg border border-transparent bg-blue-400 text-white active:bg-blue-500 sm:hover:bg-blue-500 focus:outline-none focus:bg-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                  className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-base font-bold rounded-lg border border-transparent bg-blue-400 text-white active:bg-blue-500 sm:hover:bg-blue-500 focus:outline-none focus:bg-blue-500 disabled:opacity-50 disabled:pointer-events-none"
                 >
                   Login
                 </button>
@@ -125,7 +143,6 @@ function Login() {
           </div>
         </div>
       </div>
-
     </div>
   );
 }
