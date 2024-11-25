@@ -44,8 +44,8 @@ function Login() {
   };
 
   return (
-    <div className="grid place-items-center md:pb-10 min-h-[75vh]">
-      <div className="bg-white sm:border sm:border-gray-200 sm:rounded-xl sm:shadow-md max-w-md w-full">
+    <div className="grid place-items-center md:pb-10 min-h-[74vh] lg:min-h-[80vh]">
+      <div className="bg-white sm:border sm:border-gray-300 sm:rounded-xl sm:shadow-md max-w-md w-full">
         <div className="p-4 sm:p-7">
           <h1 className="block text-3xl font-bold text-gray-800 text-center">Admin Login</h1>
           <p className="mt-2 text-sm text-gray-600 text-center">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import bellsLogo from '../../assets/images/bells-university-of-technology-logo-transparent 1.svg';
 import defaultLogo from '../../assets/images/WhatsApp Image 2024-11-19 at 09.25.06_0f465b57.jpg';
 
@@ -47,10 +47,10 @@ const Navbar = ({ isNavbarOpen, handleNavClick }: NavbarProps) => {
   const [currentEmail, setCurrentEmail] = useState<string>('');
   const [currentPhone, setCurrentPhone] = useState<string>('');
   const [currentSocialMedia, setCurrentSocialMedia] = useState<any>({});
-  const pathName = window.location.pathname;
+  const [pathname, setPathname] = useState(window.location.pathname);
   const isMenuActive = 'text-blue-600 transition ease duration-100ms'
-  const LoginHref = pathName === '/login';
   const [isLoggedIn,] = useState(false);
+  const location = useLocation();
 
   const navbarMenu: NavbarMenuProps[] = [
     {
@@ -109,7 +109,7 @@ const Navbar = ({ isNavbarOpen, handleNavClick }: NavbarProps) => {
           <ul className="hidden xl:flex gap-6 items-center ">
             <span className="sr-only">Destop and Tablet Menu</span>
             {navbarMenu.map((menu, index) => {
-              const isActive = pathName === menu.href
+              const isActive = location.pathname === menu.href
               return (
                 <Link
                   key={index}
@@ -137,7 +137,7 @@ const Navbar = ({ isNavbarOpen, handleNavClick }: NavbarProps) => {
                 <ul className="flex flex-col gap-4 md:gap-6 pt-5 sm:pt-10">
                   <span className="sr-only">Mobile Menu</span>
                   {navbarMenu.map((menu, index) => {
-                    const isActive = pathName === menu.href
+                    const isActive = location.pathname === menu.href
                     return (
                       <Link
                         key={index}
@@ -149,7 +149,6 @@ const Navbar = ({ isNavbarOpen, handleNavClick }: NavbarProps) => {
                       </Link>
                     )
                   })}
-                  {/* <p className={`py-1 md:py-2 pl-8 font-normal text-base cursor-pointer border-l-2 border-l-white md:border-b-2 md:border-b-white active:border-l-blue-600 md:hover:border-b-blue-600 active:text-blue-600 md:hover:text-blue-600 transition ease duration-200ms ${pathName === '/register' ? isMenuActive : ""}`}>Login</p> */}
                 </ul>
               </div>
 
@@ -206,7 +205,7 @@ const Navbar = ({ isNavbarOpen, handleNavClick }: NavbarProps) => {
                   <path d="M1.0835 9.00004C1.0835 5.26837 1.0835 3.40171 2.24266 2.24254C3.40183 1.08337 5.26766 1.08337 9.00016 1.08337C12.7318 1.08337 14.5985 1.08337 15.7577 2.24254C16.9168 3.40171 16.9168 5.26754 16.9168 9.00004C16.9168 12.7317 16.9168 14.5984 15.7577 15.7575C14.5985 16.9167 12.7327 16.9167 9.00016 16.9167C5.2685 16.9167 3.40183 16.9167 2.24266 15.7575C1.0835 14.5984 1.0835 12.7325 1.0835 9.00004Z" stroke="#1E1E1E" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
                   <path d="M13.1976 9.02343H7.38509M7.38509 9.02343C7.38509 9.49843 9.18092 11.0959 9.18092 11.0959M7.38509 9.02343C7.38509 8.5351 9.18092 6.96926 9.18092 6.96926M4.86426 5.6626V12.3293" stroke="#1E1E1E" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
-                <p className={`hidden sm:block ${LoginHref ? isMenuActive : ""}`}>Login</p>
+                <p className="hidden sm:block">Login</p>
               </button>
             </Link>
 
