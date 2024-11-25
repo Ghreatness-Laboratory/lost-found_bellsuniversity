@@ -4,7 +4,7 @@ import Navbar from "./navbar";
 const ToggleNavbar = () => {
   const pathname = window.location.pathname;
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
-  const hideNavbar = pathname === "/login" || pathname === "/register";
+  const hideNavbar = pathname === "/login";
 
   const toggleNavbar = () => {
     setIsNavbarOpen(!isNavbarOpen);
