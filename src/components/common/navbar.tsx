@@ -52,24 +52,29 @@ const Navbar = ({ isNavbarOpen, handleNavClick }: NavbarProps) => {
   const location = useLocation();
 
   const navbarMenu: NavbarMenuProps[] = [
-    {
-      menu: "Home",
-      href: "/"
-    },
-    ...(isLoggedIn ? [
+    ...(isLoggedIn || location.pathname === '/home' || location.pathname === '/reports' || location.pathname === '/make-a-report' ? [
+      {
+        menu: "Home",
+        href: "/home"
+      }] : [{
+        menu: "Home",
+        href: "/"
+      }]),
+    ...(isLoggedIn || location.pathname === '/home' || location.pathname === '/reports' || location.pathname === '/make-a-report' ? [
       {
         menu: "Reports",
         href: "/reports"
       }] : []),
-    ...(isLoggedIn ? [
+    ...(isLoggedIn || location.pathname === '/home' || location.pathname === '/reports' || location.pathname === '/make-a-report' ? [
       {
         menu: "Make a Report",
         href: "/make-a-report"
       }] : []),
-    {
-      menu: "About Us",
-      href: "/about-us"
-    },
+    ...(isLoggedIn || location.pathname === '/home' || location.pathname === '/reports' || location.pathname === '/make-a-report' ? [] : [
+      {
+        menu: "About Us",
+        href: "/about-us"
+      }])
   ];
 
   useEffect(() => {
@@ -198,15 +203,27 @@ const Navbar = ({ isNavbarOpen, handleNavClick }: NavbarProps) => {
           }
 
           <div className="flex items-center gap-5">
-            <Link to={'/login'}>
-              <button className="flex items-center gap-1.5 justify-center cursor-pointer rounded-lg p-2 bg-[rgba(129,129,129,0.06)] backdrop-blur-[2px]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                  <path d="M1.0835 9.00004C1.0835 5.26837 1.0835 3.40171 2.24266 2.24254C3.40183 1.08337 5.26766 1.08337 9.00016 1.08337C12.7318 1.08337 14.5985 1.08337 15.7577 2.24254C16.9168 3.40171 16.9168 5.26754 16.9168 9.00004C16.9168 12.7317 16.9168 14.5984 15.7577 15.7575C14.5985 16.9167 12.7327 16.9167 9.00016 16.9167C5.2685 16.9167 3.40183 16.9167 2.24266 15.7575C1.0835 14.5984 1.0835 12.7325 1.0835 9.00004Z" stroke="#1E1E1E" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
-                  <path d="M13.1976 9.02343H7.38509M7.38509 9.02343C7.38509 9.49843 9.18092 11.0959 9.18092 11.0959M7.38509 9.02343C7.38509 8.5351 9.18092 6.96926 9.18092 6.96926M4.86426 5.6626V12.3293" stroke="#1E1E1E" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                <p className="hidden sm:block">Login</p>
-              </button>
-            </Link>
+            {isLoggedIn || location.pathname === '/home' || location.pathname === '/reports' || location.pathname === '/make-a-report' ? (
+              <Link to={'/'}>
+                <button className="flex items-center gap-1.5 justify-center cursor-pointer rounded-lg p-2 bg-[rgba(129,129,129,0.06)] backdrop-blur-[2px]">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path d="M1.0835 9.00004C1.0835 5.26837 1.0835 3.40171 2.24266 2.24254C3.40183 1.08337 5.26766 1.08337 9.00016 1.08337C12.7318 1.08337 14.5985 1.08337 15.7577 2.24254C16.9168 3.40171 16.9168 5.26754 16.9168 9.00004C16.9168 12.7317 16.9168 14.5984 15.7577 15.7575C14.5985 16.9167 12.7327 16.9167 9.00016 16.9167C5.2685 16.9167 3.40183 16.9167 2.24266 15.7575C1.0835 14.5984 1.0835 12.7325 1.0835 9.00004Z" stroke="#1E1E1E" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M13.1976 9.02343H7.38509M7.38509 9.02343C7.38509 9.49843 9.18092 11.0959 9.18092 11.0959M7.38509 9.02343C7.38509 8.5351 9.18092 6.96926 9.18092 6.96926M4.86426 5.6626V12.3293" stroke="#1E1E1E" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  <p className="hidden sm:block">Logout</p>
+                </button>
+              </Link>
+            ) : (
+              <Link to={'/login'}>
+                <button className="flex items-center gap-1.5 justify-center cursor-pointer rounded-lg p-2 bg-[rgba(129,129,129,0.06)] backdrop-blur-[2px]">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path d="M1.0835 9.00004C1.0835 5.26837 1.0835 3.40171 2.24266 2.24254C3.40183 1.08337 5.26766 1.08337 9.00016 1.08337C12.7318 1.08337 14.5985 1.08337 15.7577 2.24254C16.9168 3.40171 16.9168 5.26754 16.9168 9.00004C16.9168 12.7317 16.9168 14.5984 15.7577 15.7575C14.5985 16.9167 12.7327 16.9167 9.00016 16.9167C5.2685 16.9167 3.40183 16.9167 2.24266 15.7575C1.0835 14.5984 1.0835 12.7325 1.0835 9.00004Z" stroke="#1E1E1E" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M13.1976 9.02343H7.38509M7.38509 9.02343C7.38509 9.49843 9.18092 11.0959 9.18092 11.0959M7.38509 9.02343C7.38509 8.5351 9.18092 6.96926 9.18092 6.96926M4.86426 5.6626V12.3293" stroke="#1E1E1E" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  <p className="hidden sm:block">Login</p>
+                </button>
+              </Link>
+            )}
 
             <div className="block lg:hidden cursor-pointer">
               <div onClick={handleNavClick} className="cursor-pointer">
