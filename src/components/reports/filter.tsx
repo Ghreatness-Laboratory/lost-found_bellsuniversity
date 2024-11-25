@@ -11,6 +11,7 @@ type Option = {
 };
 
 const options: Option[] = [
+  { value: "All", label: "All" },
   { value: "Uptown", label: "Uptown" },
   { value: "Classroom", label: "Classroom" },
   { value: "Downtown", label: "Downtown" },
@@ -50,6 +51,20 @@ const Filter = ({ onFilterChange }: FilterProps) => {
       onFilterChange(selected.value);
     }
   };
+
+  // const handleSelectChange = (
+  //   selected: SingleValue<Option>,
+  //   actionMeta: ActionMeta<Option>
+  // ) => {
+  //   setSelectedOption(selected);
+  //   if (selected) {
+  //     if (selected.value === "All") {
+  //       onFilterChange(""); 
+  //     } else {
+  //       onFilterChange(selected.value); 
+  //     }
+  //   }
+  // };
 
   const toggleSelect = () => {
     setShowSelect((prev) => !prev);

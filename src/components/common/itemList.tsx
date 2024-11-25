@@ -48,15 +48,9 @@ const items = [
   },
 ];
 
-const ItemList = ({
-  title,
-  filter,
-  reportItems,
-  selectedLocations = []
-}: ItemListProps) => {
+const ItemList = ({ title, filter, reportItems, selectedLocations = [] }: ItemListProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-
   const itemsPerPage = reportItems ?? 3;
 
   const filteredItems = items.filter((item) => {
@@ -65,6 +59,15 @@ const ItemList = ({
       selectedLocations.length === 0 || selectedLocations.includes(item.location);
     return matchesSearch && matchesLocation;
   });
+
+  // const filteredItems = items.filter((item) => {
+  //   const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
+  //   const matchesLocation =
+  //     selectedLocations.includes("All")
+  //       ? true
+  //       : selectedLocations.length === 0 || selectedLocations.includes(item.location);
+  //   return matchesSearch && matchesLocation;
+  // });
 
   const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
 
@@ -123,7 +126,17 @@ const ItemList = ({
         ))}
       </div>
 
-      <div className="flex items-center justify-center gap-4 mt-4 max-w-[320px] w-full mx-auto">
+      {filteredItems.length === 0 && <div className="grid place-items-center min-h-[50vh] px-4">
+        <div className="flex flex-col items-center gap-4 p-6">
+
+          <h1 className="text-2xl md:text-4xl font-bold text-gray-800">No Results Found</h1>
+          <p className="text-center text-gray-600 max-w-md">
+            We couldn&apos;t find anything matching your search or filters. Please try again.
+          </p>
+        </div>
+      </div>}
+
+      {filteredItems.length > 0 && <div className="flex items-center justify-center gap-4 mt-4 max-w-[320px] w-full mx-auto">
         <button
           className="py-2 bg-blue-400 text-white rounded-full max-w-[90px] w-full active:bg-blue-500"
           onClick={handlePrevPage}
@@ -141,7 +154,7 @@ const ItemList = ({
         >
           Next
         </button>
-      </div>
+      </div>}
     </section>
   );
 };

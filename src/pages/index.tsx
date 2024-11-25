@@ -4,6 +4,7 @@ import BLFStep3 from '../assets/images/man_10428848 1.svg';
 import BLFStep2 from '../assets/images/report.svg';
 import BLFStep1 from '../assets/images/scan_7026205 1.svg';
 import ItemList from '../components/common/itemList';
+import Filter from '../components/reports/filter';
 
 const universities = [
   {
@@ -16,6 +17,15 @@ const universities = [
 
 function Index() {
   const [currentUni, setCurrentUni] = useState<string>('');
+  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+
+  const handleFilterChange = (selectedLocation: string) => {
+    setSelectedLocations((prev) =>
+      prev.includes(selectedLocation)
+        ? prev.filter((location) => location !== selectedLocation) 
+        : [...prev, selectedLocation]
+    );
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -70,7 +80,10 @@ function Index() {
       </section>
 
       <ItemList
-        title='Check out the latest reports'
+        title="Search our database for your lost properties"
+        filter={<Filter onFilterChange={handleFilterChange} />}
+        selectedLocations={selectedLocations}
+        reportItems={6}
       />
     </div>
   );
