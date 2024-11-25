@@ -14,25 +14,6 @@ interface NavbarMenuProps {
   href: string,
 }
 
-const navbarMenu: NavbarMenuProps[] = [
-  {
-    menu: 'Home',
-    href: '/'
-  },
-  {
-    menu: 'Reports',
-    href: '/reports'
-  },
-  {
-    menu: 'Make a Report',
-    href: '/make-a-report'
-  },
-  {
-    menu: 'About Us',
-    href: '/about-us'
-  },
-]
-
 export const universities = [
   {
     uni: 'bells',
@@ -61,14 +42,35 @@ export const universities = [
 ];
 
 const Navbar = ({ isNavbarOpen, handleNavClick }: NavbarProps) => {
-  const [selectedMenu, setSelectedMenu] = useState<number | null>(null);
+  const [, setSelectedMenu] = useState<number | null>(null);
   const [currentLogo, setCurrentLogo] = useState<string>(defaultLogo);
   const [currentEmail, setCurrentEmail] = useState<string>('');
   const [currentPhone, setCurrentPhone] = useState<string>('');
   const [currentSocialMedia, setCurrentSocialMedia] = useState<any>({});
-  const [mobileMenu, setMobileMenu] = useState(false);
   const pathName = window.location.pathname;
   const isMenuActive = 'text-blue-600 transition ease duration-100ms'
+  const [isLoggedIn,] = useState(false);
+
+  const navbarMenu: NavbarMenuProps[] = [
+    {
+      menu: "Home",
+      href: "/"
+    },
+    ...(isLoggedIn ? [
+      {
+        menu: "Reports",
+        href: "/reports"
+      }] : []),
+    ...(isLoggedIn ? [
+      {
+        menu: "Make a Report",
+        href: "/make-a-report"
+      }] : []),
+    {
+      menu: "About Us",
+      href: "/about-us"
+    },
+  ];
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -85,6 +87,8 @@ const Navbar = ({ isNavbarOpen, handleNavClick }: NavbarProps) => {
 
     fetchUserData();
   }, []);
+
+
 
   return (
     <nav className="py-3 sm:py-5 px-4 md:px-10">
@@ -146,8 +150,7 @@ const Navbar = ({ isNavbarOpen, handleNavClick }: NavbarProps) => {
                       </Link>
                     )
                   })}
-                  <p className={`py-1 md:py-2 pl-8 font-normal text-base cursor-pointer border-l-2 border-l-white md:border-b-2 md:border-b-white active:border-l-blue-600 md:hover:border-b-blue-600 active:text-blue-600 md:hover:text-blue-600 transition ease duration-200ms ${pathName === '/login' ? isMenuActive : ""}`}>Register</p>
-                  <p className={`py-1 md:py-2 pl-8 font-normal text-base cursor-pointer border-l-2 border-l-white md:border-b-2 md:border-b-white active:border-l-blue-600 md:hover:border-b-blue-600 active:text-blue-600 md:hover:text-blue-600 transition ease duration-200ms ${pathName === '/register' ? isMenuActive : ""}`}>Login</p>
+                  {/* <p className={`py-1 md:py-2 pl-8 font-normal text-base cursor-pointer border-l-2 border-l-white md:border-b-2 md:border-b-white active:border-l-blue-600 md:hover:border-b-blue-600 active:text-blue-600 md:hover:text-blue-600 transition ease duration-200ms ${pathName === '/register' ? isMenuActive : ""}`}>Login</p> */}
                 </ul>
               </div>
 
@@ -198,12 +201,6 @@ const Navbar = ({ isNavbarOpen, handleNavClick }: NavbarProps) => {
           }
 
           <div className="flex items-center gap-5">
-            <button className="flex items-center gap-1.5 justify-center cursor-pointer rounded-lg p-2 bg-[rgba(129,129,129,0.06)] backdrop-blur-[2px]">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M12.5002 3.33337C11.6161 3.33337 10.7683 3.68456 10.1431 4.30968C9.51802 4.93481 9.16683 5.78265 9.16683 6.66671C9.16683 7.55076 9.51802 8.39861 10.1431 9.02373C10.7683 9.64885 11.6161 10 12.5002 10C13.3842 10 14.2321 9.64885 14.8572 9.02373C15.4823 8.39861 15.8335 7.55076 15.8335 6.66671C15.8335 5.78265 15.4823 4.93481 14.8572 4.30968C14.2321 3.68456 13.3842 3.33337 12.5002 3.33337ZM12.5002 4.91671C12.73 4.91671 12.9575 4.96197 13.1699 5.04992C13.3822 5.13786 13.5751 5.26677 13.7376 5.42927C13.9001 5.59177 14.029 5.78469 14.117 5.99701C14.2049 6.20933 14.2502 6.43689 14.2502 6.66671C14.2502 6.89652 14.2049 7.12408 14.117 7.3364C14.029 7.54872 13.9001 7.74164 13.7376 7.90414C13.5751 8.06665 13.3822 8.19555 13.1699 8.2835C12.9575 8.37144 12.73 8.41671 12.5002 8.41671C12.2703 8.41671 12.0428 8.37144 11.8305 8.2835C11.6181 8.19555 11.4252 8.06665 11.2627 7.90414C11.1002 7.74164 10.9713 7.54872 10.8834 7.3364C10.7954 7.12408 10.7502 6.89652 10.7502 6.66671C10.7502 6.20258 10.9345 5.75746 11.2627 5.42927C11.5909 5.10108 12.036 4.91671 12.5002 4.91671ZM3.3335 5.83337V8.33337H0.833496V10H3.3335V12.5H5.00016V10H7.50016V8.33337H5.00016V5.83337H3.3335ZM12.5002 10.8334C10.2752 10.8334 5.8335 11.9417 5.8335 14.1667V16.6667H19.1668V14.1667C19.1668 11.9417 14.7252 10.8334 12.5002 10.8334ZM12.5002 12.4167C14.9752 12.4167 17.5835 13.6334 17.5835 14.1667V15.0834H7.41683V14.1667C7.41683 13.6334 10.0002 12.4167 12.5002 12.4167Z" fill="#1E1E1E" />
-              </svg>
-              <p className='hidden sm:block'>Register</p>
-            </button>
             <button className="flex items-center gap-1.5 justify-center cursor-pointer rounded-lg p-2 bg-[rgba(129,129,129,0.06)] backdrop-blur-[2px]">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
                 <path d="M1.0835 9.00004C1.0835 5.26837 1.0835 3.40171 2.24266 2.24254C3.40183 1.08337 5.26766 1.08337 9.00016 1.08337C12.7318 1.08337 14.5985 1.08337 15.7577 2.24254C16.9168 3.40171 16.9168 5.26754 16.9168 9.00004C16.9168 12.7317 16.9168 14.5984 15.7577 15.7575C14.5985 16.9167 12.7327 16.9167 9.00016 16.9167C5.2685 16.9167 3.40183 16.9167 2.24266 15.7575C1.0835 14.5984 1.0835 12.7325 1.0835 9.00004Z" stroke="#1E1E1E" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
