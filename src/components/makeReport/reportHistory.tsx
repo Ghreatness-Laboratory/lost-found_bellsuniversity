@@ -1,56 +1,165 @@
-import React from 'react';
-import { FaEdit } from "react-icons/fa";
+import React from "react";
 
-interface ReportHistoryProps {
-  name: string,
-  date: {
-    day: number,
-    month: number,
-    year: number
-  },
-  image: string,
-  location: string,
-}
+const ReportsHistory = () => {
+  const teamMembers = [
+    {
+      name: 'Arthur Melo',
+      username: '@authurmelo',
+      status: 'Active',
+      role: 'Design Director',
+      email: 'authurmelo@example.com',
+      teams: ['Design', 'Product', 'Marketing'],
+      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80'
+    },
+    {
+      name: 'Amelia Anderson',
+      username: '@ameliaanderson',
+      status: 'Active',
+      role: 'Lead Developer',
+      email: 'ameliaanderson@example.com',
+      teams: ['Design', 'Product', 'Marketing'],
+      avatar: 'https://images.unsplash.com/photo-1531590878845-12627191e687?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80'
+    },
+    {
+      name: 'Junior Reis',
+      username: '@junior',
+      status: 'Active',
+      role: 'Products Managers',
+      email: 'junior@example.com',
+      teams: ['Design', 'Product', 'Marketing'],
+      avatar: 'https://images.unsplash.com/photo-1608174386344-80898cec6beb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'
+    },
+    {
+      name: 'Olivia Wathan',
+      username: '@oliviawathan',
+      status: 'Active',
+      role: 'Lead Designer',
+      email: 'oliviawathan@example.com',
+      teams: ['Design', 'Product', 'Marketing'],
+      avatar: 'https://images.unsplash.com/photo-1488508872907-592763824245?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
+    },
+    {
+      name: 'Mia',
+      username: '@mia',
+      status: 'Active',
+      role: 'Graphic Designer',
+      email: 'mia@example.com',
+      teams: ['Design', 'Product', 'Marketing'],
+      avatar: 'https://images.unsplash.com/photo-1499470932971-a90681ce8530?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
+    }
+  ];
 
-const ReportHistory = ({ name, date, image, location }: ReportHistoryProps) => {
   return (
-    <div className="flex items-center gap-2 rounded-lg md:rounded-2xl shadow-xs md:shadow-md border">
-      <img
-        src={image}
-        alt="Report Image"
-        className='object-cover w-[100px] sm:w-[300px] h-[120px] md:h-[220px] rounded-tl-xl rounded-bl-xl'
-      />
+    <section className="container sm:px-4 mx-auto">
+      <div className="flex items-center gap-3">
+        <h2 className="text-lg font-medium text-gray-800">Number of reports</h2>
+        <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full">{teamMembers.length}</span>
+      </div>
 
-      <div className="flex flex-col justify-between w-full md:pl-2 pr-2 md:pr-8">
-        <div className="flex flex-col items-start gap-1">
-          <p className="font-semibold text-xs md:text-base">{name}</p>
-          <div className="flex items-center gap-1">
-            <svg className="w-3 h-3 md:w-5 md:h-5" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 28 28" fill="none">
-              <path fillRule="evenodd" clipRule="evenodd" d="M14.2885 24.4638C15.6303 23.2463 16.8721 21.9229 18.002 20.5065C20.382 17.5163 21.8298 14.5681 21.9278 11.9466C21.9666 10.8812 21.7902 9.81895 21.4093 8.82322C21.0283 7.8275 20.4506 6.91878 19.7106 6.15133C18.9706 5.38389 18.0834 4.77347 17.1022 4.35655C16.121 3.93962 15.0659 3.72474 13.9997 3.72474C12.9336 3.72474 11.8785 3.93962 10.8972 4.35655C9.91604 4.77347 9.02893 5.38389 8.28891 6.15133C7.5489 6.91878 6.97115 7.8275 6.5902 8.82322C6.20924 9.81895 6.03288 10.8812 6.07166 11.9466C6.17083 14.5681 7.61983 17.5163 9.99866 20.5065C11.1285 21.9229 12.3704 23.2463 13.7122 24.4638C13.8413 24.5805 13.9373 24.6653 14.0003 24.7181L14.2885 24.4638ZM13.1393 25.823C13.1393 25.823 4.66699 18.6876 4.66699 11.6666C4.66699 9.19129 5.65032 6.81732 7.40066 5.06698C9.151 3.31664 11.525 2.33331 14.0003 2.33331C16.4757 2.33331 18.8496 3.31664 20.6 5.06698C22.3503 6.81732 23.3337 9.19129 23.3337 11.6666C23.3337 18.6876 14.8613 25.823 14.8613 25.823C14.39 26.257 13.6142 26.2523 13.1393 25.823ZM14.0003 14.9333C14.8667 14.9333 15.6976 14.5891 16.3102 13.9765C16.9228 13.3639 17.267 12.533 17.267 11.6666C17.267 10.8003 16.9228 9.96938 16.3102 9.35676C15.6976 8.74414 14.8667 8.39998 14.0003 8.39998C13.134 8.39998 12.3031 8.74414 11.6904 9.35676C11.0778 9.96938 10.7337 10.8003 10.7337 11.6666C10.7337 12.533 11.0778 13.3639 11.6904 13.9765C12.3031 14.5891 13.134 14.9333 14.0003 14.9333ZM14.0003 16.3333C12.7626 16.3333 11.5757 15.8416 10.7005 14.9665C9.82532 14.0913 9.33366 12.9043 9.33366 11.6666C9.33366 10.429 9.82532 9.24198 10.7005 8.36681C11.5757 7.49164 12.7626 6.99998 14.0003 6.99998C15.238 6.99998 16.425 7.49164 17.3002 8.36681C18.1753 9.24198 18.667 10.429 18.667 11.6666C18.667 12.9043 18.1753 14.0913 17.3002 14.9665C16.425 15.8416 15.238 16.3333 14.0003 16.3333Z" fill="black" />
-            </svg>
-            <p className="text-xs md:text-base">Location: {location}</p>
+      <div className="flex flex-col  px-4 mt-6">
+        <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+            <div className="overflow-hidden border border-gray-200 md:rounded-lg">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th scope="col" className="py-3.5 px-4 text-sm font-normal text-left text-gray-500">
+                      <div className="flex items-center gap-x-3">
+                        <input type="checkbox" className="text-blue-500 border-gray-300 rounded" />
+                        <span>Name</span>
+                      </div>
+                    </th>
+                    <th scope="col" className="px-12 py-3.5 text-sm font-normal text-left text-gray-500">
+                      <button className="flex items-center gap-x-2">
+                        <span>Status</span>
+                        <svg className="h-3" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M2.13347 0.0999756H2.98516L5.01902 4.79058H3.86226L3.45549 3.79907H1.63772L1.24366 4.79058H0.0996094L2.13347 0.0999756ZM2.54025 1.46012L1.96822 2.92196H3.11227L2.54025 1.46012Z" fill="currentColor" stroke="currentColor" strokeWidth="0.1" />
+                          <path d="M0.722656 9.60832L3.09974 6.78633H0.811638V5.87109H4.35819V6.78633L2.01925 9.60832H4.43446V10.5617H0.722656V9.60832Z" fill="currentColor" stroke="currentColor" strokeWidth="0.1" />
+                          <path d="M8.45558 7.25664V7.40664H8.60558H9.66065C9.72481 7.40664 9.74667 7.42274 9.75141 7.42691C9.75148 7.42808 9.75146 7.42993 9.75116 7.43262C9.75001 7.44265 9.74458 7.46304 9.72525 7.49314C9.72522 7.4932 9.72518 7.49326 9.72514 7.49332L7.86959 10.3529L7.86924 10.3534C7.83227 10.4109 7.79863 10.418 7.78568 10.418C7.77272 10.418 7.73908 10.4109 7.70211 10.3534L7.70177 10.3529L5.84621 7.49332C5.84617 7.49325 5.84612 7.49318 5.84608 7.49311C5.82677 7.46302 5.82135 7.44264 5.8202 7.43262C5.81989 7.42993 5.81987 7.42808 5.81994 7.42691C5.82469 7.42274 5.84655 7.40664 5.91071 7.40664H6.96578H7.11578V7.25664V0.633865C7.11578 0.42434 7.29014 0.249976 7.49967 0.249976H8.07169C8.28121 0.249976 8.45558 0.42434 8.45558 0.633865V7.25664Z" fill="currentColor" stroke="currentColor" strokeWidth="0.3" />
+                        </svg>
+                      </button>
+                    </th>
+                    <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">
+                      <button className="flex items-center gap-x-2">
+                        <span>Role</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-4 h-4">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                        </svg>
+                      </button>
+                    </th>
+                    <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">Email address</th>
+                    <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-gray-500">Teams</th>
+                    <th scope="col" className="relative py-3.5 px-4">
+                      <span className="sr-only">Edit</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {teamMembers.map((member, index) => (
+                    <tr key={index}>
+                      <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                        <div className="inline-flex items-center gap-x-3">
+                          <input type="checkbox" className="text-blue-500 border-gray-300 rounded" />
+                          <div className="flex items-center gap-x-2">
+                            <img
+                              className="object-cover w-10 h-10 rounded-full"
+                              src={member.avatar}
+                              alt={member.name}
+                            />
+                            <div>
+                              <h2 className="font-medium text-gray-800">{member.name}</h2>
+                              <p className="text-sm font-normal text-gray-600">{member.username}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-12 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
+                        <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-emerald-100/60">
+                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                          <h2 className="text-sm font-normal text-emerald-500">{member.status}</h2>
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{member.role}</td>
+                      <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{member.email}</td>
+                      <td className="px-4 py-4 text-sm whitespace-nowrap">
+                        <div className="flex items-center gap-x-2">
+                          {member.teams.map((team, teamIndex) => (
+                            <p
+                              key={teamIndex}
+                              className={`px-3 py-1 text-xs rounded-full 
+                              ${team === 'Design' ? 'text-indigo-500 bg-indigo-100/60' :
+                                  team === 'Product' ? 'text-blue-500 bg-blue-100/60' :
+                                    'text-pink-500 bg-pink-100/60'}`}
+                            >
+                              {team}
+                            </p>
+                          ))}
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 text-sm whitespace-nowrap">
+                        <div className="flex items-center gap-x-6">
+                          <button className="text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                            </svg>
+                          </button>
+                          <button className="text-gray-500 transition-colors duration-200 hover:text-yellow-500 focus:outline-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                            </svg>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div className="flex items-center gap-1">
-            <svg className="w-3 h-3 md:w-5 md:h-5" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 27 27" fill="none">
-              <path d="M21.375 6.75H5.625C4.38236 6.75 3.375 7.75736 3.375 9V21.375C3.375 22.6176 4.38236 23.625 5.625 23.625H21.375C22.6176 23.625 23.625 22.6176 23.625 21.375V9C23.625 7.75736 22.6176 6.75 21.375 6.75Z" stroke="#1E1E1E" strokeWidth="2.66667" />
-              <path d="M3.375 11.25C3.375 9.12825 3.375 8.0685 4.03425 7.40925C4.6935 6.75 5.75325 6.75 7.875 6.75H19.125C21.2467 6.75 22.3065 6.75 22.9657 7.40925C23.625 8.0685 23.625 9.12825 23.625 11.25H3.375Z" fill="#1E1E1E" />
-              <path d="M7.875 3.375V6.75M19.125 3.375V6.75" stroke="#1E1E1E" strokeWidth="2.66667" strokeLinecap="round" />
-              <path d="M11.8125 13.5H8.4375C8.12684 13.5 7.875 13.7518 7.875 14.0625V15.1875C7.875 15.4982 8.12684 15.75 8.4375 15.75H11.8125C12.1232 15.75 12.375 15.4982 12.375 15.1875V14.0625C12.375 13.7518 12.1232 13.5 11.8125 13.5Z" fill="#1E1E1E" />
-              <path d="M11.8125 18H8.4375C8.12684 18 7.875 18.2518 7.875 18.5625V19.6875C7.875 19.9982 8.12684 20.25 8.4375 20.25H11.8125C12.1232 20.25 12.375 19.9982 12.375 19.6875V18.5625C12.375 18.2518 12.1232 18 11.8125 18Z" fill="#1E1E1E" />
-              <path d="M18.5625 13.5H15.1875C14.8768 13.5 14.625 13.7518 14.625 14.0625V15.1875C14.625 15.4982 14.8768 15.75 15.1875 15.75H18.5625C18.8732 15.75 19.125 15.4982 19.125 15.1875V14.0625C19.125 13.7518 18.8732 13.5 18.5625 13.5Z" fill="#1E1E1E" />
-              <path d="M18.5625 18H15.1875C14.8768 18 14.625 18.2518 14.625 18.5625V19.6875C14.625 19.9982 14.8768 20.25 15.1875 20.25H18.5625C18.8732 20.25 19.125 19.9982 19.125 19.6875V18.5625C19.125 18.2518 18.8732 18 18.5625 18Z" fill="#1E1E1E" />
-            </svg>
-            <p className="text-xs md:text-base text-center">{date?.day}/{date?.month}/{date?.year}</p>
-          </div>
-        </div>
-
-        <div className="flex items-center self-end gap-1 mt-4 md:mt-12 cursor-pointer">
-          <FaEdit className="w-3 h-3 md:w-5 md:h-5" />
-          <p className="text-xs md:text-base">Edit</p>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 
-export default ReportHistory;
+export default ReportsHistory;
