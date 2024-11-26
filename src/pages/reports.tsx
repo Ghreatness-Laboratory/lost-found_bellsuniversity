@@ -5,26 +5,11 @@ import ReportTab from "../components/makeReport/reportTab";
 type TabType = "Reports" | "My Reports";
 
 const Reports: React.FC = () => {
-  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
-
-  const handleFilterChange = (selectedLocation: string) => {
-    setSelectedLocations(prev =>
-      prev.includes(selectedLocation)
-        ? prev.filter(location => location !== selectedLocation)
-        : [...prev, selectedLocation]
-    );
-  };
-
   const [activeReportTab, setActiveReportTab] = useState<TabType>("Reports");
-  const [displayReportForm, setDisplayReportForm] = useState(false)
 
   const handleReportTabClick = (tab: TabType) => {
     setActiveReportTab(tab);
   };
-
-  const handleReportForm = () => {
-    setDisplayReportForm(!displayReportForm)
-  }
 
   return (
     <div className="flex px-4 md:px-10 my-10">

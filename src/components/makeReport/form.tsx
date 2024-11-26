@@ -122,17 +122,17 @@ const ReportForm = ({ setDisplayReportForm }: FormProps) => {
       newErrors.date = "Date is required";
     }
 
-    if (!phoneNumber) {
-      newErrors.phoneNumber = "Phone number is required";
-    } else if (phoneNumber.length !== 10) {
-      newErrors.phoneNumber = "Phone number must be 10 digits";
-    }
+    // if (!phoneNumber) {
+    //   newErrors.phoneNumber = "Phone number is required";
+    // } else if (phoneNumber.length !== 10) {
+    //   newErrors.phoneNumber = "Phone number must be 10 digits";
+    // }
 
-    if (!email) {
-      newErrors.email = "Email is required";
-    } else if (!email.endsWith('@gmail.com')) {
-      newErrors.email = "Input valid email address";
-    }
+    // if (!email) {
+    //   newErrors.email = "Email is required";
+    // } else if (!email.endsWith('@gmail.com')) {
+    //   newErrors.email = "Input valid email address";
+    // }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -325,7 +325,7 @@ const ReportForm = ({ setDisplayReportForm }: FormProps) => {
         <label
           htmlFor="phone-number"
           className="text-base md:text-lg font-semibold">
-          Phone Number <span className="text-[#F24822]">*</span>
+          Phone Number
         </label>
         <div>
           <div className="relative">
@@ -348,9 +348,14 @@ const ReportForm = ({ setDisplayReportForm }: FormProps) => {
       </div>
 
       <div className="relative w-full my-4 flex flex-col gap-2 md:gap-4 my-2 md:my-4">
-        <p className="text-base md:text-lg font-semibold">Email <span className="text-[#F24822]">*</span></p>
+        <label
+          htmlFor="email"
+          className="text-base md:text-lg font-semibold">
+          Email
+        </label>
         <div>
           <input
+            id="email"
             type="email"
             value={email}
             onChange={(e) => {
