@@ -1,5 +1,6 @@
+import React from 'react';
 import { useEffect, useRef, useState } from "react";
-import Select, { ActionMeta, components, OptionProps, SingleValue } from "react-select";
+import Select, { components, OptionProps, SingleValue } from "react-select";
 
 interface FilterProps {
   onFilterChange: (selectedLocation: string) => void,
@@ -27,7 +28,7 @@ const options: Option[] = [
 ];
 
 const CustomOption = (props: OptionProps<Option>) => {
-  const { isSelected, label } = props;
+  const { label } = props;
   return (
     <components.Option {...props}>
       <label className="flex items-center">
@@ -44,7 +45,6 @@ const Filter = ({ onFilterChange }: FilterProps) => {
 
   const handleSelectChange = (
     selected: SingleValue<Option>,
-    actionMeta: ActionMeta<Option>
   ) => {
     setSelectedOption(selected);
     if (selected) {

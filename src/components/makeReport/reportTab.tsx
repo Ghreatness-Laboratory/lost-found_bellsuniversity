@@ -1,3 +1,4 @@
+import React from 'react';
 import { FaEdit, FaTrash } from "react-icons/fa";
 import LostItemImage from '../../assets/images/male-hand-holding-glasses-isolated 1.png';
 import Item from "../common/item";
@@ -59,29 +60,29 @@ const ReportTab = () => {
                   imageStyle="rounded-tl-lg rounded-tr-lg border rounded-tl-lg rounded-tr-lg border-b-0"
                   image={report.image}
                   style="flex flex-col gap-0"
-                  children={
-                    <div className="flex flex-col gap-1 p-2 md:p-3 border rounded-bl-lg rounded-br-lg">
-                      <p className="font-semibold">{report.name}</p>
-                      <p>
-                        Status: {''}
-                        <span
-                          className={`font-semibold ${report.status == 'pending' ? 'text-red-500' : ''} ${report.status == 'returned' ? 'text-green-500' : ''} ${report.status == 'seen' ? 'text-green-500' : ''}`}
-                        >
-                          {report.status}
-                        </span>
-                      </p>
-                      <div className="flex gap-4 justify-between text-sm mt-1">
-                        <div className="flex items-center gap-1 cursor-pointer">
-                          <FaEdit className="w-4 h-4 text-gray-900" />
-                          <p >Edit</p>
-                        </div>
-                        <div className="flex items-center gap-1 cursor-pointer">
-                          <FaTrash className="text-gray-800" />
-                          <p>Delete</p>
-                        </div>
+                >
+                  <div className="flex flex-col gap-1 p-2 md:p-3 border rounded-bl-lg rounded-br-lg">
+                    <p className="font-semibold">{report.name}</p>
+                    <p>
+                      Status: {''}
+                      <span
+                        className={`font-semibold ${report.status == 'pending' ? 'text-red-500' : ''} ${report.status == 'returned' ? 'text-green-500' : ''} ${report.status == 'seen' ? 'text-green-500' : ''}`}
+                      >
+                        {report.status}
+                      </span>
+                    </p>
+                    <div className="flex gap-4 justify-between text-sm mt-1">
+                      <div className="flex items-center gap-1 cursor-pointer">
+                        <FaEdit className="w-4 h-4 text-gray-900" />
+                        <p >Edit</p>
                       </div>
-                    </div>}
-                />
+                      <div className="flex items-center gap-1 cursor-pointer">
+                        <FaTrash className="text-gray-800" />
+                        <p>Delete</p>
+                      </div>
+                    </div>
+                  </div>
+                </Item>
               </div>
             ))}
           </div>

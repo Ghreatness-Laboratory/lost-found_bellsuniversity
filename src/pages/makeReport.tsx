@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from "react";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import ReportForm from "../components/makeReport/form";

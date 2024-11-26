@@ -1,7 +1,7 @@
+import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Index from '../pages';
 import AboutUs from '../pages/aboutUs';
-import ContactUs from '../pages/contactUs';
 import Home from '../pages/home';
 import Login from '../pages/login';
 import MakeAReport from '../pages/makeReport';
@@ -33,10 +33,6 @@ function AppRouter() {
       <Route
         path='/about-us'
         element={<AboutUs />}
-      />
-      <Route
-        path='/contact-us'
-        element={<ContactUs />}
       />
     </Routes>
   );

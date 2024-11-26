@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import backgroundImage from '../assets/images/9886321 2.png';
 import BLFStep3 from '../assets/images/man_10428848 1.svg';
@@ -19,7 +20,7 @@ const universities = [
 
 function Home() {
   const [currentUni, setCurrentUni] = useState<string>('');
-  const [currentAbbr, setCurrentAbbr] = useState<string>('');
+  const [, setCurrentAbbr] = useState<string>('');
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
 
   useEffect(() => {
@@ -53,23 +54,23 @@ function Home() {
               <p className='flex gap-4 max-w-[250px] w-full mx-auto md:mx-0 text-lg md:text-xl'>
                 <img
                   src={BLFStep1}
-                  className='w-[30px h-[30px]'
+                  className='w-[30px] h-[30px]'
                 />
                 Find an item?
               </p>
               <p className='flex gap-4 max-w-[250px] w-full mx-auto md:mx-0 text-lg md:text-xl'>
                 <img
                   src={BLFStep2}
-                  className='w-[30px h-[30px]'
+                  className='w-[30px] h-[30px]'
                 />
                 Report on BLF
               </p>
               <p className='flex gap-4 max-w-[250px] w-full mx-auto md:mx-0 text-lg md:text-xl'>
                 <img
                   src={BLFStep3}
-                  className='w-[30px h-[30px]'
+                  className='w-[30px] h-[30px]'
                 />
-                Return to it's owner
+                Return to it&apos;s owner
               </p>
             </div>
           </div>
