@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import backgroundImage from '../assets/images/9886321 2.png';
 import BLFStep3 from '../assets/images/man_10428848 1.svg';
@@ -22,7 +23,7 @@ function Index() {
   const handleFilterChange = (selectedLocation: string) => {
     setSelectedLocations((prev) =>
       prev.includes(selectedLocation)
-        ? prev.filter((location) => location !== selectedLocation) 
+        ? prev.filter((location) => location !== selectedLocation)
         : [...prev, selectedLocation]
     );
   };
@@ -49,23 +50,23 @@ function Index() {
               <p className='flex gap-4 max-w-[250px] w-full mx-auto md:mx-0 text-lg md:text-xl'>
                 <img
                   src={BLFStep1}
-                  className='w-[30px h-[30px]'
+                  className='w-[30px] h-[30px]'
                 />
                 Find an item?
               </p>
               <p className='flex gap-4 max-w-[250px] w-full mx-auto md:mx-0 text-lg md:text-xl'>
                 <img
                   src={BLFStep2}
-                  className='w-[30px h-[30px]'
+                  className='w-[30px] h-[30px]'
                 />
                 Report on BLF
               </p>
               <p className='flex gap-4 max-w-[250px] w-full mx-auto md:mx-0 text-lg md:text-xl'>
                 <img
                   src={BLFStep3}
-                  className='w-[30px h-[30px]'
+                  className='w-[30px] h-[30px]'
                 />
-                Return to it's owner
+                Return to it&apos;s owner
               </p>
             </div>
           </div>

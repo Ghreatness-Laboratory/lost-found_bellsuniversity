@@ -1,11 +1,19 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { universities } from '../components/common/navbar';
 
+interface SocialMediaLinks {
+  facebook?: string;
+  twitter?: string;
+  instagram?: string;
+  linkedin?: string;
+}
+
 function AboutUs() {
   const [currentEmail, setCurrentEmail] = useState<string>('');
   const [currentPhone, setCurrentPhone] = useState<string>('');
-  const [currentSocialMedia, setCurrentSocialMedia] = useState<any>({});
+  const [currentSocialMedia, setCurrentSocialMedia] = useState<SocialMediaLinks>({});
 
   useEffect(() => {
     const userUniversity = 'bells';

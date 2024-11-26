@@ -107,7 +107,7 @@ const ItemList = ({ title, filter, reportItems, selectedLocations = [] }: ItemLi
             />
           </div>
           {filter && React.cloneElement(filter as React.ReactElement, {
-            onChange: (selectedValues: string[]) => { },
+            onChange: () => { },
           })}
         </div>
       </div>

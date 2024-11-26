@@ -1,3 +1,4 @@
+import React from "react";
 import ReportHistory from "./reportHistory";
 import { reports } from "./reportTab";
 

@@ -6,8 +6,6 @@ interface FormProps {
   setDisplayReportForm: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
-type ReportType = 'Lost' | 'Found';
-
 type FormError = {
   title?: string,
   description?: string,
@@ -40,7 +38,7 @@ const options: Option[] = [
 ];
 
 const CustomOption = (props: OptionProps<Option>) => {
-  const { isSelected, label } = props;
+  const { label } = props;
   return (
     <components.Option {...props}>
       <label className="flex items-center">
@@ -50,9 +48,9 @@ const CustomOption = (props: OptionProps<Option>) => {
   );
 };
 
-const ReportForm = ({ displayReportForm, setDisplayReportForm }: FormProps) => {
-  const [isFocusedTitle, setIsFocusedTitle] = useState(false);
-  const [isFocusedDescription, setIsFocusedDescription] = useState(false);
+const ReportForm = ({ setDisplayReportForm }: FormProps) => {
+  const [, setIsFocusedTitle] = useState(false);
+  const [, setIsFocusedDescription] = useState(false);
   const [selectedOption, setSelectedOption] = useState<SingleValue<Option>>(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
