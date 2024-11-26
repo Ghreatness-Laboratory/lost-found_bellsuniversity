@@ -2,8 +2,8 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import Select, { components, OptionProps, SingleValue } from "react-select";
 
 interface FormProps {
-  displayReportForm: boolean,
-  setDisplayReportForm: React.Dispatch<React.SetStateAction<boolean>>,
+  displayReportPreview: boolean,
+  setDisplayReportPreview: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 type FormError = {
@@ -48,7 +48,7 @@ const CustomOption = (props: OptionProps<Option>) => {
   );
 };
 
-const ReportForm = ({ setDisplayReportForm }: FormProps) => {
+const ReportForm = ({ setDisplayReportPreview }: FormProps) => {
   const [, setIsFocusedTitle] = useState(false);
   const [, setIsFocusedDescription] = useState(false);
   const [selectedOption, setSelectedOption] = useState<SingleValue<Option>>(null);
@@ -142,7 +142,7 @@ const ReportForm = ({ setDisplayReportForm }: FormProps) => {
     e.preventDefault();
 
     if (validateForm()) {
-      setDisplayReportForm(false)
+      setDisplayReportPreview(true)
     }
   };
 

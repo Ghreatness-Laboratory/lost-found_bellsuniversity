@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import MyReportsTab from "../components/makeReport/myReportsTab";
-import ReportTab from "../components/makeReport/reportTab";
+import MyReportsTab from "../components/reports/myReportsTab";
+import ReportTab from "../components/reports/reportTab";
 
 type TabType = "Reports" | "My Reports";
 
