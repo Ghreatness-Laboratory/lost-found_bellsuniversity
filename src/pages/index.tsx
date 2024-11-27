@@ -16,7 +16,7 @@ const universities = [
   },
 ];
 
-function Index() {
+const Index: React.FC = () => {
   const [currentUni, setCurrentUni] = useState<string>('');
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
 

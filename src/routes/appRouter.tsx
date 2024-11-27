@@ -7,7 +7,7 @@ import Login from '../pages/login';
 import MakeAReport from '../pages/makeReport';
 import Reports from '../pages/reports';
 
-function AppRouter() {
+const AppRouter: React.FC = () => {
   return (
     <Routes>
       <Route

@@ -49,7 +49,7 @@ export const universities = [
   },
 ];
 
-const Navbar = ({ isNavbarOpen, handleNavClick }: NavbarProps) => {
+const Navbar: React.FC<NavbarProps> = ({ isNavbarOpen, handleNavClick }) => {
   const [, setSelectedMenu] = useState<number | null>(null);
   const [currentLogo, setCurrentLogo] = useState<string>(defaultLogo);
   const [currentEmail, setCurrentEmail] = useState<string>('');

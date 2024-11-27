@@ -18,7 +18,7 @@ const universities = [
   },
 ];
 
-function Home() {
+const Home: React.FC = () => {
   const [currentUni, setCurrentUni] = useState<string>('');
   const [, setCurrentAbbr] = useState<string>('');
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);

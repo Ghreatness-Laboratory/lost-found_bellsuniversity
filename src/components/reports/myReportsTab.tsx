@@ -1,8 +1,8 @@
 import React from "react";
-import { reports } from "./reportTab";
 import ReportsHistory from "./reportHistory";
+import { reports } from "./reportTab";
 
-const MyReportsTab = () => {
+const MyReportsTab: React.FC = () => {
   return (
     <div>
       {reports.length == 0 ?

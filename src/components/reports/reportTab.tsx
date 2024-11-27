@@ -41,9 +41,33 @@ export const reports: ReportsProps[] = [
     status: 'returned',
     location: 'Classroom',
   },
+  {
+    id: 4,
+    name: 'Found wristwatch At Classroom',
+    date: { day: 13, month: 11, year: 24 },
+    image: LostItemImage,
+    status: 'pending',
+    location: 'Classroom',
+  },
+  {
+    id: 5,
+    name: 'Found Iphone At Football Field',
+    date: { day: 23, month: 8, year: 24 },
+    image: LostItemImage,
+    status: 'seen',
+    location: 'Football Field',
+  },
+  {
+    id: 6,
+    name: 'Found wristwatch At Classroom',
+    date: { day: 12, month: 9, year: 24 },
+    image: LostItemImage,
+    status: 'returned',
+    location: 'Classroom',
+  },
 ]
 
-const ReportTab = () => {
+const ReportTab: React.FC = () => {
   return (
     <div>
       {reports.length == 0 ?

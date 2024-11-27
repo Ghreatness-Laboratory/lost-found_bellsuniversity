@@ -10,7 +10,7 @@ interface SocialMediaLinks {
   linkedin?: string;
 }
 
-function AboutUs() {
+const AboutUs: React.FC = () => {
   const [currentEmail, setCurrentEmail] = useState<string>('');
   const [currentPhone, setCurrentPhone] = useState<string>('');
   const [currentSocialMedia, setCurrentSocialMedia] = useState<SocialMediaLinks>({});

@@ -48,7 +48,7 @@ const CustomOption = (props: OptionProps<Option>) => {
   );
 };
 
-const ReportForm = ({ setDisplayReportPreview }: FormProps) => {
+const ReportForm: React.FC<FormProps> = ({ setDisplayReportPreview }) => {
   const [, setIsFocusedTitle] = useState(false);
   const [, setIsFocusedDescription] = useState(false);
   const [selectedOption, setSelectedOption] = useState<SingleValue<Option>>(null);

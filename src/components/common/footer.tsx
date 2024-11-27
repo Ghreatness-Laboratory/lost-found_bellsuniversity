@@ -1,6 +1,6 @@
 import React from "react";
 
-const Footer = () => {
+const Footer: React.FC = () => {
   return (
     <footer className="flex flex-col md:flex-row-reverse gap-2 md:gap-10 items-center justify-center border-t-[2px] py-2 md:py-4 bg-white">
       <div className="flex justify-center gap-4 lg:gap-10 text-base md:text-lg font-normal">

@@ -12,7 +12,7 @@ interface ReportPreviewProps {
   location: string,
 }
 
-const ReportPreview = ({ image, name, date, description, location }: ReportPreviewProps) => {
+const ReportPreview: React.FC<ReportPreviewProps> = ({ image, name, date, description, location }) => {
   return (
     <div className='lg:absolute lg:right-0 lg:top-20 lg:w-96 w-full'>
       <div className="bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
