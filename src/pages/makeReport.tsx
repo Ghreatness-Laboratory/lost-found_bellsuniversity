@@ -30,7 +30,7 @@ const MakeAReport: React.FC = () => {
             location='Classroom'
           />
         ) : (
-          <div className='lg:absolute lg:right-0 lg:top-20 lg:w-96 w-full'>
+          <div className='xl:absolute xl:right-0 xl:top-20 lg:w-96 w-full'>
             <div className="bg-white border border-dashed border-blue-300 rounded-xl shadow-lg p-6 h-80 flex flex-col justify-center items-center text-center transition-all duration-300 hover:border-blue-500 hover:shadow-xl">
               <div className="flex flex-col items-center gap-4">
                 <div className="bg-blue-50 p-4 rounded-full mb-2">

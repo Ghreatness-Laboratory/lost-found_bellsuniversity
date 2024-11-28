@@ -118,7 +118,7 @@ const Navbar: React.FC<NavbarProps> = ({ isNavbarOpen, handleNavClick }) => {
         </div>
 
         <div className="flex items-center gap-5">
-          <ul className="hidden xl:flex gap-6 items-center ">
+          <ul className="hidden md:flex gap-6 items-center ">
             <span className="sr-only">Destop and Tablet Menu</span>
             {navbarMenu.map((menu, index) => {
               const isActive = location.pathname === menu.href
@@ -233,7 +233,7 @@ const Navbar: React.FC<NavbarProps> = ({ isNavbarOpen, handleNavClick }) => {
               </Link>
             )}
 
-            <div className="block lg:hidden cursor-pointer">
+            <div className="block md:hidden cursor-pointer">
               <div onClick={handleNavClick} className="cursor-pointer">
                 {isNavbarOpen ? (
                   <svg width="18" height="15" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">

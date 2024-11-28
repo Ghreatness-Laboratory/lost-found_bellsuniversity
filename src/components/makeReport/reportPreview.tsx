@@ -14,7 +14,7 @@ interface ReportPreviewProps {
 
 const ReportPreview: React.FC<ReportPreviewProps> = ({ image, name, date, description, location }) => {
   return (
-    <div className='lg:absolute lg:right-0 lg:top-20 lg:w-96 w-full'>
+    <div className='xl:absolute xl:right-0 xl:top-20 lg:w-96 w-full'>
       <div className="bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
         <div className="relative">
           <img
