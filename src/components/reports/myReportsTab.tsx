@@ -1,8 +1,8 @@
 import React from "react";
-import ReportHistory from "./reportHistory";
+import ReportsHistory from "./reportHistory";
 import { reports } from "./reportTab";
 
-const MyReportsTab = () => {
+const MyReportsTab: React.FC = () => {
   return (
     <div>
       {reports.length == 0 ?
@@ -15,18 +15,8 @@ const MyReportsTab = () => {
             <p>You have made no reports</p>
           </div>
         ) : (
-          <div className="flex flex-col gap-6 md:p-3">
-            {reports.map((report, index) => (
-              <div key={index}>
-                <ReportHistory
-                  name={report.name}
-                  location={report.location}
-                  date={report.date}
-                  image={report.image}
-                />
-              </div>
-            ))}
-          </div>
+          <ReportsHistory />
+
         )}
     </div>
   )

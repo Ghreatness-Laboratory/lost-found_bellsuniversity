@@ -8,7 +8,7 @@ interface LoginProps {
   password: string;
 }
 
-function Login() {
+const Login: React.FC = () => {
   const navigate = useNavigate();
   const [errors, setErrors] = useState<Partial<LoginProps>>({});
   const [showPassword, setShowPassword] = useState<boolean>(false);

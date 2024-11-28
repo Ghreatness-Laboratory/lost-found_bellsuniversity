@@ -85,7 +85,7 @@ const ItemList = ({ title, filter, reportItems, selectedLocations = [] }: ItemLi
   };
 
   return (
-    <section className="my-10 md:my-20 mx-4 md:mx-10 px-0 md:px-10">
+    <section className="my-10 md:my-20 mx-4 lg:mx-10 px-0 lg:px-10">
       <div className="flex flex-col gap-4 md:gap-6 items-center">
         <h1 className="text-2xl sm:text-4xl md:text-5xl font-semibold text-center">{title}</h1>
         <div className="flex item-center justify-center gap-1.5 md:gap-3 w-full">
@@ -112,7 +112,7 @@ const ItemList = ({ title, filter, reportItems, selectedLocations = [] }: ItemLi
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-0 md:px-10 pt-8 md:pt-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-0 lg:px-10 pt-8 md:pt-12">
         {paginatedItems.map((item, index) => (
           <div key={index}>
             <Item
@@ -136,7 +136,7 @@ const ItemList = ({ title, filter, reportItems, selectedLocations = [] }: ItemLi
         </div>
       </div>}
 
-      {filteredItems.length > 0 && <div className="flex items-center justify-center gap-4 mt-4 max-w-[320px] w-full mx-auto">
+      {filteredItems.length > 0 && <div className="flex items-center justify-center gap-4 mt-4 max-w-[320px] w-full mx-auto mt-8 text-sm md:text-base">
         <button
           className="py-2 bg-blue-400 text-white rounded-full max-w-[90px] w-full active:bg-blue-500"
           onClick={handlePrevPage}

@@ -4,6 +4,7 @@ import LostItemImage from '../../assets/images/male-hand-holding-glasses-isolate
 import Item from "../common/item";
 
 interface ReportsProps {
+  id?: number,
   name: string,
   date: {
     day: number,
@@ -17,6 +18,7 @@ interface ReportsProps {
 
 export const reports: ReportsProps[] = [
   {
+    id: 1,
     name: 'Found wristwatch At Classroom',
     date: { day: 13, month: 11, year: 24 },
     image: LostItemImage,
@@ -24,6 +26,7 @@ export const reports: ReportsProps[] = [
     location: 'Classroom',
   },
   {
+    id: 2,
     name: 'Found Iphone At Football Field',
     date: { day: 23, month: 8, year: 24 },
     image: LostItemImage,
@@ -31,6 +34,31 @@ export const reports: ReportsProps[] = [
     location: 'Football Field',
   },
   {
+    id: 3,
+    name: 'Found wristwatch At Classroom',
+    date: { day: 12, month: 9, year: 24 },
+    image: LostItemImage,
+    status: 'returned',
+    location: 'Classroom',
+  },
+  {
+    id: 4,
+    name: 'Found wristwatch At Classroom',
+    date: { day: 13, month: 11, year: 24 },
+    image: LostItemImage,
+    status: 'pending',
+    location: 'Classroom',
+  },
+  {
+    id: 5,
+    name: 'Found Iphone At Football Field',
+    date: { day: 23, month: 8, year: 24 },
+    image: LostItemImage,
+    status: 'seen',
+    location: 'Football Field',
+  },
+  {
+    id: 6,
     name: 'Found wristwatch At Classroom',
     date: { day: 12, month: 9, year: 24 },
     image: LostItemImage,
@@ -39,7 +67,7 @@ export const reports: ReportsProps[] = [
   },
 ]
 
-const ReportTab = () => {
+const ReportTab: React.FC = () => {
   return (
     <div>
       {reports.length == 0 ?
@@ -53,8 +81,9 @@ const ReportTab = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {reports.map((report, index) => (
-              <div key={index}>
+            {reports.map((report,) => (
+              <div
+                key={report.id}>
                 <Item
                   name={report.name}
                   imageStyle="rounded-tl-lg rounded-tr-lg border rounded-tl-lg rounded-tr-lg border-b-0"

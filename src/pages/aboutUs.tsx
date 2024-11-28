@@ -1,6 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import MisplaceMeLogo from '../assets/images/WhatsApp Image 2024-11-19 at 09.25.06_0f465b57.jpg';
 import { universities } from '../components/common/navbar';
 
 interface SocialMediaLinks {
@@ -10,7 +11,7 @@ interface SocialMediaLinks {
   linkedin?: string;
 }
 
-function AboutUs() {
+const AboutUs: React.FC = () => {
   const [currentEmail, setCurrentEmail] = useState<string>('');
   const [currentPhone, setCurrentPhone] = useState<string>('');
   const [currentSocialMedia, setCurrentSocialMedia] = useState<SocialMediaLinks>({});
@@ -29,7 +30,16 @@ function AboutUs() {
   return (
     <div className="mx-4 md:mx-10 py-10 text-gray-800">
       <div className="max-w-4xl mx-auto">
-        <header className="mb-10">
+        <header className="flex flex-col md:flex-row md:items-center gap-4 mb-10">
+          <div className='max-w-28 w-full h-26 md:h-28'>
+            <img
+              src={MisplaceMeLogo}
+              alt='MisplaceMe'
+              width={100}
+              height={100}
+              className='object-cover rounded-md w-full h-full'
+            />
+          </div>
           <p className="text-lg sm:text-xl text-gray-600">
             At <span className='font-bold text-black text-xl'>MisplaceMe</span>, where we reconnect lost items with their rightful owners. Our mission is to make finding and reporting lost items easier and more effective.
           </p>

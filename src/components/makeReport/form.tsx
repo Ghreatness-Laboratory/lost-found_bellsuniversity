@@ -2,8 +2,20 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import Select, { components, OptionProps, SingleValue } from "react-select";
 
 interface FormProps {
-  displayReportForm: boolean,
-  setDisplayReportForm: React.Dispatch<React.SetStateAction<boolean>>,
+  displayReportPreview: boolean,
+  setDisplayReportPreview: React.Dispatch<React.SetStateAction<boolean>>,
+  setFormData: React.Dispatch<React.SetStateAction<FormData | null>>,
+}
+
+interface FormData {
+  title: string;
+  description: string;
+  image: string | null;
+  location: string;
+  reportType: string;
+  date: string;
+  phoneNumber: string;
+  email: string;
 }
 
 type FormError = {
@@ -48,7 +60,7 @@ const CustomOption = (props: OptionProps<Option>) => {
   );
 };
 
-const ReportForm = ({ setDisplayReportForm }: FormProps) => {
+const ReportForm: React.FC<FormProps> = ({ setDisplayReportPreview, setFormData }) => {
   const [, setIsFocusedTitle] = useState(false);
   const [, setIsFocusedDescription] = useState(false);
   const [selectedOption, setSelectedOption] = useState<SingleValue<Option>>(null);
@@ -122,17 +134,17 @@ const ReportForm = ({ setDisplayReportForm }: FormProps) => {
       newErrors.date = "Date is required";
     }
 
-    if (!phoneNumber) {
-      newErrors.phoneNumber = "Phone number is required";
-    } else if (phoneNumber.length !== 10) {
-      newErrors.phoneNumber = "Phone number must be 10 digits";
-    }
+    // if (!phoneNumber) {
+    //   newErrors.phoneNumber = "Phone number is required";
+    // } else if (phoneNumber.length !== 10) {
+    //   newErrors.phoneNumber = "Phone number must be 10 digits";
+    // }
 
-    if (!email) {
-      newErrors.email = "Email is required";
-    } else if (!email.endsWith('@gmail.com')) {
-      newErrors.email = "Input valid email address";
-    }
+    // if (!email) {
+    //   newErrors.email = "Email is required";
+    // } else if (!email.endsWith('@gmail.com')) {
+    //   newErrors.email = "Input valid email address";
+    // }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -142,7 +154,18 @@ const ReportForm = ({ setDisplayReportForm }: FormProps) => {
     e.preventDefault();
 
     if (validateForm()) {
-      setDisplayReportForm(false)
+      const formData: FormData = {
+        title,
+        description,
+        image: imagePreview,
+        location,
+        reportType,
+        date,
+        phoneNumber,
+        email
+      };
+      setFormData(formData);
+      setDisplayReportPreview(true)
     }
   };
 
@@ -325,7 +348,7 @@ const ReportForm = ({ setDisplayReportForm }: FormProps) => {
         <label
           htmlFor="phone-number"
           className="text-base md:text-lg font-semibold">
-          Phone Number <span className="text-[#F24822]">*</span>
+          Phone Number
         </label>
         <div>
           <div className="relative">
@@ -348,9 +371,14 @@ const ReportForm = ({ setDisplayReportForm }: FormProps) => {
       </div>
 
       <div className="relative w-full my-4 flex flex-col gap-2 md:gap-4 my-2 md:my-4">
-        <p className="text-base md:text-lg font-semibold">Email <span className="text-[#F24822]">*</span></p>
+        <label
+          htmlFor="email"
+          className="text-base md:text-lg font-semibold">
+          Email
+        </label>
         <div>
           <input
+            id="email"
             type="email"
             value={email}
             onChange={(e) => {

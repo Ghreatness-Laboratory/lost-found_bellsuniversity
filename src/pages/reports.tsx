@@ -1,26 +1,10 @@
-import React, { useState } from "react";
-import Filter from "../components/reports/filter";
-import ItemList from "../components/common/itemList";
+import React from "react";
+import ReportsHistory from "../components/reports/reportHistory";
 
 const Reports: React.FC = () => {
-  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
-
-  const handleFilterChange = (selectedLocation: string) => {
-    setSelectedLocations(prev =>
-      prev.includes(selectedLocation)
-        ? prev.filter(location => location !== selectedLocation)
-        : [...prev, selectedLocation]
-    );
-  };
-
   return (
-    <div>
-      <ItemList
-        title="Search our database for your lost properties"
-        filter={<Filter onFilterChange={handleFilterChange} />}
-        selectedLocations={selectedLocations}
-        reportItems={6}
-      />
+    <div className="px-4 md:px-10 my-10">
+      <ReportsHistory />
     </div>
   );
 };

@@ -38,7 +38,7 @@ const CustomOption = (props: OptionProps<Option>) => {
   );
 };
 
-const Filter = ({ onFilterChange }: FilterProps) => {
+const Filter: React.FC<FilterProps> = ({ onFilterChange }) => {
   const [selectedOption, setSelectedOption] = useState<SingleValue<Option>>(null);
   const [showSelect, setShowSelect] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);

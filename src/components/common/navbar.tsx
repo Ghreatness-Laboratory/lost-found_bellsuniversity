@@ -49,7 +49,7 @@ export const universities = [
   },
 ];
 
-const Navbar = ({ isNavbarOpen, handleNavClick }: NavbarProps) => {
+const Navbar: React.FC<NavbarProps> = ({ isNavbarOpen, handleNavClick }) => {
   const [, setSelectedMenu] = useState<number | null>(null);
   const [currentLogo, setCurrentLogo] = useState<string>(defaultLogo);
   const [currentEmail, setCurrentEmail] = useState<string>('');
@@ -101,10 +101,8 @@ const Navbar = ({ isNavbarOpen, handleNavClick }: NavbarProps) => {
     fetchUserData();
   }, []);
 
-
-
   return (
-    <nav className="py-3 sm:py-5 px-4 md:px-10">
+    <nav className="py-3 sm:py-5 px-4 md:px-10 bg-white">
       <div className="flex items-center justify-between">
         <div className='flex items-center gap-1'>
           <span className="sr-only">University Logo</span>
@@ -120,7 +118,7 @@ const Navbar = ({ isNavbarOpen, handleNavClick }: NavbarProps) => {
         </div>
 
         <div className="flex items-center gap-5">
-          <ul className="hidden xl:flex gap-6 items-center ">
+          <ul className="hidden md:flex gap-6 items-center ">
             <span className="sr-only">Destop and Tablet Menu</span>
             {navbarMenu.map((menu, index) => {
               const isActive = location.pathname === menu.href
@@ -235,7 +233,7 @@ const Navbar = ({ isNavbarOpen, handleNavClick }: NavbarProps) => {
               </Link>
             )}
 
-            <div className="block lg:hidden cursor-pointer">
+            <div className="block md:hidden cursor-pointer">
               <div onClick={handleNavClick} className="cursor-pointer">
                 {isNavbarOpen ? (
                   <svg width="18" height="15" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
