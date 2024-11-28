@@ -7,7 +7,7 @@ MisplaceMe is a web application designed to help students and staff locate lost 
 
 ## **Visit MisplaceMe**
 
-You can access the live application here: [MisplaceMe]()
+You can access the live application here: [MisplaceMe](https://misplace-me.vercel.app/)
 
 ---
 
@@ -37,18 +37,19 @@ MisplaceMe helps bridge the gap between lost and found items on campus. It provi
 ---
 
 ### **Admin Features**
-- **Login Page**:  
-  Admins can log in using their credentials.  
-
-- **Report Page**:  
-  - View all submitted reports with statuses (e.g., Pending, Seen, Returned).  
-  - Manage reports efficiently.
-
-- **Make a Report Page**:  
-  - Submit a report for a lost or found item.  
-  - View an admin's history of reports with the ability to delete individual records.
-
-- **Form Input for Reports** 
+- **Login Page**: Admins authenticate their accounts using a secure username and password.
+- **Home Page**: An admin-specific view with additional management functionalities.
+- **Reports Page**:
+    - Contains a table displaying a list of all reports.
+    - Admins can:
+        - **Edit a Report**: Update the details of a report directly from the table.
+        - **Delete a Report**: Remove a report from the list when it is no longer relevant.
+- **Make a Report Page**:
+    - Provides a form for admins to create reports of lost or found items.
+    - Key features of the form:
+        - **Preview**: Displays a live preview of the report as details are entered.
+        - **Submit**: Submits the report and resets the form.
+        - **Cancel**: Clears the form and reverts the preview to its default state.
 
 ---
 
