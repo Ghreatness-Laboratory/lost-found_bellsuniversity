@@ -44,7 +44,7 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      <section className="flex flex-col md:flex-row gap-4 md:justify-between max-w-[1300px] mx-auto px-4 sm:px-8 lg:px-10 pt-5">
+      <section className="flex flex-col md:flex-row gap-10 md:justify-between max-w-[1300px] mx-auto px-4 sm:px-8 lg:px-10 pt-5">
         <header className='flex flex-col justify-center gap-5 md:max-w-[650px] w-full text-center md:text-left'>
           <p className='text-3xl sm:text-4xl md:text-5xl leading-10 md:leading-[50px] lg:leading-[60px] font-bold'>Welcome to {currentUni} Lost and Found</p>
           <p className='text-lg lg:text-2xl leading-20 font-normal'>At {currentUni} Lost and Found, we can help you find items lost on campus.</p>
@@ -76,10 +76,10 @@ const Home: React.FC = () => {
           </div>
         </header>
 
-        <div className="hidden md:block md:max-w-[500px] w-full">
+        <div className="hidden md:block md:max-w-[500px] w-full h-[550px]">
           <img
             src={backgroundImage}
-            className="rounded-0 md:rounded-[20px] h-full"
+            className="md:rounded-[20px] h-full w-full"
           />
         </div>
       </section>

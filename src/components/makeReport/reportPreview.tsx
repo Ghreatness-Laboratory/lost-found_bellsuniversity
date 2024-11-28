@@ -10,9 +10,11 @@ interface ReportPreviewProps {
   image: string,
   description: string,
   location: string,
+  onReportSubmit: () => void,
+  onCancel: () => void,
 }
 
-const ReportPreview: React.FC<ReportPreviewProps> = ({ image, name, date, description, location }) => {
+const ReportPreview: React.FC<ReportPreviewProps> = ({ image, name, date, description, location, onCancel, onReportSubmit }) => {
   return (
     <div className='xl:absolute xl:right-0 xl:top-20 lg:w-96 w-full'>
       <div className="bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
@@ -51,10 +53,14 @@ const ReportPreview: React.FC<ReportPreviewProps> = ({ image, name, date, descri
             </p>
           </div>
 
-          <button className="bg-blue-400 text-white px-4 py-2 rounded-md active:bg-blue-500 md:hover:bg-blue-500 transition-colors w-full">
+          <button
+            onClick={onReportSubmit}
+            className="bg-blue-400 text-white px-4 py-2 rounded-md active:bg-blue-500 md:hover:bg-blue-500 transition-colors w-full">
             Report Item
           </button>
-          <button className="bg-blue-400 text-white px-4 py-2 rounded-md active:bg-blue-500 md:hover:bg-blue-500 transition-colors w-full">
+          <button
+            onClick={onCancel}
+            className="bg-blue-400 text-white px-4 py-2 rounded-md active:bg-blue-500 md:hover:bg-blue-500 transition-colors w-full">
             Cancel Report
           </button>
         </div>

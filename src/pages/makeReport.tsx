@@ -1,12 +1,34 @@
 import React, { useState } from "react";
-import ReportForm from "../components/makeReport/form";
-import LostImage from '../assets/images/male-hand-holding-glasses-isolated 1.png'
-import ReportPreview from "../components/makeReport/reportPreview";
 import { FaPlus } from "react-icons/fa";
+import LostImage from '../assets/images/male-hand-holding-glasses-isolated 1.png';
+import ReportForm from "../components/makeReport/form";
+import ReportPreview from "../components/makeReport/reportPreview";
+
+interface FormData {
+  title: string;
+  description: string;
+  image: string | null;
+  location: string;
+  reportType: string;
+  date: string;
+  phoneNumber: string;
+  email: string;
+}
 
 const MakeAReport: React.FC = () => {
   const [displayReportPreview, setDisplayReportPreview] = useState(false);
-  const date = { day: 23, month: 8, year: 24 }
+  const [formData, setFormData] = useState<FormData | null>(null);
+
+  const resetForm = () => {
+    setDisplayReportPreview(false);
+    setFormData(null);
+  };
+
+  const handleReportSubmit = () => {
+    if (formData) {
+      resetForm();
+    }
+  };
 
   return (
     <div className="container mx-auto px-4 md:px-6 py-10">
@@ -18,16 +40,23 @@ const MakeAReport: React.FC = () => {
           <ReportForm
             displayReportPreview={displayReportPreview}
             setDisplayReportPreview={setDisplayReportPreview}
+            setFormData={setFormData}
           />
         </div>
 
-        {displayReportPreview ? (
+        {displayReportPreview && formData ? (
           <ReportPreview
-            name='Found Iphone At Football Field'
-            image={LostImage}
-            description=" A wristwatch was found in the classroom during the afternoon session. If you believe this item belongs to you, please contact the lost and found office."
-            date={date}
-            location='Classroom'
+            name={formData.title}
+            image={formData.image || LostImage}
+            description={formData.description}
+            date={{
+              day: new Date(formData.date).getDate(),
+              month: new Date(formData.date).getMonth() + 1,
+              year: new Date(formData.date).getFullYear()
+            }}
+            location={formData.location}
+            onReportSubmit={handleReportSubmit}
+            onCancel={resetForm}
           />
         ) : (
           <div className='xl:absolute xl:right-0 xl:top-20 lg:w-96 w-full'>

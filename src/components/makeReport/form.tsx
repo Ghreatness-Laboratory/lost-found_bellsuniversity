@@ -4,6 +4,18 @@ import Select, { components, OptionProps, SingleValue } from "react-select";
 interface FormProps {
   displayReportPreview: boolean,
   setDisplayReportPreview: React.Dispatch<React.SetStateAction<boolean>>,
+  setFormData: React.Dispatch<React.SetStateAction<FormData | null>>,
+}
+
+interface FormData {
+  title: string;
+  description: string;
+  image: string | null;
+  location: string;
+  reportType: string;
+  date: string;
+  phoneNumber: string;
+  email: string;
 }
 
 type FormError = {
@@ -48,7 +60,7 @@ const CustomOption = (props: OptionProps<Option>) => {
   );
 };
 
-const ReportForm: React.FC<FormProps> = ({ setDisplayReportPreview }) => {
+const ReportForm: React.FC<FormProps> = ({ setDisplayReportPreview, setFormData }) => {
   const [, setIsFocusedTitle] = useState(false);
   const [, setIsFocusedDescription] = useState(false);
   const [selectedOption, setSelectedOption] = useState<SingleValue<Option>>(null);
@@ -142,6 +154,17 @@ const ReportForm: React.FC<FormProps> = ({ setDisplayReportPreview }) => {
     e.preventDefault();
 
     if (validateForm()) {
+      const formData: FormData = {
+        title,
+        description,
+        image: imagePreview,
+        location,
+        reportType,
+        date,
+        phoneNumber,
+        email
+      };
+      setFormData(formData);
       setDisplayReportPreview(true)
     }
   };
