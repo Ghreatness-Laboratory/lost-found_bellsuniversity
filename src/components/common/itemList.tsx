@@ -136,7 +136,7 @@ const ItemList = ({ title, filter, reportItems, selectedLocations = [] }: ItemLi
         </div>
       </div>}
 
-      {filteredItems.length > 0 && <div className="flex items-center justify-center gap-4 mt-4 max-w-[320px] w-full mx-auto">
+      {filteredItems.length > 0 && <div className="flex items-center justify-center gap-4 mt-4 max-w-[320px] w-full mx-auto mt-8 text-sm md:text-base">
         <button
           className="py-2 bg-blue-400 text-white rounded-full max-w-[90px] w-full active:bg-blue-500"
           onClick={handlePrevPage}

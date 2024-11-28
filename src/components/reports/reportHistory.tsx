@@ -140,7 +140,7 @@ const ReportsHistory: React.FC = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {paginatedItems.map((report) => (
                         <tr key={report.id}>
-                          <td className="px-4 py-5 text-sm font-medium text-gray-700 whitespace-nowrap">
+                          <td className="px-2 md:px-4 py-4 md:py-5 text-sm font-medium text-gray-700 whitespace-nowrap">
                             <div className="inline-flex items-center gap-x-3">
                               <div className="flex items-center gap-x-2">
                                 {report.isEditing ? (
@@ -245,7 +245,7 @@ const ReportsHistory: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center justify-center gap-4 mt-8 md:mt-10 max-w-[320px] w-full mx-auto">
+          <div className="flex items-center justify-center gap-4 mt-8 md:mt-10 max-w-[320px] w-full mx-auto text-sm md:text-base">
             <button
               className="py-2 bg-blue-400 text-white rounded-full max-w-[90px] w-full active:bg-blue-500"
               onClick={handlePrevPage}
