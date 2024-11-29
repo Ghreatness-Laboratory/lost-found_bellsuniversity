@@ -1,9 +1,8 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
 import bellsLogo from '../../assets/images/bells-university-of-technology-logo-transparent 1.svg';
-import defaultLogo from '../../assets/images/WhatsApp Image 2024-11-19 at 09.25.06_0f465b57.jpg';
+import defaultLogo from '../../assets/images/misplaceme logo icon main@4x.png';
 
 interface NavbarProps {
   isNavbarOpen: boolean,

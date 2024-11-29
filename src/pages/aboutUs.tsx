@@ -1,7 +1,6 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
-import MisplaceMeLogo from '../assets/images/WhatsApp Image 2024-11-19 at 09.25.06_0f465b57.jpg';
+import MisplaceMeLogo from '../assets/images/misplaceme logo icon main@4x.png';
 import { universities } from '../components/common/navbar';
 
 interface SocialMediaLinks {
@@ -28,16 +27,16 @@ const AboutUs: React.FC = () => {
   }, []);
 
   return (
-    <div className="mx-4 md:mx-10 py-10 text-gray-800">
+    <div className="mx-4 md:mx-10 pb-10 pt-8 text-gray-800">
       <div className="max-w-4xl mx-auto">
-        <header className="flex flex-col md:flex-row md:items-center gap-4 mb-10">
-          <div className='max-w-28 w-full h-26 md:h-28'>
+        <header className="flex flex-col md:flex-row md:items-center mb-10">
+          <div className='max-w-20 md:max-w-28 w-full h-20 md:h-28'>
             <img
               src={MisplaceMeLogo}
               alt='MisplaceMe'
               width={100}
               height={100}
-              className='object-cover rounded-md w-full h-full'
+              className='object-cover w-full h-full'
             />
           </div>
           <p className="text-lg sm:text-xl text-gray-600">
