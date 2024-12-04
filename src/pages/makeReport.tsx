@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import LostImage from '../assets/images/male-hand-holding-glasses-isolated 1.png';
-import ReportForm from "../components/makeReport/form";
-import ReportPreview from "../components/makeReport/reportPreview";
+import ReportForm from "../components/make-a-report/reportForm";
+import ReportPreview from "../components/make-a-report/reportPreview";
 
 interface FormData {
   title: string;

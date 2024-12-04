@@ -5,7 +5,7 @@ import BLFStep3 from '../assets/images/man_10428848 1.svg';
 import BLFStep2 from '../assets/images/report.svg';
 import BLFStep1 from '../assets/images/scan_7026205 1.svg';
 import ItemList from '../components/common/itemList';
-import Filter from '../components/reports/filter';
+import Filter from '../components/common/filter';
 
 const universities = [
   {

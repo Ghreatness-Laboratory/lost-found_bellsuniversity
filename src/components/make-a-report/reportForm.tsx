@@ -370,7 +370,7 @@ const ReportForm: React.FC<FormProps> = ({ setDisplayReportPreview, setFormData 
         </div>
       </div>
 
-      <div className="relative w-full my-4 flex flex-col gap-2 md:gap-4 my-2 md:my-4">
+      <div className="relative w-full flex flex-col gap-2 md:gap-4 my-2 md:my-4">
         <label
           htmlFor="email"
           className="text-base md:text-lg font-semibold">
