@@ -1,43 +1,35 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-import backgroundImage from '../assets/images/9886321 2.png';
-import BLFStep3 from '../assets/images/man_10428848 1.svg';
-import BLFStep2 from '../assets/images/report.svg';
-import BLFStep1 from '../assets/images/scan_7026205 1.svg';
-import ItemList from '../components/common/itemList';
-import Filter from '../components/common/filter';
+import React, { useEffect, useState } from "react";
+import backgroundImage from "../assets/images/9886321 2.png";
+import BLFStep3 from "../assets/images/man_10428848 1.svg";
+import BLFStep2 from "../assets/images/report.svg";
+import BLFStep1 from "../assets/images/scan_7026205 1.svg";
+import Filter from "../components/common/filter";
+import ReportList from "../components/common/reportList";
+import useFetch from "../hooks/useFetch";
 
-const universities = [
-  {
-    uni: 'Bells University',
-    abbr: 'BLF',
-  },
-  {
-    uni: 'Babcock University',
-    abbr: 'BUF',
-  },
-];
+interface UniversityProps {
+  uni: string;
+}
 
 const Home: React.FC = () => {
-  const [currentUni, setCurrentUni] = useState<string>('');
-  const [, setCurrentAbbr] = useState<string>('');
+  const [currentUni, setCurrentUni] = useState<string>("");
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+  const { data: universities } = useFetch<UniversityProps[]>("/data/universities.json");
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const userUniversity = 'Bells University';
-      const university = universities.find((uni) => uni.uni === userUniversity);
-      setCurrentUni(university?.uni || '');
-      setCurrentAbbr(university?.abbr || '');
+      const userUniversity = "Bells University";
+      const university = universities?.find((uni) => uni.uni.toLowerCase() === userUniversity.toLowerCase());
+      setCurrentUni(university?.uni || "");
     };
 
     fetchUserData();
-  }, []);
+  }, [universities]);
 
   const handleFilterChange = (selectedLocation: string) => {
-    setSelectedLocations(prev =>
+    setSelectedLocations((prev) =>
       prev.includes(selectedLocation)
-        ? prev.filter(location => location !== selectedLocation)
+        ? prev.filter((location) => location !== selectedLocation)
         : [...prev, selectedLocation]
     );
   };
@@ -45,31 +37,28 @@ const Home: React.FC = () => {
   return (
     <div>
       <section className="flex flex-col md:flex-row gap-10 md:justify-between max-w-[1300px] mx-auto px-4 sm:px-8 lg:px-10 pt-5">
-        <header className='flex flex-col justify-center gap-5 md:max-w-[650px] w-full text-center md:text-left'>
-          <p className='text-3xl sm:text-4xl md:text-5xl leading-10 md:leading-[50px] lg:leading-[60px] font-bold'>Welcome to {currentUni} Lost and Found</p>
-          <p className='text-lg lg:text-2xl leading-20 font-normal'>At {currentUni} Lost and Found, we can help you find items lost on campus.</p>
-          <div className='max-w-[500px] w-full mx-auto md:mx-0 mt-5 md:mt-10'>
-            <h3 className=' bg-blue-400 text-white text-lg md:text-xl py-2 font-semibold text-center rounded-full'>Use BLF in 3 simple steps</h3>
-            <div className='flex flex-col gap-3 text-xl font-semibold py-4'>
-              <p className='flex gap-4 max-w-[250px] w-full mx-auto md:mx-0 text-lg md:text-xl'>
-                <img
-                  src={BLFStep1}
-                  className='w-[30px] h-[30px]'
-                />
+        <header className="flex flex-col justify-center gap-5 md:max-w-[650px] w-full text-center md:text-left">
+          <p className="text-3xl sm:text-4xl md:text-5xl leading-10 md:leading-[50px] lg:leading-[60px] font-bold">
+            Welcome to <span className="capitalize">{currentUni}</span> Lost and Found
+          </p>
+          <p className="text-lg lg:text-2xl leading-20 font-normal">
+            At <span className="capitalize">{currentUni}</span> Lost and Found, we can help you find items lost on campus.
+          </p>
+          <div className="max-w-[500px] w-full mx-auto md:mx-0 mt-5 md:mt-10">
+            <h3 className=" bg-blue-400 text-white text-lg md:text-xl py-2 font-semibold text-center rounded-full">
+              Use misplaceme in 3 simple steps
+            </h3>
+            <div className="flex flex-col gap-3 text-xl font-semibold py-4">
+              <p className="flex gap-4 max-w-[250px] w-full mx-auto md:mx-0 text-lg md:text-xl">
+                <img src={BLFStep1} className="w-[30px] h-[30px]" />
                 Find an item?
               </p>
-              <p className='flex gap-4 max-w-[250px] w-full mx-auto md:mx-0 text-lg md:text-xl'>
-                <img
-                  src={BLFStep2}
-                  className='w-[30px] h-[30px]'
-                />
-                Report on BLF
+              <p className="flex gap-4 max-w-[250px] w-full mx-auto md:mx-0 text-lg md:text-xl">
+                <img src={BLFStep2} className="w-[30px] h-[30px]" />
+                Report item
               </p>
-              <p className='flex gap-4 max-w-[250px] w-full mx-auto md:mx-0 text-lg md:text-xl'>
-                <img
-                  src={BLFStep3}
-                  className='w-[30px] h-[30px]'
-                />
+              <p className="flex gap-4 max-w-[250px] w-full mx-auto md:mx-0 text-lg md:text-xl">
+                <img src={BLFStep3} className="w-[30px] h-[30px]" />
                 Return to it&apos;s owner
               </p>
             </div>
@@ -84,14 +73,13 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      <ItemList
+      <ReportList
         title="Search our database for your lost properties"
         filter={<Filter onFilterChange={handleFilterChange} />}
         selectedLocations={selectedLocations}
-        reportItems={6}
       />
     </div>
   );
-}
+};
 
 export default Home;

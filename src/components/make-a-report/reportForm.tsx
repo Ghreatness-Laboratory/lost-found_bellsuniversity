@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import Select, { components, OptionProps, SingleValue } from "react-select";
+import { FormData } from "../../types/reportForm";
 
 interface FormProps {
   displayReportPreview: boolean,
@@ -7,27 +8,7 @@ interface FormProps {
   setFormData: React.Dispatch<React.SetStateAction<FormData | null>>,
 }
 
-interface FormData {
-  title: string;
-  description: string;
-  image: string | null;
-  location: string;
-  reportType: string;
-  date: string;
-  phoneNumber: string;
-  email: string;
-}
-
-type FormError = {
-  title?: string,
-  description?: string,
-  image?: string,
-  location?: string,
-  reportType?: string,
-  date?: string,
-  phoneNumber?: string,
-  email?: string,
-}
+type FormError =  Partial<FormData>
 
 type Option = {
   value: string,

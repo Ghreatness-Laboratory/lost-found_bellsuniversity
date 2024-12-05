@@ -1,33 +1,30 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from "react";
 
-interface ItemsProps {
-  name: string;
-  date?: {
-    day: number;
-    month: number;
-    year: number;
-  };
-  image: string;
+interface FetchError {
+  status: number | null;
+  message: string;
 }
 
-const useFetch = (url: string) => {
-  const [data, setData] = useState<ItemsProps[]>([]);
+const useFetch = <T,>(url: string): { data: T | undefined; loading: boolean; error: FetchError | null } => {
+  const [data, setData] = useState<T | undefined>(undefined);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<FetchError | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
         const response = await fetch(url);
-        if (!response.ok) throw new Error('Reload Page');
+        if (!response.ok) {
+          throw { status: response.status, message: "Failed to fetch data. Please try again." };
+        }
         const result = await response.json();
         setData(result);
-      } catch (error: unknown) {
+      } catch (error) {
         if (error instanceof Error) {
-          setError(error.message);
+          setError({ status: null, message: error.message });
         } else {
-          setError('An unknown error occurred');
+          setError(error as FetchError);
         }
       } finally {
         setLoading(false);

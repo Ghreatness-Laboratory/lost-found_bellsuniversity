@@ -1,59 +1,21 @@
 import React, { useState } from "react";
-import LostItemImage2 from '../../assets/images/male-hand-holding-glasses-isolated 1.png';
-import Item from "./item";
+import useFetch from "../../hooks/useFetch";
+import { ReportProps } from "../../types/report";
+import ReportItem from "./reportItem";
 
-interface ItemListProps {
+interface ReportListProps {
   title?: string,
   filter?: React.ReactNode,
-  reportItems?: number,
   selectedLocations?: string[],
 }
 
-const items = [
-  {
-    name: 'Found wristwatch At Classroom',
-    date: { day: 13, month: 11, year: 24 },
-    image: LostItemImage2,
-    location: "Classroom",
-  },
-  {
-    name: 'Found Iphone At Football Field',
-    date: { day: 23, month: 8, year: 24 },
-    image: LostItemImage2,
-    location: "Football field/Pavilion",
-  },
-  {
-    name: 'Found wristwatch At Classroom',
-    date: { day: 12, month: 9, year: 24 },
-    image: LostItemImage2,
-    location: "Classroom",
-  },
-  {
-    name: 'Found Iphone At Football Field',
-    date: { day: 3, month: 4, year: 24 },
-    image: LostItemImage2,
-    location: "Football field/Pavilion",
-  },
-  {
-    name: 'Found wristwatch At Classroom',
-    date: { day: 18, month: 1, year: 24 },
-    image: LostItemImage2,
-    location: "Classroom",
-  },
-  {
-    name: 'Found Iphone At Football Field',
-    date: { day: 17, month: 11, year: 24 },
-    image: LostItemImage2,
-    location: "Football field/Pavilion",
-  },
-];
-
-const ItemList = ({ title, filter, reportItems, selectedLocations = [] }: ItemListProps) => {
+const ReportList = ({ title, filter, selectedLocations = [] }: ReportListProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = reportItems ?? 3;
+  const itemsPerPage = 6;
+  const { data: items } = useFetch<ReportProps[]>("/data/reports.json");
 
-  const filteredItems = items.filter((item) => {
+  const filteredItems = (items ?? []).filter((item) => {
     const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesLocation =
       selectedLocations.length === 0 || selectedLocations.includes(item.location);
@@ -115,7 +77,7 @@ const ItemList = ({ title, filter, reportItems, selectedLocations = [] }: ItemLi
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-0 lg:px-10 pt-8 md:pt-12">
         {paginatedItems.map((item, index) => (
           <div key={index}>
-            <Item
+            <ReportItem
               name={item.name}
               date={item.date}
               style='flex flex-col gap-2 md:gap-5'
@@ -136,9 +98,9 @@ const ItemList = ({ title, filter, reportItems, selectedLocations = [] }: ItemLi
         </div>
       </div>}
 
-      {filteredItems.length > 0 && <div className="flex items-center justify-center gap-4 mt-4 max-w-[320px] w-full mx-auto mt-8 text-sm md:text-base">
+      {filteredItems.length > 0 && <div className="flex items-center justify-center gap-4 max-w-[320px] w-full mx-auto mt-8 text-sm md:text-base">
         <button
-          className="py-2 bg-blue-400 text-white rounded-full max-w-[90px] w-full active:bg-blue-500"
+          className={`py-2 bg-blue-400 text-white rounded-full max-w-[90px] w-full active:bg-blue-500 ${filteredItems.length == itemsPerPage ? 'cursor-not-allowed': ''}`}
           onClick={handlePrevPage}
           disabled={currentPage === 1}
         >
@@ -148,7 +110,7 @@ const ItemList = ({ title, filter, reportItems, selectedLocations = [] }: ItemLi
           {currentPage} of {totalPages}
         </span>
         <button
-          className="py-2 bg-blue-400 text-white rounded-full max-w-[90px] w-full active:bg-blue-500"
+          className={`py-2 bg-blue-400 text-white rounded-full max-w-[90px] w-full active:bg-blue-500 ${filteredItems.length == itemsPerPage ? 'cursor-not-allowed': ''}`}
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
         >
@@ -159,4 +121,4 @@ const ItemList = ({ title, filter, reportItems, selectedLocations = [] }: ItemLi
   );
 };
 
-export default ItemList;
+export default ReportList;

@@ -1,19 +1,13 @@
 import React from 'react';
+import { ReportProps } from '../../types/report';
 
-interface ItemProps {
-  name: string,
-  date?: {
-    day: number,
-    month: number,
-    year: number
-  },
-  image: string,
+interface ReportItemProps extends Partial<ReportProps> {
   style?: string,
   imageStyle?: string,
   children?: React.ReactNode,
 }
 
-const Item = ({ name, date, image, style, imageStyle, children }: ItemProps) => {
+const ReportItem: React.FC<ReportItemProps> = ({ name, date, image, style, imageStyle, children }) => {
   return (
     <div className='p-0 md:p-4 w-full rounded-lg'>
       <div className={`${style}`}>
@@ -47,4 +41,4 @@ const Item = ({ name, date, image, style, imageStyle, children }: ItemProps) => 
   )
 }
 
-export default Item;
+export default ReportItem;

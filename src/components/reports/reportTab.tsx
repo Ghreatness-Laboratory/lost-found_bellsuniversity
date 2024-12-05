@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaEdit, FaTrash } from "react-icons/fa";
 import LostItemImage from '../../assets/images/male-hand-holding-glasses-isolated 1.png';
-import Item from "../common/item";
+import Item from "../common/reportItem";
 
 interface ReportsProps {
   id?: number,

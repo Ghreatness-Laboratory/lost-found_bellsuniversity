@@ -1,15 +1,8 @@
 import React from "react";
+import { ReportProps } from "../../types/report";
 
-interface ReportPreviewProps {
-  name: string,
-  date: {
-    day: number,
-    month: number,
-    year: number
-  },
-  image: string,
+interface ReportPreviewProps extends Partial<ReportProps> {
   description: string,
-  location: string,
   onReportSubmit: () => void,
   onCancel: () => void,
 }
