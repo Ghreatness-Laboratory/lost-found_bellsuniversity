@@ -12,7 +12,7 @@ interface UniversityProps {
 }
 
 const Home: React.FC = () => {
-  const [currentUni, setCurrentUni] = useState<string>("");
+  const [, setCurrentUni] = useState<string>("");
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const { data: universities } = useFetch<UniversityProps[]>("/data/universities.json");
 
@@ -39,10 +39,10 @@ const Home: React.FC = () => {
       <section className="flex flex-col md:flex-row gap-10 md:justify-between max-w-[1300px] mx-auto px-4 sm:px-8 lg:px-10 pt-5">
         <header className="flex flex-col justify-center gap-5 md:max-w-[650px] w-full text-center md:text-left">
           <p className="text-3xl sm:text-4xl md:text-5xl leading-10 md:leading-[50px] lg:leading-[60px] font-bold">
-            Welcome to <span className="capitalize">{currentUni}</span> Lost and Found
+            Welcome to <span className="capitalize">Bells University</span> Lost and Found
           </p>
           <p className="text-lg lg:text-2xl leading-20 font-normal">
-            At <span className="capitalize">{currentUni}</span> Lost and Found, we can help you find items lost on campus.
+            At <span className="capitalize">Bells University</span> Lost and Found, we can help you find items lost on campus.
           </p>
           <div className="max-w-[500px] w-full mx-auto md:mx-0 mt-5 md:mt-10">
             <h3 className=" bg-blue-400 text-white text-lg md:text-xl py-2 font-semibold text-center rounded-full">

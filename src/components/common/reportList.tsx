@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import useFetch from "../../hooks/useFetch";
 import { ReportProps } from "../../types/report";
 import ReportItem from "./reportItem";
+import Loader from "./loader";
 
 interface ReportListProps {
   title?: string,
@@ -13,7 +14,7 @@ const ReportList = ({ title, filter, selectedLocations = [] }: ReportListProps) 
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
-  const { data: items } = useFetch<ReportProps[]>("/data/reports.json");
+  const { data: items, loading } = useFetch<ReportProps[]>("/data/reports.json");
 
   const filteredItems = (items ?? []).filter((item) => {
     const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
@@ -44,6 +45,10 @@ const ReportList = ({ title, filter, selectedLocations = [] }: ReportListProps) 
 
   const handlePrevPage = () => {
     if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+  };
+
+  if (loading) {
+    return <Loader/>
   };
 
   return (

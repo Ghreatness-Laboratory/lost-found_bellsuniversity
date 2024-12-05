@@ -2,13 +2,14 @@ import React, { useEffect, useMemo, useState } from "react";
 import { FaClock, FaSearch } from "react-icons/fa";
 import useFetch from "../../hooks/useFetch";
 import { ReportProps } from "../../types/report";
+import Loader from "../common/loader";
 
 interface EditableReport extends ReportProps {
   isEditing: boolean;
 }
 
 const ReportsHistory: React.FC = () => {
-  const { data: reports } = useFetch<ReportProps[]>("/data/reports.json");
+  const { data: reports, loading } = useFetch<ReportProps[]>("/data/reports.json");
   const [reportList, setReportList] = useState<EditableReport[]>([]);
 
   useEffect(() => {
@@ -76,6 +77,10 @@ const ReportsHistory: React.FC = () => {
 
   const handleNextPage = () => {
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  };
+
+  if (loading) { 
+    return <Loader />
   };
 
   return (
@@ -174,7 +179,7 @@ const ReportsHistory: React.FC = () => {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {paginatedItems.map((report) => (
                     <tr key={report.id}>
-                      <td className="px-2 md:px-4 py-4 md:py-5 text-sm font-medium text-gray-700 whitespace-nowrap">
+                      <td className="px-2 md:px-4 py-4 md:py-5 text-sm font-medium text-gray-700">
                         <div className="inline-flex items-center gap-x-3">
                           <div className="flex items-center gap-x-2">
                             {report.isEditing ? (
@@ -208,7 +213,7 @@ const ReportsHistory: React.FC = () => {
                                     alt={report.name}
                                   />
                                 </div>
-                                <h2 className="font-medium md:text-lg lg:w-[300px] text-gray-800 overflow-hidden">
+                                <h2 className="font-medium md:text-lg w-[200px] md:w-[250px] lg:w-[300px] text-gray-800 overflow-hidden">
                                   {report.name}
                                 </h2>
                               </>
@@ -314,7 +319,9 @@ const ReportsHistory: React.FC = () => {
 
           <div className="flex items-center justify-center gap-4 mt-8 md:mt-10 max-w-[320px] w-full mx-auto text-sm md:text-base">
             <button
-              className={`py-2 bg-blue-400 text-white rounded-full max-w-[90px] w-full active:bg-blue-500 ${filteredItems.length == itemsPerPage ? 'cursor-not-allowed': ''}`}
+              className={`py-2 bg-blue-400 text-white rounded-full max-w-[90px] w-full active:bg-blue-500 ${
+                filteredItems.length == itemsPerPage ? "cursor-not-allowed" : ""
+              }`}
               onClick={handlePrevPage}
               disabled={currentPage === 1}
             >
@@ -324,7 +331,9 @@ const ReportsHistory: React.FC = () => {
               {currentPage} of {totalPages}
             </span>
             <button
-              className={`py-2 bg-blue-400 text-white rounded-full max-w-[90px] w-full active:bg-blue-500 ${filteredItems.length == itemsPerPage ? 'cursor-not-allowed': ''}`}
+              className={`py-2 bg-blue-400 text-white rounded-full max-w-[90px] w-full active:bg-blue-500 ${
+                filteredItems.length == itemsPerPage ? "cursor-not-allowed" : ""
+              }`}
               onClick={handleNextPage}
               disabled={currentPage === totalPages}
             >

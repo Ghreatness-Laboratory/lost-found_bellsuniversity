@@ -7,7 +7,7 @@ interface FetchError {
 
 const useFetch = <T,>(url: string): { data: T | undefined; loading: boolean; error: FetchError | null } => {
   const [data, setData] = useState<T | undefined>(undefined);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<FetchError | null>(null);
 
   useEffect(() => {
