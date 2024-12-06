@@ -41,10 +41,9 @@ const Index: React.FC = () => {
     <div>
       <section className="flex flex-col md:flex-row gap-10 md:justify-between max-w-[1300px] mx-auto px-4 sm:px-8 lg:px-10 pt-5">
         <header className="flex flex-col justify-center gap-5 md:max-w-[650px] w-full text-center md:text-left">
-          <p className="text-3xl sm:text-4xl md:text-5xl leading-10 md:leading-[50px] lg:leading-[60px] font-bold">
-            Welcome to <span className="capitalize">Bells University</span> Lost and
-            Found
-          </p>
+          <h1 role="heading" className="text-3xl sm:text-4xl md:text-5xl leading-10 md:leading-[50px] lg:leading-[60px] font-bold">
+            Welcome to <span className="capitalize">Bells University</span> Lost and Found
+          </h1>
           <p className="text-lg lg:text-2xl leading-20 font-normal">
             At <span className="capitalize">Bells University</span> Lost and Found,
             we can help you find items lost on campus.
