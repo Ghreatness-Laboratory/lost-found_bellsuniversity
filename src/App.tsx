@@ -1,10 +1,13 @@
 import React from "react";
 import AppRouter from "./routes/appRouter";
+import ErrorBoundary from "./utils/error/errorBoundary";
 
 const App: React.FC = () => {
   return (
     <div>
-      <AppRouter />
+      <ErrorBoundary>
+        <AppRouter />
+      </ErrorBoundary>
     </div>
   );
 };
