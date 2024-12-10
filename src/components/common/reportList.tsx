@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import useFetch from "../../hooks/useFetch";
-import { ReportProps } from "../../types/report";
+import { ReportProps } from "../../types/report.types";
 import ReportItem from "./reportItem";
 import Loader from "./loader";
 

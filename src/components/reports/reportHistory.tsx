@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FaClock, FaSearch } from "react-icons/fa";
 import useFetch from "../../hooks/useFetch";
-import { ReportProps } from "../../types/report";
+import { ReportProps } from "../../types/report.types";
 import Loader from "../common/loader";
 
 interface EditableReport extends ReportProps {

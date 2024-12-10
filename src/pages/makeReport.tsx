@@ -3,7 +3,7 @@ import { FaPlus } from "react-icons/fa";
 import LostImage from '../assets/images/male-hand-holding-glasses-isolated 1.png';
 import ReportForm from "../components/make-a-report/reportForm";
 import ReportPreview from "../components/make-a-report/reportPreview";
-import { FormData } from "../types/reportForm";
+import { FormData } from "../types/reportForm.types";
 
 const MakeAReport: React.FC = () => {
   const [displayReportPreview, setDisplayReportPreview] = useState(false);

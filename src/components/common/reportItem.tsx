@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReportProps } from '../../types/report';
+import { ReportProps } from '../../types/report.types';
 
 interface ReportItemProps extends Partial<ReportProps> {
   style?: string,

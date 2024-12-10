@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import Select, { components, OptionProps, SingleValue } from "react-select";
-import { FormData } from "../../types/reportForm";
+import { FormData } from "../../types/reportForm.types";
 
 interface FormProps {
   displayReportPreview: boolean,
