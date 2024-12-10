@@ -21,7 +21,7 @@ const MakeAReport: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 md:px-6 py-10">
+    <div data-testid="make-a-report-page" className="container mx-auto px-4 md:px-6 py-10">
       <section className="relative flex flex-col lg:flex-row gap-10 w-full">
         <div className="flex-grow max-w-3xl w-full">
           <h1 className="text-xl sm:text-2xl font-bold text-gray-800 text-center mb-6">

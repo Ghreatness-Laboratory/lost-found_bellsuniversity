@@ -27,7 +27,7 @@ const AboutUs: React.FC = () => {
   }, []);
 
   return (
-    <div className="mx-4 md:mx-10 pb-10 pt-8 text-gray-800">
+    <div data-testid="about-us-page" className="mx-4 md:mx-10 pb-10 pt-8 text-gray-800">
       <div className="max-w-4xl mx-auto">
         <header className="flex flex-col md:flex-row md:items-center mb-10">
           <div className='max-w-20 md:max-w-28 w-full h-20 md:h-28'>

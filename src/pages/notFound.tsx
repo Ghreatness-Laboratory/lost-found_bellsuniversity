@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const NotFound: React.FC = () => {
   const navigate = useNavigate();
   return (
-    <section className="bg-white">
+    <div data-testid="not-found-page" className="bg-white">
       <div className="container flex items-center min-h-[75vh] px-6 py-12 mx-auto">
         <div className="flex flex-col items-center max-w-sm mx-auto text-center">
           <p className="p-3 text-sm font-medium text-red-500 rounded-full bg-red-50">
@@ -61,7 +61,7 @@ const NotFound: React.FC = () => {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 export default NotFound;

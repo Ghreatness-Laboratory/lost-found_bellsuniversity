@@ -51,7 +51,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="grid place-items-center md:pb-10 min-h-[74vh] lg:min-h-[80vh]">
+    <div data-testid="login-page" className="grid place-items-center md:pb-10 min-h-[74vh] lg:min-h-[80vh]">
       <div className="bg-white sm:border sm:border-gray-300 sm:rounded-xl sm:shadow-md max-w-md w-full">
         <div className="p-4 sm:p-7">
           <h1 className="block text-3xl font-bold text-gray-800 text-center">Admin Login</h1>
