@@ -139,6 +139,7 @@ const Navbar: React.FC<NavbarProps> = ({ isNavbarOpen, handleNavClick }) => {
               <div>
                 <div
                   onClick={handleNavClick}
+                  data-testid="close-menu"
                   className='block lg:hidden cursor-pointer'
                 >
                   <svg className="absolute right-4 md:right-8 top-5 md:top-12" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none">
@@ -160,6 +161,17 @@ const Navbar: React.FC<NavbarProps> = ({ isNavbarOpen, handleNavClick }) => {
                       </Link>
                     )
                   })}
+                  {isLoggedIn || location.pathname === '/home' || location.pathname === '/reports' || location.pathname === '/make-a-report' ? (
+                    <Link 
+                      to={'/'}
+                      onClick={handleNavClick}
+                      className="block sm:hidden py-1 md:py-2 pl-8 font-normal text-base cursor-pointer border-l-2 border-l-white md:border-b-2 md:border-b-white active:border-l-blue-600 md:hover:border-b-blue-600 active:text-blue-600 md:hover:text-blue-600 transition ease duration-200ms"
+                    >
+                      Logout
+                    </Link>
+                  ) : (
+                    <></>
+                  )}
                 </ul>
               </div>
 
@@ -184,22 +196,22 @@ const Navbar: React.FC<NavbarProps> = ({ isNavbarOpen, handleNavClick }) => {
                   <p className='font-semibold text-[18px]'>Follow us on</p>
                   <div className='flex items-center gap-4'>
                     {currentSocialMedia.facebook && (
-                      <a href={currentSocialMedia.facebook} target="_blank" rel="noopener noreferrer">
+                      <a href={currentSocialMedia.facebook} target="_blank" rel="noopener noreferrer" data-testid="social-media-link">
                         <FaFacebook className="text-blue-600 hover:text-blue-800" size={20} />
                       </a>
                     )}
                     {currentSocialMedia.twitter && (
-                      <a href={currentSocialMedia.twitter} target="_blank" rel="noopener noreferrer">
+                      <a href={currentSocialMedia.twitter} target="_blank" rel="noopener noreferrer"data-testid="social-media-link">
                         <FaTwitter className="text-blue-400 hover:text-blue-600" size={20} />
                       </a>
                     )}
                     {currentSocialMedia.instagram && (
-                      <a href={currentSocialMedia.instagram} target="_blank" rel="noopener noreferrer">
+                      <a href={currentSocialMedia.instagram} target="_blank" rel="noopener noreferrer" data-testid="social-media-link">
                         <FaInstagram className="text-pink-500 hover:text-pink-700" size={20} />
                       </a>
                     )}
                     {currentSocialMedia.linkedin && (
-                      <a href={currentSocialMedia.linkedin} target="_blank" rel="noopener noreferrer">
+                      <a href={currentSocialMedia.linkedin} target="_blank" rel="noopener noreferrer" data-testid="social-media-link">
                         <FaLinkedin className="text-blue-700 hover:text-blue-900" size={20} />
                       </a>
                     )}
@@ -212,7 +224,7 @@ const Navbar: React.FC<NavbarProps> = ({ isNavbarOpen, handleNavClick }) => {
           <div className="flex items-center gap-5">
             {isLoggedIn || location.pathname === '/home' || location.pathname === '/reports' || location.pathname === '/make-a-report' ? (
               <Link to={'/'}>
-                <button className="flex items-center gap-1.5 justify-center cursor-pointer rounded-lg p-2 bg-[rgba(129,129,129,0.06)] backdrop-blur-[2px]">
+                <button className="hidden sm:flex items-center gap-1.5 justify-center cursor-pointer rounded-lg p-2 bg-[rgba(129,129,129,0.06)] backdrop-blur-[2px]">
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
                     <path d="M1.0835 9.00004C1.0835 5.26837 1.0835 3.40171 2.24266 2.24254C3.40183 1.08337 5.26766 1.08337 9.00016 1.08337C12.7318 1.08337 14.5985 1.08337 15.7577 2.24254C16.9168 3.40171 16.9168 5.26754 16.9168 9.00004C16.9168 12.7317 16.9168 14.5984 15.7577 15.7575C14.5985 16.9167 12.7327 16.9167 9.00016 16.9167C5.2685 16.9167 3.40183 16.9167 2.24266 15.7575C1.0835 14.5984 1.0835 12.7325 1.0835 9.00004Z" stroke="#1E1E1E" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
                     <path d="M13.1976 9.02343H7.38509M7.38509 9.02343C7.38509 9.49843 9.18092 11.0959 9.18092 11.0959M7.38509 9.02343C7.38509 8.5351 9.18092 6.96926 9.18092 6.96926M4.86426 5.6626V12.3293" stroke="#1E1E1E" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
@@ -239,7 +251,7 @@ const Navbar: React.FC<NavbarProps> = ({ isNavbarOpen, handleNavClick }) => {
                     <path d="M1 1L17 17M17 1L1 17" stroke="black" strokeWidth="2" strokeLinecap="round" />
                   </svg>
                 ) : (
-                  <svg width="18" height="15" viewBox="0 0 18 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg data-testid="hamburger-menu" width="18" height="15" viewBox="0 0 18 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M0.0683594 1.50454C0.0683594 1.14162 0.362565 0.847412 0.725486 0.847412H16.4965C16.8594 0.847412 17.1536 1.14162 17.1536 1.50454C17.1536 1.86746 16.8594 2.16166 16.4965 2.16166H0.725486C0.362565 2.16166 0.0683594 1.86746 0.0683594 1.50454ZM0.0683594 7.63772C0.0683594 7.2748 0.362565 6.98059 0.725486 6.98059H16.4965C16.8594 6.98059 17.1536 7.2748 17.1536 7.63772C17.1536 8.00064 16.8594 8.29484 16.4965 8.29484H0.725486C0.362565 8.29484 0.0683594 8.00064 0.0683594 7.63772ZM0.725486 13.1138C0.362565 13.1138 0.0683594 13.408 0.0683594 13.7709C0.0683594 14.1338 0.362565 14.428 0.725486 14.428H16.4965C16.8594 14.428 17.1536 14.1338 17.1536 13.7709C17.1536 13.408 16.8594 13.1138 16.4965 13.1138H0.725486Z" fill="black" />
                   </svg>
                 )}
