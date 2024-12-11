@@ -2,7 +2,7 @@ import React from "react";
 
 const Loader: React.FC = () => {
   return (
-    <div className="min-h-[70vh] flex justify-center items-center">
+    <div data-testid="loader" className="min-h-[70vh] flex justify-center items-center">
       <svg className="w-16 h-16 animate-spin" viewBox="25 25 50 50">
         <circle
           className="fill-none stroke-blue-500 stroke-[2] stroke-dasharray-[1_200] stroke-dashoffset-0 stroke-linecap-round"

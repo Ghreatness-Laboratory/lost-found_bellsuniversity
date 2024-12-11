@@ -9,7 +9,7 @@ interface ReportItemProps extends Partial<ReportProps> {
 
 const ReportItem: React.FC<ReportItemProps> = ({ name, date, image, style, imageStyle, children }) => {
   return (
-    <div className='p-0 md:p-4 w-full rounded-lg'>
+    <div data-testid="report-item" className='p-0 md:p-4 w-full rounded-lg'>
       <div className={`${style}`}>
         <img
           src={image}

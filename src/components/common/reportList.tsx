@@ -14,7 +14,7 @@ const ReportList = ({ title, filter, selectedLocations = [] }: ReportListProps) 
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
-  const { data: items, loading } = useFetch<ReportProps[]>("/data/reports.json");
+  const { data: items, loading, error } = useFetch<ReportProps[]>("/data/reports.json");
 
   const filteredItems = (items ?? []).filter((item) => {
     const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
@@ -48,9 +48,25 @@ const ReportList = ({ title, filter, selectedLocations = [] }: ReportListProps) 
   };
 
   if (loading) {
-    return <Loader/>
+    return <Loader />
   };
 
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] my-10 max-w-[1280px] mx-4 sm:mx-8 xl:mx-auto px-4 sm:px-8 lg:px-10 bg-red-50 text-red-500 rounded-lg shadow-sm text-center">
+        <h1 className="text-3xl font-bold">Oops!</h1>
+        <p className="text-lg mt-2">Something went wrong while fetching the reports.</p>
+        <p className="text-base mt-1">Error {error.status}: {error.message}</p>
+        <button
+          className="mt-4 py-2 px-6 bg-red-500 text-white rounded-md hover:bg-red-600 transition-all"
+          onClick={() => window.location.reload()}
+        >
+          Reload Page
+        </button>
+      </div>
+    );
+  };
+  
   return (
     <section className="my-10 md:my-20 mx-4 lg:mx-10 px-0 lg:px-10">
       <div className="flex flex-col gap-4 md:gap-6 items-center">

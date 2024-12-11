@@ -9,7 +9,7 @@ interface EditableReport extends ReportProps {
 }
 
 const ReportsHistory: React.FC = () => {
-  const { data: reports, loading } = useFetch<ReportProps[]>("/data/reports.json");
+  const { data: reports, loading, error } = useFetch<ReportProps[]>("/data/reports.json");
   const [reportList, setReportList] = useState<EditableReport[]>([]);
 
   useEffect(() => {
@@ -81,6 +81,22 @@ const ReportsHistory: React.FC = () => {
 
   if (loading) { 
     return <Loader />
+  };
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] my-10 max-w-[1280px] mx-4 sm:mx-8 xl:mx-auto px-4 sm:px-8 lg:px-10 bg-red-50 text-red-500 rounded-lg shadow-sm text-center">
+        <h1 className="text-3xl font-bold">Oops!</h1>
+        <p className="text-lg mt-2">Something went wrong while fetching the reports.</p>
+        <p className="text-base mt-1">Error {error.status}: {error.message}</p>
+        <button
+          className="mt-4 py-2 px-6 bg-red-500 text-white rounded-md hover:bg-red-600 transition-all"
+          onClick={() => window.location.reload()}
+        >
+          Reload Page
+        </button>
+      </div>
+    );
   };
 
   return (
