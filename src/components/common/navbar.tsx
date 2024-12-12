@@ -101,7 +101,7 @@ const Navbar: React.FC<NavbarProps> = ({ isNavbarOpen, handleNavClick }) => {
   }, []);
 
   return (
-    <nav className="py-3 sm:py-5 px-4 md:px-10 bg-white">
+    <nav data-testid="navbar" data-navbar-open={isNavbarOpen} className="py-3 sm:py-5 px-4 md:px-10 bg-white">
       <div className="flex items-center justify-between">
         <div className='flex items-center gap-1'>
           <span className="sr-only">University Logo</span>
@@ -141,7 +141,7 @@ const Navbar: React.FC<NavbarProps> = ({ isNavbarOpen, handleNavClick }) => {
                   onClick={handleNavClick}
                   data-testid="close-menu"
                   className='block lg:hidden cursor-pointer'
-                >
+                >``
                   <svg className="absolute right-4 md:right-8 top-5 md:top-12" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none">
                     <path d="M6.4 19L5 17.6L10.6 12L5 6.4L6.4 5L12 10.6L17.6 5L19 6.4L13.4 12L19 17.6L17.6 19L12 13.4L6.4 19Z" fill="#1E1E1E" />
                   </svg>
