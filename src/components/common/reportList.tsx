@@ -14,7 +14,7 @@ const ReportList = ({ title, filter, selectedLocations = [] }: ReportListProps) 
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
-  const { data: items, loading, error } = useFetch<ReportProps[]>("/data/reports.json");
+  const { data: items, loading, error } = useFetch<ReportProps[]>("/reports/");
 
   const filteredItems = (items ?? []).filter((item) => {
     const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
