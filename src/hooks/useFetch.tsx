@@ -6,7 +6,7 @@ interface FetchError {
   message: string;
 }
 
-const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
+const BASE_URL = process.env.REACT_APP_API_URL;
 
 if (!BASE_URL) {
   throw new Error(

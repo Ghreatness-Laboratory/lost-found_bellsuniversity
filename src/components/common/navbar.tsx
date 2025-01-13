@@ -50,7 +50,7 @@ export const universities = [
 
 const Navbar: React.FC<NavbarProps> = ({ isNavbarOpen, handleNavClick }) => {
   const [, setSelectedMenu] = useState<number | null>(null);
-  const [currentLogo, setCurrentLogo] = useState<string>(defaultLogo);
+  const [currentLogo, setCurrentLogo] = useState<string>("");
   const [currentEmail, setCurrentEmail] = useState<string>('');
   const [currentPhone, setCurrentPhone] = useState<string>('');
   const [currentSocialMedia, setCurrentSocialMedia] = useState<SocialMediaLinks>({});
