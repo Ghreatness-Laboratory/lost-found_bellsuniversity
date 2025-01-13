@@ -51,7 +51,7 @@ const ReportForm: React.FC<FormProps> = ({ setDisplayReportPreview, setFormData 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [location, setLocation] = useState('');
   const [reportType, setReportType] = useState<string>('');
-  const [date, setDate] = useState('');
+  const [date_reported, setDate_reported] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState<FormError>({});
@@ -111,8 +111,8 @@ const ReportForm: React.FC<FormProps> = ({ setDisplayReportPreview, setFormData 
       newErrors.reportType = "Report type is required";
     }
 
-    if (!date) {
-      newErrors.date = "Date is required";
+    if (!date_reported) {
+      newErrors.date_reported = "Date is required";
     }
 
     // if (!phoneNumber) {
@@ -141,7 +141,7 @@ const ReportForm: React.FC<FormProps> = ({ setDisplayReportPreview, setFormData 
         image: imagePreview,
         location,
         reportType,
-        date,
+        date_reported,
         phoneNumber,
         email
       };
@@ -313,15 +313,15 @@ const ReportForm: React.FC<FormProps> = ({ setDisplayReportPreview, setFormData 
           <input
             id="date"
             type="date"
-            value={date}
+            value={date_reported}
             placeholder="Enter date"
             onChange={(e) => {
-              setDate(e.target.value);
+              setDate_reported(e.target.value);
               setErrors(prev => ({ ...prev, date: undefined }));
             }}
             className="w-full px-3 py-2 text-sm md:text-base outline-none border border-gray-300 rounded-md focus:border-blue-300"
           />
-          {errors.date && <span className="absolute left-0 -bottom-5 text-red-500 text-xs mt-1">{errors.date}</span>}
+          {errors.date_reported && <span className="absolute left-0 -bottom-5 text-red-500 text-xs mt-1">{errors.date_reported}</span>}
         </div>
       </div>
 

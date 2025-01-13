@@ -4,7 +4,7 @@ export interface FormData {
   image: string | null;
   location: string;
   reportType: string;
-  date: string;
+  date_reported: string;
   phoneNumber: string;
   email: string;
 }

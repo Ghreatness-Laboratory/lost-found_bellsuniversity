@@ -7,13 +7,13 @@ interface ReportItemProps extends Partial<ReportProps> {
   children?: React.ReactNode,
 }
 
-const ReportItem: React.FC<ReportItemProps> = ({ name, date, image, style, imageStyle, children }) => {
+const ReportItem: React.FC<ReportItemProps> = ({ title, date_reported, image, location, style, imageStyle, children }) => {
   return (
     <div data-testid="report-item" className='p-0 md:p-4 w-full rounded-lg'>
       <div className={`${style}`}>
         <img
           src={image}
-          alt="Lost and Found Item"
+          alt={`Lost and Found Item at ${location}`}
           className={`object-cover w-full h-[180px] md:h-[200px] ${imageStyle}`}
         />
 
@@ -21,7 +21,7 @@ const ReportItem: React.FC<ReportItemProps> = ({ name, date, image, style, image
           children
         ) : (
           <div className='flex flex-col items-center gap-1 md:gap-2'>
-            <h3>{name}</h3>
+            <h3>{title}</h3>
             <div className='flex items-center gap-2'>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 27 27" fill="none">
                 <path d="M21.375 6.75H5.625C4.38236 6.75 3.375 7.75736 3.375 9V21.375C3.375 22.6176 4.38236 23.625 5.625 23.625H21.375C22.6176 23.625 23.625 22.6176 23.625 21.375V9C23.625 7.75736 22.6176 6.75 21.375 6.75Z" stroke="#1E1E1E" strokeWidth="2.66667" />
@@ -32,7 +32,7 @@ const ReportItem: React.FC<ReportItemProps> = ({ name, date, image, style, image
                 <path d="M18.5625 13.5H15.1875C14.8768 13.5 14.625 13.7518 14.625 14.0625V15.1875C14.625 15.4982 14.8768 15.75 15.1875 15.75H18.5625C18.8732 15.75 19.125 15.4982 19.125 15.1875V14.0625C19.125 13.7518 18.8732 13.5 18.5625 13.5Z" fill="#1E1E1E" />
                 <path d="M18.5625 18H15.1875C14.8768 18 14.625 18.2518 14.625 18.5625V19.6875C14.625 19.9982 14.8768 20.25 15.1875 20.25H18.5625C18.8732 20.25 19.125 19.9982 19.125 19.6875V18.5625C19.125 18.2518 18.8732 18 18.5625 18Z" fill="#1E1E1E" />
               </svg>
-              <p className='text-center'>{date?.day}/{date?.month}/{date?.year}</p>
+              <p className='text-center'>{date_reported}</p>
             </div>
           </div>
         )}

@@ -7,7 +7,7 @@ interface ReportPreviewProps extends Partial<ReportProps> {
   onCancel: () => void,
 }
 
-const ReportPreview: React.FC<ReportPreviewProps> = ({ image, name, date, description, location, onCancel, onReportSubmit }) => {
+const ReportPreview: React.FC<ReportPreviewProps> = ({ image, title, date_reported, description, location, onCancel, onReportSubmit }) => {
   return (
     <div className='xl:absolute xl:right-0 xl:top-20 lg:w-96 w-full'>
       <div className="bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
@@ -25,7 +25,7 @@ const ReportPreview: React.FC<ReportPreviewProps> = ({ image, name, date, descri
         <div className="p-6 space-y-4">
           <div className="text-center">
             <h3 className="text-xl font-semibold text-gray-800">
-              {name}
+              {title}
             </h3>
             <p>Location: {location}</p>
             <div className='flex items-center justify-center gap-2 text-gray-600 mb-3'>
@@ -38,7 +38,7 @@ const ReportPreview: React.FC<ReportPreviewProps> = ({ image, name, date, descri
                 <path d="M18.5625 13.5H15.1875C14.8768 13.5 14.625 13.7518 14.625 14.0625V15.1875C14.625 15.4982 14.8768 15.75 15.1875 15.75H18.5625C18.8732 15.75 19.125 15.4982 19.125 15.1875V14.0625C19.125 13.7518 18.8732 13.5 18.5625 13.5Z" fill="#1E1E1E" />
                 <path d="M18.5625 18H15.1875C14.8768 18 14.625 18.2518 14.625 18.5625V19.6875C14.625 19.9982 14.8768 20.25 15.1875 20.25H18.5625C18.8732 20.25 19.125 19.9982 19.125 19.6875V18.5625C19.125 18.2518 18.8732 18 18.5625 18Z" fill="#1E1E1E" />
               </svg>
-              <p className='text-sm'>{date?.day}/{date?.month}/{date?.year}</p>
+              <p className='text-sm'>{date_reported}</p>
             </div>
 
             <p className="text-gray-600 text-sm leading-relaxed">

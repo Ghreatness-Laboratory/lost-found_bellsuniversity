@@ -9,7 +9,7 @@ interface EditableReport extends ReportProps {
 }
 
 const ReportsHistory: React.FC = () => {
-  const { data: reports, loading, error } = useFetch<ReportProps[]>("/data/reports.json");
+  const { data: reports, loading, error } = useFetch<ReportProps[]>("/reports/");
   const [reportList, setReportList] = useState<EditableReport[]>([]);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const ReportsHistory: React.FC = () => {
   const filteredItems = useMemo(() => {
     return reportList.filter(
       (report) =>
-        report.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        report.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         report.location.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [reportList, searchTerm]);
@@ -85,7 +85,7 @@ const ReportsHistory: React.FC = () => {
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[50vh] my-10 max-w-[1280px] mx-4 sm:mx-8 xl:mx-auto px-4 sm:px-8 lg:px-10 bg-red-50 text-red-500 rounded-lg shadow-sm text-center">
+      <div className="flex flex-col items-center justify-center min-h-[50vh] my-10 max-w-[1280px] mx-4 sm:mx-8 xl:mx-auto px-4 sm:px-8 lg:px-10 bg-red-50/10 text-red-500 rounded-lg shadow-sm text-center">
         <h1 className="text-3xl font-bold">Oops!</h1>
         <p className="text-lg mt-2">Something went wrong while fetching the reports.</p>
         <p className="text-base mt-1">Error {error.status}: {error.message}</p>
@@ -204,16 +204,16 @@ const ReportsHistory: React.FC = () => {
                                   <img
                                     className="object-cover rounded-md w-full h-full"
                                     src={report.image}
-                                    alt={report.name}
+                                    alt={report.title}
                                   />
                                 </div>
                                 <input
                                   type="text"
-                                  value={report.name}
+                                  value={report.title}
                                   onChange={(e) =>
                                     handleUpdateReport(
                                       report.id,
-                                      "name",
+                                      "title",
                                       e.target.value
                                     )
                                   }
@@ -226,11 +226,11 @@ const ReportsHistory: React.FC = () => {
                                   <img
                                     className="object-cover rounded-md w-full h-full"
                                     src={report.image}
-                                    alt={report.name}
+                                    alt={report.title}
                                   />
                                 </div>
                                 <h2 className="font-medium md:text-lg w-[200px] md:w-[250px] lg:w-[300px] text-gray-800 overflow-hidden">
-                                  {report.name}
+                                  {report.title}
                                 </h2>
                               </>
                             )}
@@ -241,8 +241,7 @@ const ReportsHistory: React.FC = () => {
                         <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-emerald-100/60">
                           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
                           <h2 className="text-sm font-normal text-emerald-500">
-                            {report.date?.day}/{report.date?.month}/
-                            {report.date?.year}
+                            {report.date_reported}
                           </h2>
                         </div>
                       </td>

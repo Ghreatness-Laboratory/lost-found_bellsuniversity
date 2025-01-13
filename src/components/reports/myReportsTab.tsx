@@ -1,11 +1,35 @@
 import React from "react";
+import useFetch from "../../hooks/useFetch";
+import { ReportProps } from "../../types/report.types";
+import Loader from "../common/loader";
 import ReportsHistory from "./reportHistory";
-import { reports } from "./reportTab";
 
 const MyReportsTab: React.FC = () => {
+  const { data: reports, loading, error } = useFetch<ReportProps[]>("/reports/");
+
+  if (loading) { 
+    return <Loader />
+  };
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] my-10 max-w-[1280px] mx-4 sm:mx-8 xl:mx-auto px-4 sm:px-8 lg:px-10 bg-red-50/10 text-red-500 rounded-lg shadow-sm text-center">
+        <h1 className="text-3xl font-bold">Oops!</h1>
+        <p className="text-lg mt-2">Something went wrong while fetching the reports.</p>
+        <p className="text-base mt-1">Error {error.status}: {error.message}</p>
+        <button
+          className="mt-4 py-2 px-6 bg-red-500 text-white rounded-md hover:bg-red-600 transition-all"
+          onClick={() => window.location.reload()}
+        >
+          Reload Page
+        </button>
+      </div>
+    );
+  };
+
   return (
     <div>
-      {reports.length == 0 ?
+      {reports?.length == 0 ?
         (
           <div className="flex flex-col gap-5 items-center justify-center text-xl font-semibold flex-wrap min-h-[53vh]">
             <svg className="w-16 h-16 text-blue-500" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 250 250" fill="none">

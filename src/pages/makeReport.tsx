@@ -36,14 +36,15 @@ const MakeAReport: React.FC = () => {
 
         {displayReportPreview && formData ? (
           <ReportPreview
-            name={formData.title}
+            title={formData.title}
             image={formData.image || LostImage}
             description={formData.description}
-            date={{
-              day: new Date(formData.date).getDate(),
-              month: new Date(formData.date).getMonth() + 1,
-              year: new Date(formData.date).getFullYear()
-            }}
+            // date_reported={{
+            //   day: new Date(formData.date).getDate(),
+            //   month: new Date(formData.date).getMonth() + 1,
+            //   year: new Date(formData.date).getFullYear()
+            // }}
+            date_reported={formData.date_reported}
             location={formData.location}
             onReportSubmit={handleReportSubmit}
             onCancel={resetForm}

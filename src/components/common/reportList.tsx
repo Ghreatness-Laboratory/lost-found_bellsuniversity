@@ -17,7 +17,7 @@ const ReportList = ({ title, filter, selectedLocations = [] }: ReportListProps) 
   const { data: items, loading, error } = useFetch<ReportProps[]>("/reports/");
 
   const filteredItems = (items ?? []).filter((item) => {
-    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesLocation =
       selectedLocations.length === 0 || selectedLocations.includes(item.location);
     return matchesSearch && matchesLocation;
@@ -53,7 +53,7 @@ const ReportList = ({ title, filter, selectedLocations = [] }: ReportListProps) 
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[50vh] my-10 max-w-[1280px] mx-4 sm:mx-8 xl:mx-auto px-4 sm:px-8 lg:px-10 bg-red-50 text-red-500 rounded-lg shadow-sm text-center">
+      <div className="flex flex-col items-center justify-center min-h-[50vh] my-10 max-w-[1280px] mx-4 sm:mx-8 xl:mx-auto px-4 sm:px-8 lg:px-10 bg-red-50/10 text-red-500 rounded-lg shadow-sm text-center">
         <h1 className="text-3xl font-bold">Oops!</h1>
         <p className="text-lg mt-2">Something went wrong while fetching the reports.</p>
         <p className="text-base mt-1">Error {error.status}: {error.message}</p>
@@ -99,11 +99,12 @@ const ReportList = ({ title, filter, selectedLocations = [] }: ReportListProps) 
         {paginatedItems.map((item, index) => (
           <div key={index}>
             <ReportItem
-              name={item.name}
-              date={item.date}
+              title={item.title}
+              date_reported={item.date_reported}
               style='flex flex-col gap-2 md:gap-5'
               imageStyle="rounded-lg "
               image={item.image}
+              location={item.location}
             />
           </div>
         ))}

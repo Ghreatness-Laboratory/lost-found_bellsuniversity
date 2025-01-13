@@ -12,17 +12,27 @@ describe("ReportList Component", () => {
   const mockData: ReportProps[] = [
     {
       id: 1,
-      name: "Lost Wallet",
+      title: "Lost Wallet",
       location: "Classroom",
-      date: { day: 15, month: 8, year: 2024 },
+      date_reported: "15-8-2024",
       image: "test-image-1.jpg",
+      location_name: "",
+      status: "",
+      description: "",
+      reporter: 1,
+      phone_number: "",
     },
     {
       id: 2,
-      name: "Found Keys",
+      title: "Found Keys",
       location: "Football Field",
-      date: { day: 10, month: 9, year: 2024 },
+      date_reported: "10-9-2024",
       image: "test-image-2.jpg",
+      location_name: "",
+      status: "",
+      description: "",
+      reporter: 2,
+      phone_number: "",
     },
   ];
 
@@ -59,12 +69,8 @@ describe("ReportList Component", () => {
     render(<ReportList title="Test Reports" />);
 
     mockData.forEach((item) => {
-      expect(screen.getByText(item.name)).toBeInTheDocument();
-      expect(
-        screen.getByText(
-          `${item.date.day}/${item.date.month}/${item.date.year}`
-        )
-      ).toBeInTheDocument();
+      expect(screen.getByText(item.title)).toBeInTheDocument();
+      expect(screen.getByText(item.date_reported)).toBeInTheDocument();
     });
   });
 
