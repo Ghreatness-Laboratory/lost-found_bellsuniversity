@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import ReportList from "../components/common/reportList";
 import useFetch from "../hooks/useFetch";
 import { ReportProps } from "../types/report.types";
@@ -39,7 +39,7 @@ describe("ReportList Component", () => {
   test("renders the loading state", () => {
     mockUseFetch.mockReturnValue({ data: null, loading: true, error: null });
 
-    render(<ReportList title="Test Reports" />);
+    render(<ReportList />);
 
     expect(screen.getByTestId("loader")).toBeInTheDocument();
   });
@@ -52,7 +52,7 @@ describe("ReportList Component", () => {
       error: mockError,
     });
 
-    render(<ReportList title="Test Reports" />);
+    render(<ReportList />);
 
     expect(
       screen.getByText(`Error ${mockError.status}: ${mockError.message}`)
@@ -66,7 +66,7 @@ describe("ReportList Component", () => {
       error: null,
     });
 
-    render(<ReportList title="Test Reports" />);
+    render(<ReportList />);
 
     mockData.forEach((item) => {
       expect(screen.getByText(item.title)).toBeInTheDocument();
@@ -81,7 +81,7 @@ describe("ReportList Component", () => {
       error: null,
     });
 
-    render(<ReportList title="Test Reports" />);
+    render(<ReportList />);
 
     const searchInput = screen.getByPlaceholderText("Search...");
     fireEvent.change(searchInput, { target: { value: "Nonexistent Item" } });
@@ -104,7 +104,7 @@ describe("ReportList Component", () => {
       error: null,
     });
 
-    render(<ReportList title="Test Reports" />);
+    render(<ReportList />);
 
     // Assert that the first 6 items are displayed (itemsPerPage = 6)
     paginatedData.slice(0, 6).forEach((item) => {

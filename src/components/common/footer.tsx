@@ -22,19 +22,19 @@ const Footer: React.FC = () => {
                   className="w-full h-full object-contain"
                 />
               </div>
-              <p className="font-semibold text-lg text-gray-800">MisplaceMe</p>
+              <p role="heading" className="font-semibold text-lg text-gray-800">MisplaceMe</p>
             </div>
 
             <div className="flex max-md:flex-col md:items-center justify-between space-y-4 sm:space-y-0 sm:space-x-8">
               <Link
                 to="#terms"
-                className="text-gray-600 hover:text-blue-600 transition-colors duration-200 text-sm sm:text-base"
+                className="text-gray-600 hover:text-blue-600 transition-colors duration-200 text-sm sm:text-base cursor-pointer"
               >
                 Terms & Conditions
               </Link>
               <Link
                 to="#privacy"
-                className="text-gray-600 hover:text-blue-600 transition-colors duration-200 text-sm sm:text-base"
+                className="text-gray-600 hover:text-blue-600 transition-colors duration-200 text-sm sm:text-base cursor-pointer"
               >
                 Privacy Policy
               </Link>
