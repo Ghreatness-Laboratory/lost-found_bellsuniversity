@@ -23,3 +23,36 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+@layer base {
+  input:-webkit-autofill,
+  textarea:-webkit-autofill,
+  select:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset !important;
+    box-shadow: 0 0 0 1000px white inset !important;
+    -webkit-text-fill-color: #4b5563 !important; 
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px white inset !important;
+    box-shadow: 0 0 0 1000px white inset !important;
+  }
+}
+
+/* Firefox */
+input:-moz-autofill,
+textarea:-moz-autofill,
+select:-moz-autofill {
+  box-shadow: 0 0 0 1000px white inset !important;
+  color: #4b5563 !important; 
+}
+
+input:-moz-autofill:focus,
+textarea:-moz-autofill:focus,
+select:-moz-autofill:focus {
+  box-shadow: 0 0 0 1000px white inset !important;
+}

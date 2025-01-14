@@ -1,19 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router } from 'react-router-dom';
-import App from './App';
-import Footer from './components/common/footer';
-import ToggleNavbar from './components/common/toggleNavbar';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter as Router } from "react-router-dom";
+import App from "./App";
+import Footer from "./components/common/footer";
+import ToggleNavbar from "./components/common/toggleNavbar";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 
 root.render(
   <React.StrictMode>
-    <Router>
+    <Router future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
       <ToggleNavbar />
       <App />
       <Footer />

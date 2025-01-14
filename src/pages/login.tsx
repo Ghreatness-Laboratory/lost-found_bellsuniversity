@@ -1,8 +1,7 @@
-import React from "react";
-import { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import useFetch from "../hooks/useFetch";
+import { BASE_URL } from "../hooks/useFetch";
 
 interface LoginProps {
   username: string;
@@ -37,26 +36,36 @@ const Login: React.FC = () => {
       ...prevState,
       [name]: value,
     }));
+    setErrors((prev) => ({ ...prev, [name]: undefined }));
   };
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     setLoading(true);
+    setError("");
     try {
-      const { error } = useFetch("/auth/create/", {
+      const response = await fetch(`${BASE_URL}/auth/create/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        data: state,
+        body: JSON.stringify(state),
       });
 
-      if (error) {
-        setError(error.message || "An error occurred");
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Login failed. Please try again.");
       } else {
+        alert("Login successful!");
+        setState({ username: "", password: "" });
         navigate("/home");
       }
-    } catch {
-      setError("An unexpected error occurred.");
+    } catch (error: unknown) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "An unexpected error occurred. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -101,7 +110,10 @@ const Login: React.FC = () => {
             <form onSubmit={handleSubmit}>
               <div className="grid gap-y-4">
                 <div>
-                  <label htmlFor="username" className="block text-sm mb-2 font-semibold">
+                  <label
+                    htmlFor="username"
+                    className="block text-sm mb-2 font-semibold"
+                  >
                     Username
                   </label>
                   <div className="relative">
@@ -184,7 +196,7 @@ const Login: React.FC = () => {
                   className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-base font-bold rounded-lg border border-transparent bg-blue-400 text-white active:bg-blue-500 sm:hover:bg-blue-500 focus:outline-none focus:bg-blue-500 disabled:opacity-50 disabled:pointer-events-none"
                   disabled={loading}
                 >
-                  {loading ? "Loggin in..." : "Login"}
+                  {loading ? "Logging in..." : "Login"}
                 </button>
                 {error && (
                   <p className="text-sm text-[#F24822] text-center">

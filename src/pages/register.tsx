@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import useFetch from "../hooks/useFetch";
+import { BASE_URL } from "../hooks/useFetch";
 
 interface LoginProps {
   username: string;
@@ -52,27 +52,37 @@ const Register: React.FC = () => {
         ...prevState,
         [name]: value,
       }));
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
   };
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     setLoading(true);
+    setError("");
     try {
-      const { error } = useFetch("/accounts/register/", {
+      const response = await fetch(`${BASE_URL}/accounts/register/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        data: state,
+        body: JSON.stringify(state),
       });
 
-      if (error) {
-        setError(error.message || "An error occurred");
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Registration failed. Please try again.");
       } else {
+        alert("Registration successful!");
+        setState({ username: "", password: "", email: "", phone_number: "" });
         navigate("/home");
       }
-    } catch {
-      setError("An unexpected error occurred.");
+    } catch (error: unknown) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "An unexpected error occurred. Please try again."
+      );
     } finally {
       setLoading(false);
     }

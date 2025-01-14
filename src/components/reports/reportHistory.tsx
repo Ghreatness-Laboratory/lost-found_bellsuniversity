@@ -9,7 +9,11 @@ interface EditableReport extends ReportProps {
 }
 
 const ReportsHistory: React.FC = () => {
-  const { data: reports, loading, error } = useFetch<ReportProps[]>("/reports/");
+  const {
+    data: reports,
+    loading,
+    error,
+  } = useFetch<ReportProps[]>("/reports/");
   const [reportList, setReportList] = useState<EditableReport[]>([]);
 
   useEffect(() => {
@@ -71,24 +75,24 @@ const ReportsHistory: React.FC = () => {
     );
   };
 
-  const handlePrevPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
-  const handleNextPage = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-  };
-
-  if (loading) { 
-    return <Loader />
-  };
+  if (loading) {
+    return <Loader />;
+  }
 
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] my-10 max-w-[1280px] mx-4 sm:mx-8 xl:mx-auto px-4 sm:px-8 lg:px-10 bg-red-50/10 text-red-500 rounded-lg shadow-sm text-center">
         <h1 className="text-3xl font-bold">Oops!</h1>
-        <p className="text-lg mt-2">Something went wrong while fetching the reports.</p>
-        <p className="text-base mt-1">Error {error.status}: {error.message}</p>
+        <p className="text-lg mt-2">
+          Something went wrong while fetching the reports.
+        </p>
+        <p className="text-base mt-1">
+          Error {error.status}: {error.message}
+        </p>
         <button
           className="mt-4 py-2 px-6 bg-red-500 text-white rounded-md hover:bg-red-600 transition-all"
           onClick={() => window.location.reload()}
@@ -97,7 +101,7 @@ const ReportsHistory: React.FC = () => {
         </button>
       </div>
     );
-  };
+  }
 
   return (
     <section>
@@ -332,29 +336,31 @@ const ReportsHistory: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center justify-center gap-4 mt-8 md:mt-10 max-w-[320px] w-full mx-auto text-sm md:text-base">
-            <button
-              className={`py-2 bg-blue-400 text-white rounded-full max-w-[90px] w-full active:bg-blue-500 ${
-                filteredItems.length == itemsPerPage ? "cursor-not-allowed" : ""
-              }`}
-              onClick={handlePrevPage}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </button>
-            <span className="text-lg font-semibold">
-              {currentPage} of {totalPages}
-            </span>
-            <button
-              className={`py-2 bg-blue-400 text-white rounded-full max-w-[90px] w-full active:bg-blue-500 ${
-                filteredItems.length == itemsPerPage ? "cursor-not-allowed" : ""
-              }`}
-              onClick={handleNextPage}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
-          </div>
+          {filteredItems.length > 0 && (
+            <div className="flex items-center justify-center gap-4 max-w-[600px] mx-auto mt-8 text-sm md:text-base">
+              <button
+                className={`py-2 px-4 bg-blue-400 text-white rounded-md hover:bg-blue-500 transition ${
+                  currentPage === 1 && "cursor-not-allowed opacity-50"
+                }`}
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+              <span className="text-lg font-medium">
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                className={`py-2 px-4 bg-blue-400 text-white rounded-md hover:bg-blue-500 transition ${
+                  currentPage === totalPages && "cursor-not-allowed opacity-50"
+                }`}
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          )}
         </>
       )}
     </section>

@@ -1,7 +1,7 @@
 export interface FormData {
   title: string;
   description: string;
-  image: string | null;
+  image: string | File;
   location: string;
   reportType: string;
   date_reported: string;

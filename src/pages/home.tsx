@@ -16,6 +16,24 @@ const universities: UniversityProps[] = [
   },
 ];
 
+const steps = [
+  {
+    icon: BLFStep1,
+    text: "Find an item?",
+    description: "Spot a lost item somewhere in your vicinity",
+  },
+  {
+    icon: BLFStep2,
+    text: "Report item",
+    description: "Take a photo and describe where you found it",
+  },
+  {
+    icon: BLFStep3,
+    text: "Return to its owner",
+    description: "Help reunite the item with its rightful owner",
+  },
+];
+
 const Home: React.FC = () => {
   const [currentUni, setCurrentUni] = useState<string>("");
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
@@ -59,30 +77,37 @@ const Home: React.FC = () => {
                 Found, we can help you find items lost on campus.
               </p>
 
-              <div className="bg-transparent md:bg-white rounded-2xl md:shadow-lg pt-4 px-0 md:py-5 md:px-10 mt-5 md:mt-20">
+              <div className="bg-transparent md:bg-white rounded-2xl md:border-2 pt-4 px-0 md:py-5 md:px-10 mt-5 md:mt-20">
                 <h3 className="bg-blue-400 text-white text-lg md:text-xl p-2 md:px-6 font-semibold text-center rounded-full transform -translate-y-3 md:-translate-y-10 mx-auto max-w-[500px]">
                   Use misplaceme in 3 simple steps
                 </h3>
                 <div className="flex flex-col gap-1 md:gap-3">
-                  {[
-                    { icon: BLFStep1, text: "Find an item?" },
-                    { icon: BLFStep2, text: "Report item" },
-                    { icon: BLFStep3, text: "Return to its owner" },
-                  ].map((step, index) => (
+                  {steps.map((step, index) => (
                     <div
                       key={index}
-                      className="flex items-center gap-4 rounded-lg"
+                      className="flex items-start gap-4 md:gap-6 py-1 rounded-xl"
                     >
-                      <div className="bg-blue-50 p-2 rounded-full">
+                      <div className="bg-white shadow-mdrounded-2xl max-md:pt-1">
                         <img
                           src={step.icon}
                           className="w-6 h-6 object-contain"
                           alt={step.text}
-                        />
+                        />{" "}
                       </div>
-                      <p className="text-lg md:text-xl font-semibold text-gray-700">
-                        {step.text}
-                      </p>
+                      <div className="md:space-y-1">
+                        <p className="text-xl font-semibold text-gray-800">
+                          {step.text}
+                        </p>
+                        <p className="text-gray-600 text-xs">
+                          {step.description}
+                        </p>
+                      </div>
+                      {index < steps.length - 1 && (
+                        <div
+                          className="hidden md:block absolute h-12 w-px bg-blue-200 ml-8"
+                          style={{ top: `${(index + 1) * 120}px` }}
+                        />
+                      )}
                     </div>
                   ))}
                 </div>
