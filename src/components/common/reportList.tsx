@@ -100,45 +100,61 @@ const ReportList = ({ filter, selectedLocations = [] }: ReportListProps) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-0 lg:px-10 pt-8 md:pt-12">
-        {paginatedItems.map((item, index) => (
-          <div key={index}>
-            <ReportItem
-              title={item.title}
-              date_reported={item.date_reported}
-              style="flex flex-col gap-2 md:gap-5"
-              imageStyle="rounded-lg "
-              image={item.image}
-              location={item.location}
-            />
+      {filteredItems.length === 0 ? (
+        <div className="grid place-items-center min-h-[50vh] px-4">
+          <div className="flex flex-col items-center gap-4 p-6">
+            <h1 className="text-2xl md:text-4xl font-bold text-gray-800">
+              No Results Found
+            </h1>
+            <p className="text-center text-gray-600 max-w-md">
+              We couldn&apos;t find anything matching your search or filters.
+              Please try again.
+            </p>
           </div>
-        ))}
-      </div>
-
-      {filteredItems.length > 0 && (
-        <div className="flex items-center justify-center gap-4 max-w-[600px] mx-auto mt-8 text-sm md:text-base">
-          <button
-            className={`py-2 px-4 bg-blue-400 text-white rounded-md hover:bg-blue-500 transition ${
-              currentPage === 1 && "cursor-not-allowed opacity-50"
-            }`}
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </button>
-          <span className="text-lg font-medium">
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            className={`py-2 px-4 bg-blue-400 text-white rounded-md hover:bg-blue-500 transition ${
-              currentPage === totalPages && "cursor-not-allowed opacity-50"
-            }`}
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </button>
         </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-0 lg:px-10 pt-8 md:pt-12">
+            {paginatedItems.map((item, index) => (
+              <div key={index}>
+                <ReportItem
+                  title={item.title}
+                  date_reported={item.date_reported}
+                  style="flex flex-col gap-2 md:gap-5"
+                  imageStyle="rounded-lg "
+                  image={item.image}
+                  location={item.location}
+                />
+              </div>
+            ))}
+          </div>
+
+          {filteredItems.length > 0 && (
+            <div className="flex items-center justify-center gap-4 max-w-[600px] mx-auto mt-8 text-sm md:text-base">
+              <button
+                className={`py-2 px-4 bg-blue-400 text-white rounded-md hover:bg-blue-500 transition ${
+                  currentPage === 1 && "cursor-not-allowed opacity-50"
+                }`}
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+              <span className="text-lg font-medium">
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                className={`py-2 px-4 bg-blue-400 text-white rounded-md hover:bg-blue-500 transition ${
+                  currentPage === totalPages && "cursor-not-allowed opacity-50"
+                }`}
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          )}
+        </>
       )}
     </section>
   );

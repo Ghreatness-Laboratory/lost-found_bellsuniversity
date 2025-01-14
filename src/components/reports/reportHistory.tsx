@@ -1,6 +1,7 @@
+import axios from "axios";
 import React, { useEffect, useMemo, useState } from "react";
 import { FaClock, FaSearch } from "react-icons/fa";
-import useFetch from "../../hooks/useFetch";
+import useFetch, { BASE_URL } from "../../hooks/useFetch";
 import { ReportProps } from "../../types/report.types";
 import Loader from "../common/loader";
 
@@ -9,11 +10,17 @@ interface EditableReport extends ReportProps {
 }
 
 const ReportsHistory: React.FC = () => {
-  const {
-    data: reports,
-    loading,
-    error,
-  } = useFetch<ReportProps[]>("/reports/");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const itemsPerPage = 4;
+
+  const [isFetchingReports, setIsFetchingReports] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [deleteAndEditError, setDeleteAndEditError] = useState<string | null>(
+    null
+  );
+
+  const { data: reports, error } = useFetch<ReportProps[]>("/reports/");
   const [reportList, setReportList] = useState<EditableReport[]>([]);
 
   useEffect(() => {
@@ -26,11 +33,8 @@ const ReportsHistory: React.FC = () => {
         }))
       );
     }
+    setIsFetchingReports(false);
   }, [reports]);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState("");
-  const itemsPerPage = 4;
 
   const filteredItems = useMemo(() => {
     return reportList.filter(
@@ -47,20 +51,49 @@ const ReportsHistory: React.FC = () => {
     return filteredItems.slice(startIndex, startIndex + itemsPerPage);
   }, [filteredItems, currentPage]);
 
-  const handleDelete = (idToDelete: number) => {
-    setReportList((currentReports) =>
-      currentReports.filter((report) => report.id !== idToDelete)
-    );
+  const handleDelete = async (id: number) => {
+    setLoading(true);
+    setDeleteAndEditError(null);
+
+    try {
+      await axios.delete(`${BASE_URL}/reports/${id}`);
+      setReportList((currentReports) =>
+        currentReports.filter((report) => report.id !== id)
+      );
+      alert("Report deleted successfully");
+    } catch {
+      setDeleteAndEditError("Failed to delete report. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleEditToggle = (idToToggle: number) => {
-    setReportList((currentReports) =>
-      currentReports.map((report) =>
-        report.id === idToToggle
-          ? { ...report, isEditing: !report.isEditing }
-          : report
-      )
-    );
+  const handleEditToggle = async (id: number) => {
+    const reportToUpdate = reportList.find((report) => report.id === id);
+    if (!reportToUpdate) return;
+
+    setLoading(true);
+    setDeleteAndEditError(null);
+
+    try {
+      setReportList((currentReports) =>
+        currentReports.map((report) =>
+          report.id === id
+            ? { ...report, isEditing: !report.isEditing }
+            : report
+        )
+      );
+
+      if (reportToUpdate.isEditing) {
+        const updatedReport = { ...reportToUpdate };
+        await axios.patch(`${BASE_URL}/reports/${id}`, updatedReport);
+        alert("Report updated successfully");
+      }
+    } catch {
+      setDeleteAndEditError("Failed to edit report. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleUpdateReport = (
@@ -79,7 +112,7 @@ const ReportsHistory: React.FC = () => {
     setCurrentPage(page);
   };
 
-  if (loading) {
+  if (isFetchingReports || !reports) {
     return <Loader />;
   }
 
@@ -102,7 +135,6 @@ const ReportsHistory: React.FC = () => {
       </div>
     );
   }
-
   return (
     <section>
       <div className="relative mb-4 lg:px-0 w-full md:max-w-xl">
@@ -122,11 +154,19 @@ const ReportsHistory: React.FC = () => {
         />
       </div>
 
-      <div className="flex items-center gap-3 mb-4 px-0">
-        <h2 className="text-lg font-medium text-gray-800">Number of reports</h2>
-        <span className="px-3 py-1 text-sm text-blue-600 bg-blue-50 rounded-md">
-          {filteredItems.length}
-        </span>
+      <div className="flex max-md:flex-col md:items-center justify-between">
+        <div className="flex items-center gap-3 mb-4 px-0">
+          <h2 className="text-lg font-medium text-gray-800">
+            Number of reports
+          </h2>
+          <span className="px-3 py-1 text-sm text-blue-600 bg-blue-50 rounded-md">
+            {filteredItems.length}
+          </span>
+        </div>
+        {deleteAndEditError && (
+          <p className="text-red-500 text-sm">{deleteAndEditError}</p>
+        )}
+        {loading && <p className="text-blue-400 text-sm">Loading...</p>}
       </div>
 
       {filteredItems.length === 0 ? (
@@ -274,6 +314,7 @@ const ReportsHistory: React.FC = () => {
                           <button
                             onClick={() => handleDelete(report.id)}
                             className="text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none"
+                            disabled={loading}
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -294,6 +335,7 @@ const ReportsHistory: React.FC = () => {
                           <button
                             onClick={() => handleEditToggle(report.id)}
                             className="text-gray-500 transition-colors duration-200 hover:text-yellow-500 focus:outline-none"
+                            disabled={loading}
                           >
                             {report.isEditing ? (
                               <svg

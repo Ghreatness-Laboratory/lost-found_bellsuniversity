@@ -138,7 +138,7 @@ const ReportForm: React.FC<FormProps> = ({
             placeholder="Enter title of report"
             onChange={handleChange}
             autoComplete="off"
-            className="w-full px-3 py-2 text-sm md:text-base outline-none border border-gray-300 rounded-md focus:border-blue-300"
+            className="w-full py-3 px-4 text-sm outline-none border border-gray-300 rounded-md focus:border-blue-300"
           />
           {errors.title && (
             <span className="absolute left-0 -bottom-5 text-red-500 text-xs mt-1">
@@ -164,7 +164,7 @@ const ReportForm: React.FC<FormProps> = ({
             placeholder="Enter item description"
             onChange={handleChange}
             autoComplete="off"
-            className="w-full px-3 py-2 text-sm md:text-base outline-none border border-gray-300 rounded-md focus:border-blue-300"
+            className="w-full py-3 px-4 text-sm outline-none border border-gray-300 rounded-md focus:border-blue-300"
           />
           {errors.description && (
             <span className="absolute left-0 -bottom-5 text-red-500 text-xs mt-1">
@@ -238,7 +238,7 @@ const ReportForm: React.FC<FormProps> = ({
             value={selectedOption}
             onChange={handleSelectChange}
             placeholder="Filter by location..."
-            className="border-gray-300 text-sm md:text-base"
+            className="border-gray-300 text-sm"
             isMulti={false}
           />
           {errors.location && (
@@ -312,7 +312,7 @@ const ReportForm: React.FC<FormProps> = ({
             type="date"
             value={formState.date_reported}
             onChange={handleChange}
-            className="w-full px-3 py-2 text-sm md:text-base outline-none border border-gray-300 rounded-md focus:border-blue-300"
+            className="w-full py-3 px-4 text-sm outline-none border border-gray-300 rounded-md focus:border-blue-300"
           />
           {errors.date_reported && (
             <span className="absolute left-0 -bottom-5 text-red-500 text-xs mt-1">
@@ -332,7 +332,7 @@ const ReportForm: React.FC<FormProps> = ({
         <div>
           <div className="relative">
             <div className="absolute inset-y-0 left-3 my-auto h-6 flex items-center border-r pr-2">
-              <p className="text-sm md:text-base">+234 </p>
+              <p className="text-sm">+234 </p>
             </div>
             <input
               id="phoneNumber"
@@ -343,7 +343,7 @@ const ReportForm: React.FC<FormProps> = ({
               value={formState.phoneNumber}
               onChange={handlePhoneNumberChange}
               placeholder="Enter 10-digit phone number"
-              className="w-full pl-[4.5rem] pr-3 py-2 text-sm md:text-base appearance-none outline-none border focus:border-blue-300 rounded-lg"
+              className="w-full pl-[4.5rem] pr-3 py-3 text-sm appearance-none outline-none border focus:border-blue-300 rounded-lg"
             />
           </div>
           {errors.phoneNumber && (
@@ -366,7 +366,7 @@ const ReportForm: React.FC<FormProps> = ({
             value={formState.email}
             onChange={handleChange}
             autoComplete="email"
-            className="w-full px-3 py-2 text-sm md:text-base outline-none border border-gray-300 rounded-md focus:border-blue-300"
+            className="w-full py-3 px-4 text-sm outline-none border border-gray-300 rounded-md focus:border-blue-300"
             placeholder="Enter email address"
           />
           {errors.email && (
