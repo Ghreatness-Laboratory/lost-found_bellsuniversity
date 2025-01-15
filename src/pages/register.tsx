@@ -73,7 +73,6 @@ const Register: React.FC = () => {
       if (!response.ok) {
         setError(data.message || "Registration failed. Please try again.");
       } else {
-        alert("Registration successful!");
         setState({ username: "", password: "", email: "", phone_number: "" });
         navigate("/home");
       }

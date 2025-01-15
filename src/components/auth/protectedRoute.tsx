@@ -1,283 +1,67 @@
-// import { jwtDecode } from "jwt-decode";
-import React from "react";
-// import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../constants";
-// import api from "../../services/api";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ACCESS_TOKEN, CSRF_TOKEN } from "../../constants"; // Assuming you have the CSRF token stored
+import { BASE_URL } from "../../hooks/useFetch";
+import api from "../../services/api";
+import Loader from "../common/loader";
 
 interface ProtectedRouteProp {
   children: React.ReactNode;
 }
 
 function ProtectedRoute({ children }: ProtectedRouteProp) {
-  //   const [isAuthorised, setIsAuthorised] = useState<boolean | null>(null);
-  //   const navigate = useNavigate();
+  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
+  const navigate = useNavigate();
 
-  //   useEffect(() => {
-  //     auth().catch(() => setIsAuthorised(false));
-  //   });
+  useEffect(() => {
+    const authenticateUser = async () => {
+      try {
+        const accessToken = localStorage.getItem(ACCESS_TOKEN);
+        if (!accessToken) {
+          handleUnauthorized();
+          return;
+        }
 
-  //   const refreshToken = async () => {
-  //     const refreshToken = localStorage.getItem(REFRESH_TOKEN);
-  //     try {
-  //       const res = await api.post("/api/token/refresh/", {
-  //         refresh: refreshToken,
-  //       });
-  //       if (res.status == 200) {
-  //         localStorage.setItem(ACCESS_TOKEN, res.data.access);
-  //         setIsAuthorised(true);
-  //       } else {
-  //         setIsAuthorised(false);
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //       setIsAuthorised(false);
-  //     }
-  //   };
+        const response = await api.post(
+          `${BASE_URL}/auth/verify`,
+          { token: accessToken },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              accept: "application/json",
+              "X-CSRFTOKEN": CSRF_TOKEN || "",
+            },
+          }
+        );
 
-  //   const auth = async () => {
-  //     const token = localStorage.getItem(ACCESS_TOKEN);
-  //     if (!token) {
-  //       setIsAuthorised(false);
-  //       return;
-  //     }
-  //     const decoded = jwtDecode(token);
-  //     const tokenExpiration = decoded.exp;
-  //     const now = Date.now() / 1000;
+        if (response.status === 200) {
+          setIsAuthorized(true);
+        } else {
+          handleUnauthorized();
+        }
+      } catch (error) {
+        console.error("Authentication error:", error);
+        handleUnauthorized();
+      }
+    };
 
-  //     if (tokenExpiration! < now) {
-  //       await refreshToken();
-  //     } else {
-  //       setIsAuthorised(true);
-  //     }
-  //   };
+    const handleUnauthorized = () => {
+      setIsAuthorized(false);
+      navigate("/login");
+    };
 
-  //   if (isAuthorised == null) {
-  //     return (
-  //       <div className="grid place-items-center h-[100vh] w-full">
-  //         <div className="relative w-24 h-24">
-  //           <svg className="absolute inset-0" viewBox="0 0 220 220">
-  //             <circle
-  //               cx="110"
-  //               cy="110"
-  //               r="100"
-  //               className="loader-ring"
-  //               style={{
-  //                 stroke: "#9708F4",
-  //                 strokeWidth: 20,
-  //                 fill: "none",
-  //                 animation: "ringA 2s linear infinite",
-  //               }}
-  //             />
-  //             <circle
-  //               cx="110"
-  //               cy="110"
-  //               r="80"
-  //               className="loader-ring"
-  //               style={{
-  //                 stroke: "#5E14E4",
-  //                 strokeWidth: 20,
-  //                 fill: "none",
-  //                 animation: "ringB 2s linear infinite",
-  //               }}
-  //             />
-  //             <circle
-  //               cx="110"
-  //               cy="110"
-  //               r="60"
-  //               className="loader-ring"
-  //               style={{
-  //                 stroke: "#9708F4",
-  //                 strokeWidth: 20,
-  //                 fill: "none",
-  //                 animation: "ringC 2s linear infinite",
-  //               }}
-  //             />
-  //             <circle
-  //               cx="110"
-  //               cy="110"
-  //               r="40"
-  //               className="loader-ring"
-  //               style={{
-  //                 stroke: "#5E14E4",
-  //                 strokeWidth: 20,
-  //                 fill: "none",
-  //                 animation: "ringD 2s linear infinite",
-  //               }}
-  //             />
-  //           </svg>
-  //           <style>{`
-  //             @keyframes ringA {
-  //               from,
-  //               4% {
-  //                 stroke-dasharray: 0 660;
-  //                 stroke-width: 20;
-  //                 stroke-dashoffset: -330;
-  //               }
-  //               12% {
-  //                 stroke-dasharray: 60 600;
-  //                 stroke-width: 30;
-  //                 stroke-dashoffset: -335;
-  //               }
-  //               32% {
-  //                 stroke-dasharray: 60 600;
-  //                 stroke-width: 30;
-  //                 stroke-dashoffset: -595;
-  //               }
-  //               40%,
-  //               54% {
-  //                 stroke-dasharray: 0 660;
-  //                 stroke-width: 20;
-  //                 stroke-dashoffset: -660;
-  //               }
-  //               62% {
-  //                 stroke-dasharray: 60 600;
-  //                 stroke-width: 30;
-  //                 stroke-dashoffset: -665;
-  //               }
-  //               82% {
-  //                 stroke-dasharray: 60 600;
-  //                 stroke-width: 30;
-  //                 stroke-dashoffset: -925;
-  //               }
-  //               90%,
-  //               to {
-  //                 stroke-dasharray: 0 660;
-  //                 stroke-width: 20;
-  //                 stroke-dashoffset: -990;
-  //               }
-  //             }
-  //             @keyframes ringB {
-  //               from,
-  //               12% {
-  //                 stroke-dasharray: 0 220;
-  //                 stroke-width: 20;
-  //                 stroke-dashoffset: -110;
-  //               }
-  //               20% {
-  //                 stroke-dasharray: 20 200;
-  //                 stroke-width: 30;
-  //                 stroke-dashoffset: -115;
-  //               }
-  //               40% {
-  //                 stroke-dasharray: 20 200;
-  //                 stroke-width: 30;
-  //                 stroke-dashoffset: -195;
-  //               }
-  //               48%,
-  //               62% {
-  //                 stroke-dasharray: 0 220;
-  //                 stroke-width: 20;
-  //                 stroke-dashoffset: -220;
-  //               }
-  //               70% {
-  //                 stroke-dasharray: 20 200;
-  //                 stroke-width: 30;
-  //                 stroke-dashoffset: -225;
-  //               }
-  //               90% {
-  //                 stroke-dasharray: 20 200;
-  //                 stroke-width: 30;
-  //                 stroke-dashoffset: -305;
-  //               }
-  //               98%,
-  //               to {
-  //                 stroke-dasharray: 0 220;
-  //                 stroke-width: 20;
-  //                 stroke-dashoffset: -330;
-  //               }
-  //             }
-  //             @keyframes ringC {
-  //               from {
-  //                 stroke-dasharray: 0 440;
-  //                 stroke-width: 20;
-  //                 stroke-dashoffset: 0;
-  //               }
-  //               8% {
-  //                 stroke-dasharray: 40 400;
-  //                 stroke-width: 30;
-  //                 stroke-dashoffset: -5;
-  //               }
-  //               28% {
-  //                 stroke-dasharray: 40 400;
-  //                 stroke-width: 30;
-  //                 stroke-dashoffset: -175;
-  //               }
-  //               36%,
-  //               58% {
-  //                 stroke-dasharray: 0 440;
-  //                 stroke-width: 20;
-  //                 stroke-dashoffset: -220;
-  //               }
-  //               66% {
-  //                 stroke-dasharray: 40 400;
-  //                 stroke-width: 30;
-  //                 stroke-dashoffset: -225;
-  //               }
-  //               86% {
-  //                 stroke-dasharray: 40 400;
-  //                 stroke-width: 30;
-  //                 stroke-dashoffset: -395;
-  //               }
-  //               94%,
-  //               to {
-  //                 stroke-dasharray: 0 440;
-  //                 stroke-width: 20;
-  //                 stroke-dashoffset: -440;
-  //               }
-  //             }
-  //             @keyframes ringD {
-  //               from,
-  //               8% {
-  //                 stroke-dasharray: 0 440;
-  //                 stroke-width: 20;
-  //                 stroke-dashoffset: 0;
-  //               }
-  //               16% {
-  //                 stroke-dasharray: 40 400;
-  //                 stroke-width: 30;
-  //                 stroke-dashoffset: -5;
-  //               }
-  //               36% {
-  //                 stroke-dasharray: 40 400;
-  //                 stroke-width: 30;
-  //                 stroke-dashoffset: -175;
-  //               }
-  //               44%,
-  //               50% {
-  //                 stroke-dasharray: 0 440;
-  //                 stroke-width: 20;
-  //                 stroke-dashoffset: -220;
-  //               }
-  //               58% {
-  //                 stroke-dasharray: 40 400;
-  //                 stroke-width: 30;
-  //                 stroke-dashoffset: -225;
-  //               }
-  //               78% {
-  //                 stroke-dasharray: 40 400;
-  //                 stroke-width: 30;
-  //                 stroke-dashoffset: -395;
-  //               }
-  //               86%,
-  //               to {
-  //                 stroke-dasharray: 0 440;
-  //                 stroke-width: 20;
-  //                 stroke-dashoffset: -440;
-  //               }
-  //             }
-  //           `}</style>
-  //         </div>
-  //       </div>
-  //     );
-  //   }
+    authenticateUser();
+  }, [navigate]);
 
-  //   if (!isAuthorised) {
-  //     navigate("/login");
-  //     return null;
-  //   }
+  if (isAuthorized === null) {
+    return (
+      <div className="grid place-items-center h-screen">
+        <Loader />
+      </div>
+    );
+  }
 
-  return <>{children}</>;
+  return isAuthorized ? <>{children}</> : null;
 }
 
 export default ProtectedRoute;

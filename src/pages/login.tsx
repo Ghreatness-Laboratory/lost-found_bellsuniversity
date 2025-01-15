@@ -1,11 +1,16 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import { BASE_URL } from "../hooks/useFetch";
 
 interface LoginProps {
   username: string;
   password: string;
+}
+
+interface ApiError {
+  message: string;
 }
 
 const Login: React.FC = () => {
@@ -14,17 +19,24 @@ const Login: React.FC = () => {
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [state, setState] = useState<LoginProps>({
     username: "",
     password: "",
   });
 
-  const validate = () => {
+  const validateForm = (): boolean => {
     const newErrors: Partial<LoginProps> = {};
 
-    if (!state.username) newErrors.username = "Enter valid username";
-    if (!state.password || state.password.length < 8)
+    if (!state.username.trim()) {
+      newErrors.username = "Username is required";
+    }
+
+    if (!state.password) {
+      newErrors.password = "Password is required";
+    } else if (state.password.length < 8) {
       newErrors.password = "Password must be at least 8 characters";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -32,18 +44,17 @@ const Login: React.FC = () => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    setState((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: undefined }));
+    setError("");
   };
 
-  const handleSignIn = async () => {
+  const handleLogin = async () => {
     setLoading(true);
     setError("");
+
     try {
-      const response = await fetch(`${BASE_URL}/auth/create/`, {
+      const response = await fetch(`${BASE_URL}/auth/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,32 +65,36 @@ const Login: React.FC = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message || "Login failed. Please try again.");
-      } else {
-        alert("Login successful!");
-        setState({ username: "", password: "" });
-        navigate("/home");
+        throw new Error(
+          (data as ApiError).message || "Login failed. Please try again."
+        );
       }
-    } catch (error: unknown) {
+
+      if (rememberMe) {
+        localStorage.setItem("rememberedUsername", state.username);
+      }
+      if (data.access) {
+        localStorage.setItem(ACCESS_TOKEN, data.access);
+        localStorage.setItem(REFRESH_TOKEN, data.refresh);
+      } else {
+        throw new Error("No token received");
+      }
+
+      navigate("/home");
+    } catch (error) {
       setError(
-        error instanceof Error
-          ? error.message
-          : "An unexpected error occurred. Please try again."
+        error instanceof Error ? error.message : "An unexpected error occurred"
       );
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (validate()) {
-      handleSignIn();
+    if (validateForm()) {
+      await handleLogin();
     }
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
   };
 
   return (
@@ -158,7 +173,7 @@ const Login: React.FC = () => {
                     />
                     <button
                       type="button"
-                      onClick={togglePasswordVisibility}
+                      onClick={() => setShowPassword(!showPassword)}
                       className="absolute inset-y-0 right-0 flex items-center px-3 focus:outline-none"
                     >
                       {showPassword ? (
@@ -181,6 +196,8 @@ const Login: React.FC = () => {
                       id="remember-me"
                       name="remember-me"
                       type="checkbox"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
                       className="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500"
                     />
                   </div>

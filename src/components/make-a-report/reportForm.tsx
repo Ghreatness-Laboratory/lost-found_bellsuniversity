@@ -8,7 +8,7 @@ interface FormProps {
   setFormData: React.Dispatch<React.SetStateAction<FormData | null>>;
 }
 
-type FormError = Partial<FormData>;
+type FormError = Partial<Omit<FormData, "image">> & { image?: string };
 
 type Option = {
   value: string;
@@ -46,11 +46,11 @@ const ReportForm: React.FC<FormProps> = ({
   const [formState, setFormState] = useState<FormData>({
     title: "",
     description: "",
-    image: "",
+    image: null, // Changed to null initially
     location: "",
-    reportType: "",
+    status: "",
     date_reported: "",
-    phoneNumber: "",
+    phone_number: "", // Changed from phone_number to phone_number to match API
     email: "",
   });
   const [selectedOption, setSelectedOption] = useState<Option | null>(null);
@@ -72,7 +72,7 @@ const ReportForm: React.FC<FormProps> = ({
         setErrors((prev) => ({ ...prev, image: "File size exceeds 5MB" }));
         return;
       }
-      setFormState((prev) => ({ ...prev, image: file }));
+      setFormState((prev) => ({ ...prev, image: file })); // Store the actual file
       const reader = new FileReader();
       reader.onloadend = () => setImagePreview(reader.result as string);
       reader.readAsDataURL(file);
@@ -86,25 +86,28 @@ const ReportForm: React.FC<FormProps> = ({
     setErrors((prev) => ({ ...prev, location: undefined }));
   };
 
-  const handlePhoneNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+  const handlePhone_numberChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D/g, ""); // Only allow digits
     if (value.length <= 10) {
-      setFormState((prev) => ({ ...prev, phoneNumber: value }));
-      setErrors((prev) => ({ ...prev, phoneNumber: undefined }));
+      setFormState((prev) => ({ ...prev, phone_number: value })); // Changed to phone_number
+      setErrors((prev) => ({ ...prev, phone_number: undefined }));
     }
   };
 
   const validateForm = (): boolean => {
     const newErrors: FormError = {};
-    const { title, description, image, location, reportType, date_reported } =
+    const { title, description, image, location, status, date_reported } =
       formState;
 
     if (!title.trim()) newErrors.title = "Title is required";
     if (!description.trim()) newErrors.description = "Description is required";
     if (!image) newErrors.image = "Image is required";
     if (!location) newErrors.location = "Location is required";
-    if (!reportType) newErrors.reportType = "Report type is required";
+    if (!status) newErrors.status = "Report type is required";
     if (!date_reported) newErrors.date_reported = "Date is required";
+    if (formState.phone_number && formState.phone_number.length !== 10) {
+      newErrors.phone_number = "Phone number must be 10 digits";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -113,9 +116,14 @@ const ReportForm: React.FC<FormProps> = ({
   const handleReportSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm()) {
-      if (imagePreview) {
-        setFormData({ ...formState, image: imagePreview });
-      }
+      const formDataToSubmit = {
+        ...formState,
+        image: formState.image, // Send the actual file for the form submission
+        phone_number: formState.phone_number
+          ? `+234${formState.phone_number}`
+          : "", 
+      };
+      setFormData(formDataToSubmit);
       setDisplayReportPreview(true);
     }
   };
@@ -260,15 +268,15 @@ const ReportForm: React.FC<FormProps> = ({
                 <input
                   id={`radio-${type}`}
                   type="radio"
-                  name="reportType"
+                  name="status"
                   value={type}
-                  checked={formState.reportType === type}
+                  checked={formState.status === type}
                   onChange={(e) => {
                     setFormState((prev) => ({
                       ...prev,
-                      reportType: e.target.value,
+                      status: e.target.value,
                     }));
-                    setErrors((prev) => ({ ...prev, reportType: undefined }));
+                    setErrors((prev) => ({ ...prev, status: undefined }));
                   }}
                   className="absolute opacity-0 w-0 h-0"
                 />
@@ -280,7 +288,7 @@ const ReportForm: React.FC<FormProps> = ({
                     className={`absolute top-1/2 left-0 transform -translate-y-1/2 
                     w-[20px] h-[20px] rounded-full border-2 
                     ${
-                      formState.reportType === type
+                      formState.status === type
                         ? "border-blue-500 bg-blue-500"
                         : "border-gray-600"
                     } transition-all duration-300`}
@@ -290,9 +298,9 @@ const ReportForm: React.FC<FormProps> = ({
               </div>
             ))}
           </div>
-          {errors.reportType && (
+          {errors.status && (
             <span className="absolute left-0 -bottom-5 text-red-500 text-xs mt-1">
-              {errors.reportType}
+              {errors.status}
             </span>
           )}
         </div>
@@ -324,7 +332,7 @@ const ReportForm: React.FC<FormProps> = ({
 
       <div className="relative w-full flex flex-col gap-2 md:gap-4 my-2 md:my-4">
         <label
-          htmlFor="phoneNumber"
+          htmlFor="phone_number"
           className="text-base md:text-lg font-semibold"
         >
           Phone Number
@@ -335,20 +343,20 @@ const ReportForm: React.FC<FormProps> = ({
               <p className="text-sm">+234 </p>
             </div>
             <input
-              id="phoneNumber"
-              name="phoneNumber"
+              id="phone_number"
+              name="phone_number"
               type="tel"
               pattern="[0-9]{10}"
               maxLength={10}
-              value={formState.phoneNumber}
-              onChange={handlePhoneNumberChange}
+              value={formState.phone_number}
+              onChange={handlePhone_numberChange}
               placeholder="Enter 10-digit phone number"
               className="w-full pl-[4.5rem] pr-3 py-3 text-sm appearance-none outline-none border focus:border-blue-300 rounded-lg"
             />
           </div>
-          {errors.phoneNumber && (
+          {errors.phone_number && (
             <span className="absolute left-0 -bottom-5 text-red-500 text-xs mt-1">
-              {errors.phoneNumber}
+              {errors.phone_number}
             </span>
           )}
         </div>

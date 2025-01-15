@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useMemo, useState } from "react";
 import { FaClock, FaSearch } from "react-icons/fa";
+import { ACCESS_TOKEN, CSRF_TOKEN } from "../../constants";
 import useFetch, { BASE_URL } from "../../hooks/useFetch";
 import { ReportProps } from "../../types/report.types";
 import Loader from "../common/loader";
@@ -55,14 +56,29 @@ const ReportsHistory: React.FC = () => {
     setLoading(true);
     setDeleteAndEditError(null);
 
+    const accessToken = localStorage.getItem(ACCESS_TOKEN);
+
+    if (!CSRF_TOKEN || !accessToken) {
+      setDeleteAndEditError("Missing CSRF or access token");
+      setLoading(false);
+      return;
+    }
+
     try {
-      await axios.delete(`${BASE_URL}/reports/${id}`);
+      await axios.delete(`${BASE_URL}/reports/${id}`, {
+        headers: {
+          accept: "application/json",
+          "X-CSRFTOKEN": CSRF_TOKEN,
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       setReportList((currentReports) =>
         currentReports.filter((report) => report.id !== id)
       );
-      alert("Report deleted successfully");
-    } catch {
+      alert("Report deleted successfully!");
+    } catch (error) {
       setDeleteAndEditError("Failed to delete report. Please try again later.");
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -75,6 +91,14 @@ const ReportsHistory: React.FC = () => {
     setLoading(true);
     setDeleteAndEditError(null);
 
+    const accessToken = localStorage.getItem(ACCESS_TOKEN);
+
+    if (!CSRF_TOKEN || !accessToken) {
+      setDeleteAndEditError("Missing CSRF or access token");
+      setLoading(false);
+      return;
+    }
+
     try {
       setReportList((currentReports) =>
         currentReports.map((report) =>
@@ -86,9 +110,16 @@ const ReportsHistory: React.FC = () => {
 
       if (reportToUpdate.isEditing) {
         const updatedReport = { ...reportToUpdate };
-        await axios.patch(`${BASE_URL}/reports/${id}`, updatedReport);
-        alert("Report updated successfully");
+        await axios.patch(`${BASE_URL}/reports/${id}`, updatedReport, {
+          headers: {
+            accept: "application/json",
+            "Content-Type": "multipart/form-data",
+            "X-CSRFTOKEN": CSRF_TOKEN,
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
       }
+      alert("Report updated successfully!");
     } catch {
       setDeleteAndEditError("Failed to edit report. Please try again later.");
     } finally {

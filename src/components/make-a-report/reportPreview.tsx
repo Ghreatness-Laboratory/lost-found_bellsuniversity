@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { FaTimes } from "react-icons/fa";
+import { ACCESS_TOKEN, CSRF_TOKEN } from "../../constants";
 import { BASE_URL } from "../../hooks/useFetch";
 import { ReportProps } from "../../types/report.types";
 
@@ -9,6 +10,7 @@ interface ReportPreviewProps extends Partial<ReportProps> {
   onReportSubmit: () => void;
   onCancel: () => void;
   isOpen: boolean;
+  phone_number: string;
 }
 
 const ReportPreview: React.FC<ReportPreviewProps> = ({
@@ -17,6 +19,7 @@ const ReportPreview: React.FC<ReportPreviewProps> = ({
   date_reported,
   description,
   location,
+  phone_number,
   onCancel,
   onReportSubmit,
   isOpen,
@@ -28,22 +31,39 @@ const ReportPreview: React.FC<ReportPreviewProps> = ({
     setIsSubmitting(true);
     setSubmissionError(null);
 
-    try {
-      const reportData = {
-        image,
-        title,
-        description,
-        location,
-        date_reported,
-      };
+    const accessToken = localStorage.getItem(ACCESS_TOKEN);
 
-      await axios.post(`${BASE_URL}/reports/`, reportData);
-      alert("Submission successful!");
+    if (!CSRF_TOKEN || !accessToken) {
+      setSubmissionError("Missing CSRF or access token");
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Use FormData for `multipart/form-data`
+    const formData = new FormData();
+    if (image) formData.append("image", image); // Ensure `image` is a File object
+    formData.append("title", title || "");
+    formData.append("description", description || "");
+    formData.append("location", location || "");
+    formData.append("date_reported", date_reported || "");
+    formData.append("phone_number", phone_number || "");
+
+    try {
+      await axios.post(`${BASE_URL}/reports/`, formData, {
+        headers: {
+          accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          "X-CSRFTOKEN": CSRF_TOKEN,
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       onReportSubmit();
     } catch {
-      setSubmissionError(
-        "Failed to submit the report. Please try again later."
-      );
+      {
+        setSubmissionError(
+          "Failed to submit the report. Please try again later."
+        );
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -78,6 +98,7 @@ const ReportPreview: React.FC<ReportPreviewProps> = ({
           <div className="text-center">
             <h3 className="text-xl font-semibold text-gray-800">{title}</h3>
             <p>Location: {location}</p>
+            <p className="text-gray-600 mt-2">Contact: {phone_number}</p>
             <div className="flex items-center justify-center gap-2 text-gray-600 mb-3">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
