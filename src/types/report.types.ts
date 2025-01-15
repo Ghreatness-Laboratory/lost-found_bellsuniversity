@@ -1,11 +1,12 @@
 export interface ReportProps {
-  id: number,
-  name: string,
-  date: {
-    day: number,
-    month: number,
-    year: number
-  },
-  image: string,
-  location: string,
+  id: number;
+  title: string;
+  description: string;
+  location: string;
+  location_name: string;
+  date_reported: string;
+  status: string;
+  reporter: number;
+  phone_number: string;
+  image: string;
 }

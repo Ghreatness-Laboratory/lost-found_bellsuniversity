@@ -1,23 +1,52 @@
 import React from "react";
+import { Link, useLocation } from "react-router-dom";
 import defaultLogo from "../../assets/images/misplaceme logo icon main@4x.png";
 
 const Footer: React.FC = () => {
-  return (
-    <footer className="flex flex-col md:flex-row-reverse gap-2 md:gap-10 items-center justify-center border-t-[2px] py-2 md:py-4 bg-white">
-      <div className="flex justify-center gap-4 lg:gap-10 text-base md:text-lg font-normal">
-        <p className="cursor-pointer active:text-blue-700 underline">
-          Terms & Conditions
-        </p>
-        <p className="cursor-pointer active:text-blue-700 underline">
-          Privacy policy
-        </p>
-      </div>
+  const currentYear = new Date().getFullYear();
+  const location = useLocation();
 
-      <div className="flex items-center">
-        <div className="w-10 h-10">
-          <img src={defaultLogo} alt="misplaceme logo" />
+  const hideFooterPaths = ["/login", "/register"];
+  if (hideFooterPaths.includes(location.pathname)) return null;
+
+  return (
+    <footer className="border-t bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="py-2">
+          <div className="flex flex-col md:flex-row md:items-center justify-between space-y-2 md:space-y-0">
+            <div className="flex items-center md:space-x-3">
+              <div className="w-12 h-12 transition-transform hover:scale-105 max-sm:-ml-4">
+                <img
+                  src={defaultLogo}
+                  alt="misplaceme logo"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <p role="heading" className="font-semibold text-lg text-gray-800">MisplaceMe</p>
+            </div>
+
+            <div className="flex max-md:flex-col md:items-center justify-between space-y-4 sm:space-y-0 sm:space-x-8">
+              <Link
+                to="#terms"
+                className="text-gray-600 hover:text-blue-600 transition-colors duration-200 text-sm sm:text-base cursor-pointer"
+              >
+                Terms & Conditions
+              </Link>
+              <Link
+                to="#privacy"
+                className="text-gray-600 hover:text-blue-600 transition-colors duration-200 text-sm sm:text-base cursor-pointer"
+              >
+                Privacy Policy
+              </Link>
+            </div>
+          </div>
+
+          <div className="py-4">
+            <p className="md:text-center text-sm text-gray-500">
+              © {currentYear} MisplaceMe. All rights reserved.
+            </p>
+          </div>
         </div>
-        <p className="font-medium text-base md:text-lg">MisplaceMe</p>
       </div>
     </footer>
   );

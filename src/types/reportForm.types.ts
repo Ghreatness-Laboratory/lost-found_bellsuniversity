@@ -1,10 +1,10 @@
 export interface FormData {
   title: string;
   description: string;
-  image: string | null;
   location: string;
-  reportType: string;
-  date: string;
-  phoneNumber: string;
+  date_reported: string;
+  status: string;
+  phone_number: string;
+  image: File | null;
   email: string;
 }

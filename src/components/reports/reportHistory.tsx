@@ -1,6 +1,8 @@
+import axios from "axios";
 import React, { useEffect, useMemo, useState } from "react";
 import { FaClock, FaSearch } from "react-icons/fa";
-import useFetch from "../../hooks/useFetch";
+import { ACCESS_TOKEN, CSRF_TOKEN } from "../../constants";
+import useFetch, { BASE_URL } from "../../hooks/useFetch";
 import { ReportProps } from "../../types/report.types";
 import Loader from "../common/loader";
 
@@ -9,7 +11,17 @@ interface EditableReport extends ReportProps {
 }
 
 const ReportsHistory: React.FC = () => {
-  const { data: reports, loading, error } = useFetch<ReportProps[]>("/data/reports.json");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const itemsPerPage = 4;
+
+  const [isFetchingReports, setIsFetchingReports] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [deleteAndEditError, setDeleteAndEditError] = useState<string | null>(
+    null
+  );
+
+  const { data: reports, error } = useFetch<ReportProps[]>("/reports/");
   const [reportList, setReportList] = useState<EditableReport[]>([]);
 
   useEffect(() => {
@@ -22,16 +34,13 @@ const ReportsHistory: React.FC = () => {
         }))
       );
     }
+    setIsFetchingReports(false);
   }, [reports]);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState("");
-  const itemsPerPage = 4;
 
   const filteredItems = useMemo(() => {
     return reportList.filter(
       (report) =>
-        report.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        report.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         report.location.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [reportList, searchTerm]);
@@ -43,20 +52,79 @@ const ReportsHistory: React.FC = () => {
     return filteredItems.slice(startIndex, startIndex + itemsPerPage);
   }, [filteredItems, currentPage]);
 
-  const handleDelete = (idToDelete: number) => {
-    setReportList((currentReports) =>
-      currentReports.filter((report) => report.id !== idToDelete)
-    );
+  const handleDelete = async (id: number) => {
+    setLoading(true);
+    setDeleteAndEditError(null);
+
+    const accessToken = localStorage.getItem(ACCESS_TOKEN);
+
+    if (!CSRF_TOKEN || !accessToken) {
+      setDeleteAndEditError("Missing CSRF or access token");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await axios.delete(`${BASE_URL}/reports/${id}`, {
+        headers: {
+          accept: "application/json",
+          "X-CSRFTOKEN": CSRF_TOKEN,
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      setReportList((currentReports) =>
+        currentReports.filter((report) => report.id !== id)
+      );
+      alert("Report deleted successfully!");
+    } catch (error) {
+      setDeleteAndEditError("Failed to delete report. Please try again later.");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleEditToggle = (idToToggle: number) => {
-    setReportList((currentReports) =>
-      currentReports.map((report) =>
-        report.id === idToToggle
-          ? { ...report, isEditing: !report.isEditing }
-          : report
-      )
-    );
+  const handleEditToggle = async (id: number) => {
+    const reportToUpdate = reportList.find((report) => report.id === id);
+    if (!reportToUpdate) return;
+
+    setLoading(true);
+    setDeleteAndEditError(null);
+
+    const accessToken = localStorage.getItem(ACCESS_TOKEN);
+
+    if (!CSRF_TOKEN || !accessToken) {
+      setDeleteAndEditError("Missing CSRF or access token");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      setReportList((currentReports) =>
+        currentReports.map((report) =>
+          report.id === id
+            ? { ...report, isEditing: !report.isEditing }
+            : report
+        )
+      );
+
+      if (reportToUpdate.isEditing) {
+        const updatedReport = { ...reportToUpdate };
+        await axios.patch(`${BASE_URL}/reports/${id}`, updatedReport, {
+          headers: {
+            accept: "application/json",
+            "Content-Type": "multipart/form-data",
+            "X-CSRFTOKEN": CSRF_TOKEN,
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+      }
+      alert("Report updated successfully!");
+    } catch {
+      setDeleteAndEditError("Failed to edit report. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleUpdateReport = (
@@ -71,24 +139,24 @@ const ReportsHistory: React.FC = () => {
     );
   };
 
-  const handlePrevPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
-  const handleNextPage = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-  };
-
-  if (loading) { 
-    return <Loader />
-  };
+  if (isFetchingReports || !reports) {
+    return <Loader />;
+  }
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[50vh] my-10 max-w-[1280px] mx-4 sm:mx-8 xl:mx-auto px-4 sm:px-8 lg:px-10 bg-red-50 text-red-500 rounded-lg shadow-sm text-center">
+      <div className="flex flex-col items-center justify-center min-h-[50vh] my-10 max-w-[1280px] mx-4 sm:mx-8 xl:mx-auto px-4 sm:px-8 lg:px-10 bg-red-50/10 text-red-500 rounded-lg shadow-sm text-center">
         <h1 className="text-3xl font-bold">Oops!</h1>
-        <p className="text-lg mt-2">Something went wrong while fetching the reports.</p>
-        <p className="text-base mt-1">Error {error.status}: {error.message}</p>
+        <p className="text-lg mt-2">
+          Something went wrong while fetching the reports.
+        </p>
+        <p className="text-base mt-1">
+          Error {error.status}: {error.message}
+        </p>
         <button
           className="mt-4 py-2 px-6 bg-red-500 text-white rounded-md hover:bg-red-600 transition-all"
           onClick={() => window.location.reload()}
@@ -97,8 +165,7 @@ const ReportsHistory: React.FC = () => {
         </button>
       </div>
     );
-  };
-
+  }
   return (
     <section>
       <div className="relative mb-4 lg:px-0 w-full md:max-w-xl">
@@ -118,11 +185,19 @@ const ReportsHistory: React.FC = () => {
         />
       </div>
 
-      <div className="flex items-center gap-3 mb-4 px-0">
-        <h2 className="text-lg font-medium text-gray-800">Number of reports</h2>
-        <span className="px-3 py-1 text-sm text-blue-600 bg-blue-50 rounded-md">
-          {filteredItems.length}
-        </span>
+      <div className="flex max-md:flex-col md:items-center justify-between">
+        <div className="flex items-center gap-3 mb-4 px-0">
+          <h2 className="text-lg font-medium text-gray-800">
+            Number of reports
+          </h2>
+          <span className="px-3 py-1 text-sm text-blue-600 bg-blue-50 rounded-md">
+            {filteredItems.length}
+          </span>
+        </div>
+        {deleteAndEditError && (
+          <p className="text-red-500 text-sm">{deleteAndEditError}</p>
+        )}
+        {loading && <p className="text-blue-400 text-sm">Loading...</p>}
       </div>
 
       {filteredItems.length === 0 ? (
@@ -204,16 +279,16 @@ const ReportsHistory: React.FC = () => {
                                   <img
                                     className="object-cover rounded-md w-full h-full"
                                     src={report.image}
-                                    alt={report.name}
+                                    alt={report.title}
                                   />
                                 </div>
                                 <input
                                   type="text"
-                                  value={report.name}
+                                  value={report.title}
                                   onChange={(e) =>
                                     handleUpdateReport(
                                       report.id,
-                                      "name",
+                                      "title",
                                       e.target.value
                                     )
                                   }
@@ -226,11 +301,11 @@ const ReportsHistory: React.FC = () => {
                                   <img
                                     className="object-cover rounded-md w-full h-full"
                                     src={report.image}
-                                    alt={report.name}
+                                    alt={report.title}
                                   />
                                 </div>
                                 <h2 className="font-medium md:text-lg w-[200px] md:w-[250px] lg:w-[300px] text-gray-800 overflow-hidden">
-                                  {report.name}
+                                  {report.title}
                                 </h2>
                               </>
                             )}
@@ -241,8 +316,7 @@ const ReportsHistory: React.FC = () => {
                         <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-emerald-100/60">
                           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
                           <h2 className="text-sm font-normal text-emerald-500">
-                            {report.date?.day}/{report.date?.month}/
-                            {report.date?.year}
+                            {report.date_reported}
                           </h2>
                         </div>
                       </td>
@@ -271,6 +345,7 @@ const ReportsHistory: React.FC = () => {
                           <button
                             onClick={() => handleDelete(report.id)}
                             className="text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none"
+                            disabled={loading}
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -291,6 +366,7 @@ const ReportsHistory: React.FC = () => {
                           <button
                             onClick={() => handleEditToggle(report.id)}
                             className="text-gray-500 transition-colors duration-200 hover:text-yellow-500 focus:outline-none"
+                            disabled={loading}
                           >
                             {report.isEditing ? (
                               <svg
@@ -333,29 +409,31 @@ const ReportsHistory: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center justify-center gap-4 mt-8 md:mt-10 max-w-[320px] w-full mx-auto text-sm md:text-base">
-            <button
-              className={`py-2 bg-blue-400 text-white rounded-full max-w-[90px] w-full active:bg-blue-500 ${
-                filteredItems.length == itemsPerPage ? "cursor-not-allowed" : ""
-              }`}
-              onClick={handlePrevPage}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </button>
-            <span className="text-lg font-semibold">
-              {currentPage} of {totalPages}
-            </span>
-            <button
-              className={`py-2 bg-blue-400 text-white rounded-full max-w-[90px] w-full active:bg-blue-500 ${
-                filteredItems.length == itemsPerPage ? "cursor-not-allowed" : ""
-              }`}
-              onClick={handleNextPage}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
-          </div>
+          {filteredItems.length > 0 && (
+            <div className="flex items-center justify-center gap-4 max-w-[600px] mx-auto mt-8 text-sm md:text-base">
+              <button
+                className={`py-2 px-4 bg-blue-400 text-white rounded-md hover:bg-blue-500 transition ${
+                  currentPage === 1 && "cursor-not-allowed opacity-50"
+                }`}
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+              <span className="text-lg font-medium">
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                className={`py-2 px-4 bg-blue-400 text-white rounded-md hover:bg-blue-500 transition ${
+                  currentPage === totalPages && "cursor-not-allowed opacity-50"
+                }`}
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          )}
         </>
       )}
     </section>

@@ -5,8 +5,8 @@ import ReportItem from "../components/common/reportItem";
 describe("ReportItem Component", () => {
   // Mock data for testing
   const mockProps = {
-    name: "Lost Wallet",
-    date: { day: 15, month: 8, year: 2024 },
+    title: "Lost Wallet",
+    date_reported: "15-8-2024",
     image: "test-image.jpg",
   };
 
@@ -24,13 +24,16 @@ describe("ReportItem Component", () => {
   });
 
   test("should render name and date passed as props", () => {
-    render(<ReportItem name={mockProps.name} date={mockProps.date} />);
-    const reportItemName = screen.getByText(mockProps.name);
+    render(
+      <ReportItem
+        title={mockProps.title}
+        date_reported={mockProps.date_reported}
+      />
+    );
+    const reportItemName = screen.getByText(mockProps.title);
     expect(reportItemName).toBeInTheDocument();
 
-    const reportItemDate = screen.getByText(
-      `${mockProps.date.day}/${mockProps.date.month}/${mockProps.date.year}`
-    );
+    const reportItemDate = screen.getByText(mockProps.date_reported);
     expect(reportItemDate).toBeInTheDocument();
   });
 });
