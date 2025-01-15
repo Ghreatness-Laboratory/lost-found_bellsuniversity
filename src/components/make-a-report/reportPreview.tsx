@@ -10,7 +10,6 @@ interface ReportPreviewProps extends Partial<ReportProps> {
   onReportSubmit: () => void;
   onCancel: () => void;
   isOpen: boolean;
-  phone_number: string;
 }
 
 const ReportPreview: React.FC<ReportPreviewProps> = ({
