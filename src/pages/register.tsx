@@ -122,7 +122,7 @@ const Register: React.FC = () => {
 
           <div className="mt-5">
             <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-5 gap-y-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-5 gap-y-6">
                 <div>
                   <label
                     htmlFor="username"

@@ -46,11 +46,11 @@ const ReportForm: React.FC<FormProps> = ({
   const [formState, setFormState] = useState<FormData>({
     title: "",
     description: "",
-    image: null, // Changed to null initially
+    image: null,
     location: "",
     status: "",
     date_reported: "",
-    phone_number: "", // Changed from phone_number to phone_number to match API
+    phone_number: "",
     email: "",
   });
   const [selectedOption, setSelectedOption] = useState<Option | null>(null);
@@ -89,21 +89,21 @@ const ReportForm: React.FC<FormProps> = ({
   const handlePhone_numberChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, ""); // Only allow digits
     if (value.length <= 10) {
-      setFormState((prev) => ({ ...prev, phone_number: value })); // Changed to phone_number
+      setFormState((prev) => ({ ...prev, phone_number: value }));
       setErrors((prev) => ({ ...prev, phone_number: undefined }));
     }
   };
 
   const validateForm = (): boolean => {
     const newErrors: FormError = {};
-    const { title, description, image, location, status, date_reported } =
+    const { title, description, image, location, phone_number, date_reported } =
       formState;
 
     if (!title.trim()) newErrors.title = "Title is required";
     if (!description.trim()) newErrors.description = "Description is required";
     if (!image) newErrors.image = "Image is required";
     if (!location) newErrors.location = "Location is required";
-    if (!status) newErrors.status = "Report type is required";
+    if (!phone_number) newErrors.phone_number = "Phone number is required";
     if (!date_reported) newErrors.date_reported = "Date is required";
     if (formState.phone_number && formState.phone_number.length !== 10) {
       newErrors.phone_number = "Phone number must be 10 digits";
@@ -119,9 +119,7 @@ const ReportForm: React.FC<FormProps> = ({
       const formDataToSubmit = {
         ...formState,
         image: formState.image, // Send the actual file for the form submission
-        phone_number: formState.phone_number
-          ? `+234${formState.phone_number}`
-          : "", 
+        phone_number: formState.phone_number ? `${formState.phone_number}` : "",
       };
       setFormData(formDataToSubmit);
       setDisplayReportPreview(true);
@@ -257,10 +255,64 @@ const ReportForm: React.FC<FormProps> = ({
         </div>
       </div>
 
-      <div className="relative flex flex-col gap-2 md:gap-4 my-2 md:my-4">
-        <label className="text-base md:text-lg font-semibold">
-          Report Type <span className="text-[#F24822]">*</span>
+      <div className="relative w-full flex flex-col gap-2 md:gap-4 my-2 md:my-4">
+        <label
+          htmlFor="date_reported"
+          className="text-base md:text-lg font-semibold"
+        >
+          Date <span className="text-[#F24822]">*</span>
         </label>
+        <div>
+          <input
+            id="date_reported"
+            name="date_reported"
+            type="date"
+            value={formState.date_reported}
+            onChange={handleChange}
+            className="w-full py-3 px-4 text-sm outline-none border border-gray-300 rounded-md focus:border-blue-300"
+          />
+          {errors.date_reported && (
+            <span className="absolute left-0 -bottom-5 text-red-500 text-xs mt-1">
+              {errors.date_reported}
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div className="relative w-full flex flex-col gap-2 md:gap-4 my-2 md:my-4">
+        <label
+          htmlFor="phone_number"
+          className="text-base md:text-lg font-semibold"
+        >
+          Phone Number <span className="text-[#F24822]">*</span>
+        </label>
+        <div>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-3 my-auto h-6 flex items-center border-r pr-2">
+              <p className="text-sm">+234 </p>
+            </div>
+            <input
+              id="phone_number"
+              name="phone_number"
+              type="tel"
+              pattern="[0-9]{10}"
+              maxLength={10}
+              value={formState.phone_number}
+              onChange={handlePhone_numberChange}
+              placeholder="Enter 10-digit phone number"
+              className="w-full pl-[4.5rem] pr-3 py-3 text-sm appearance-none outline-none border focus:border-blue-300 rounded-lg"
+            />
+          </div>
+          {errors.phone_number && (
+            <span className="absolute left-0 -bottom-5 text-red-500 text-xs mt-1">
+              {errors.phone_number}
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div className="relative flex flex-col gap-2 md:gap-4 my-2 md:my-4">
+        <label className="text-base md:text-lg font-semibold">Status</label>
         <div>
           <div className="flex items-center gap-6">
             {(["Lost", "Found"] as const).map((type) => (
@@ -301,62 +353,6 @@ const ReportForm: React.FC<FormProps> = ({
           {errors.status && (
             <span className="absolute left-0 -bottom-5 text-red-500 text-xs mt-1">
               {errors.status}
-            </span>
-          )}
-        </div>
-      </div>
-
-      <div className="relative w-full flex flex-col gap-2 md:gap-4 my-2 md:my-4">
-        <label
-          htmlFor="date_reported"
-          className="text-base md:text-lg font-semibold"
-        >
-          Date <span className="text-[#F24822]">*</span>
-        </label>
-        <div>
-          <input
-            id="date_reported"
-            name="date_reported"
-            type="date"
-            value={formState.date_reported}
-            onChange={handleChange}
-            className="w-full py-3 px-4 text-sm outline-none border border-gray-300 rounded-md focus:border-blue-300"
-          />
-          {errors.date_reported && (
-            <span className="absolute left-0 -bottom-5 text-red-500 text-xs mt-1">
-              {errors.date_reported}
-            </span>
-          )}
-        </div>
-      </div>
-
-      <div className="relative w-full flex flex-col gap-2 md:gap-4 my-2 md:my-4">
-        <label
-          htmlFor="phone_number"
-          className="text-base md:text-lg font-semibold"
-        >
-          Phone Number
-        </label>
-        <div>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-3 my-auto h-6 flex items-center border-r pr-2">
-              <p className="text-sm">+234 </p>
-            </div>
-            <input
-              id="phone_number"
-              name="phone_number"
-              type="tel"
-              pattern="[0-9]{10}"
-              maxLength={10}
-              value={formState.phone_number}
-              onChange={handlePhone_numberChange}
-              placeholder="Enter 10-digit phone number"
-              className="w-full pl-[4.5rem] pr-3 py-3 text-sm appearance-none outline-none border focus:border-blue-300 rounded-lg"
-            />
-          </div>
-          {errors.phone_number && (
-            <span className="absolute left-0 -bottom-5 text-red-500 text-xs mt-1">
-              {errors.phone_number}
             </span>
           )}
         </div>

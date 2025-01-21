@@ -195,9 +195,15 @@ const ReportsHistory: React.FC = () => {
           </span>
         </div>
         {deleteAndEditError && (
-          <p className="text-red-500 text-sm">{deleteAndEditError}</p>
+          <p className="text-red-500 text-sm bg-red-50 p-2 rounded">
+            {deleteAndEditError}
+          </p>
         )}
-        {loading && <p className="text-blue-400 text-sm">Loading...</p>}
+        {loading && (
+          <p className="text-blue-400 text-sm bg-blue-50 p-2 rounded">
+            Loading...
+          </p>
+        )}
       </div>
 
       {filteredItems.length === 0 ? (

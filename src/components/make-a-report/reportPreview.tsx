@@ -1,12 +1,28 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { ACCESS_TOKEN, CSRF_TOKEN } from "../../constants";
 import { BASE_URL } from "../../hooks/useFetch";
-import { ReportProps } from "../../types/report.types";
 
-interface ReportPreviewProps extends Partial<ReportProps> {
+interface ReportFormData {
+  title: string;
   description: string;
+  location: string;
+  status: "lost" | "found";
+  reporter?: number;
+  phone_number: string;
+  image?: File;
+  id?: number;
+}
+
+interface ReportPreviewProps {
+  image?: File | null;
+  title?: string;
+  date_reported?: string;
+  description: string;
+  location?: string;
+  phone_number?: string;
+  status?: "lost" | "found";
   onReportSubmit: () => void;
   onCancel: () => void;
   isOpen: boolean;
@@ -19,49 +35,117 @@ const ReportPreview: React.FC<ReportPreviewProps> = ({
   description,
   location,
   phone_number,
+  status,
   onCancel,
   onReportSubmit,
   isOpen,
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (image && image instanceof File) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(image);
+    }
+  }, [image]);
+
+  const validateFormData = (data: Partial<ReportFormData>): boolean => {
+    if (!data.title || data.title.length < 1 || data.title.length > 30) {
+      setSubmissionError("Title must be between 1 and 30 characters");
+      return false;
+    }
+    if (!data.description || data.description.length < 1) {
+      setSubmissionError("Description is required");
+      return false;
+    }
+    if (!data.location || data.location.length < 1) {
+      setSubmissionError("Location is required");
+      return false;
+    }
+    if (
+      !data.phone_number ||
+      data.phone_number.length < 1 ||
+      data.phone_number.length > 11
+    ) {
+      setSubmissionError("Phone number must be between 1 and 11 characters");
+      return false;
+    }
+    if (!data.status || !["lost", "found"].includes(data.status)) {
+      setSubmissionError("Status must be either 'lost' or 'found'");
+      return false;
+    }
+    return true;
+  };
 
   const handleReportSubmit = async () => {
     setIsSubmitting(true);
     setSubmissionError(null);
 
     const accessToken = localStorage.getItem(ACCESS_TOKEN);
+    const csrfToken = CSRF_TOKEN;
 
-    if (!CSRF_TOKEN || !accessToken) {
-      setSubmissionError("Missing CSRF or access token");
+    if (!csrfToken || !accessToken) {
+      setSubmissionError("Authentication error. Please log in again.");
       setIsSubmitting(false);
       return;
     }
 
-    // Use FormData for `multipart/form-data`
     const formData = new FormData();
-    if (image) formData.append("image", image); // Ensure `image` is a File object
-    formData.append("title", title || "");
-    formData.append("description", description || "");
-    formData.append("location", location || "");
-    formData.append("date_reported", date_reported || "");
-    formData.append("phone_number", phone_number || "");
+    const reportData: ReportFormData = {
+      title: title || "",
+      description: description,
+      location: location || "",
+      status: status || "lost",
+      phone_number: phone_number || "",
+    };
+
+    if (!validateFormData(reportData)) {
+      setIsSubmitting(false);
+      return;
+    }
+
+    Object.entries(reportData).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        formData.append(key, value.toString());
+      }
+    });
+
+    // Handle image upload
+    if (image && image instanceof File) {
+      formData.append("image", image);
+    }
 
     try {
       await axios.post(`${BASE_URL}/reports/`, formData, {
         headers: {
-          accept: "application/json",
-          "Content-Type": "multipart/form-data",
-          "X-CSRFTOKEN": CSRF_TOKEN,
+          Accept: "application/json",
           Authorization: `Bearer ${accessToken}`,
+          "X-CSRFToken": csrfToken,
         },
+        withCredentials: true,
       });
+
+      alert("Report submitted successfully!");
       onReportSubmit();
-    } catch {
-      {
-        setSubmissionError(
-          "Failed to submit the report. Please try again later."
-        );
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage =
+          error.response?.data?.detail ||
+          error.response?.data?.message ||
+          "Failed to submit the report. Please try again.";
+        setSubmissionError(errorMessage);
+
+        // Handle token expiration
+        if (error.response?.status === 401) {
+          setSubmissionError("Your session has expired. Please log in again.");
+        }
+      } else {
+        setSubmissionError("An unexpected error occurred. Please try again.");
       }
     } finally {
       setIsSubmitting(false);
@@ -86,18 +170,27 @@ const ReportPreview: React.FC<ReportPreviewProps> = ({
         </div>
 
         <div className="relative">
-          <img
-            src={image}
-            alt="Lost and Found Item"
-            className="w-full h-56 object-cover"
-          />
+          {imagePreviewUrl ? (
+            <img
+              src={imagePreviewUrl}
+              alt="Lost and Found Item"
+              className="w-full h-56 object-cover"
+            />
+          ) : (
+            <div className="w-full h-56 bg-gray-200 flex items-center justify-center">
+              <span className="text-gray-500">No image available</span>
+            </div>
+          )}
         </div>
 
         <div className="p-6 space-y-4">
           <div className="text-center">
             <h3 className="text-xl font-semibold text-gray-800">{title}</h3>
-            <p>Location: {location}</p>
-            <p className="text-gray-600 mt-2">Contact: {phone_number}</p>
+            <p className="text-gray-700">Status: {status}</p>
+            <p className="text-gray-700">Location: {location}</p>
+            {phone_number && (
+              <p className="text-gray-600 mt-2">Contact: {phone_number}</p>
+            )}
             <div className="flex items-center justify-center gap-2 text-gray-600 mb-3">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -147,7 +240,7 @@ const ReportPreview: React.FC<ReportPreviewProps> = ({
           </div>
 
           {submissionError && (
-            <p className="text-red-500 text-center text-sm">
+            <p className="text-red-500 text-center text-sm bg-red-50 p-2 rounded">
               {submissionError}
             </p>
           )}

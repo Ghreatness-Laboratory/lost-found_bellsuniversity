@@ -150,13 +150,13 @@ const Login: React.FC = () => {
                 </div>
 
                 <div className="my-6">
-                  <div className="flex justify-between items-center font-semibold">
-                    <label htmlFor="password" className="block text-sm mb-2">
+                  <div className="flex justify-between items-center font-semibold mb-2">
+                    <label htmlFor="password" className="block text-sm ">
                       Password
                     </label>
                     <Link
                       className="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium"
-                      to="#"
+                      to="/register"
                     >
                       Forgot password?
                     </Link>

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import LostImage from "../assets/images/male-hand-holding-glasses-isolated 1.png";
 import ReportForm from "../components/make-a-report/reportForm";
 import ReportPreview from "../components/make-a-report/reportPreview";
 import { FormData } from "../types/reportForm.types";
@@ -38,9 +37,7 @@ const MakeAReport: React.FC = () => {
           <ReportPreview
             isOpen={displayReportPreview}
             title={formData.title}
-            image={
-              typeof formData.image === "string" ? formData.image : LostImage
-            }
+            image={formData.image}
             description={formData.description}
             date_reported={formData.date_reported}
             location={formData.location}
