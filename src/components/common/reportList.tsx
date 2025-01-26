@@ -9,19 +9,23 @@ interface ReportListProps {
   selectedLocations?: string[];
 }
 
-const ReportList = ({ filter, selectedLocations = [] }: ReportListProps) => {
+const ReportList = ({ filter = [] }: ReportListProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
   const { data: items, loading, error } = useFetch<ReportProps[]>("/reports/");
+  const [selectedLocation, setSelectedLocation] = useState<string>("All");
+
+  const handleFilterChange = (location: string) => {
+    setSelectedLocation(location);
+  };
 
   const filteredItems = (items ?? []).filter((item) => {
     const matchesSearch = item.title
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
     const matchesLocation =
-      selectedLocations.length === 0 ||
-      selectedLocations.includes(item.location);
+      selectedLocation === "All" || item.location === selectedLocation;
     return matchesSearch && matchesLocation;
   });
 
@@ -95,7 +99,7 @@ const ReportList = ({ filter, selectedLocations = [] }: ReportListProps) => {
           </div>
           {filter &&
             React.cloneElement(filter as React.ReactElement, {
-              onChange: () => {},
+              onFilterChange: handleFilterChange,
             })}
         </div>
       </div>
