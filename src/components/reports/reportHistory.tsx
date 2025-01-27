@@ -109,8 +109,16 @@ const ReportsHistory: React.FC = () => {
       );
 
       if (reportToUpdate.isEditing) {
-        const updatedReport = { ...reportToUpdate };
-        await axios.patch(`${BASE_URL}/reports/${id}`, updatedReport, {
+        const formData = new FormData();
+        formData.append("title", reportToUpdate.title);
+        formData.append("description", reportToUpdate.description);
+        formData.append("location", reportToUpdate.location);
+        formData.append("phone_number", reportToUpdate.phone_number);
+        if (reportToUpdate.status) {
+          formData.append("status", reportToUpdate.status);
+        }
+
+        await axios.patch(`${BASE_URL}/reports/${id}`, formData, {
           headers: {
             accept: "application/json",
             "Content-Type": "multipart/form-data",
@@ -118,10 +126,19 @@ const ReportsHistory: React.FC = () => {
             Authorization: `Bearer ${accessToken}`,
           },
         });
+        alert("Report updated successfully!");
       }
-      alert("Report updated successfully!");
-    } catch {
-      setDeleteAndEditError("Failed to edit report. Please try again later.");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setDeleteAndEditError(
+          `Failed to edit report: ${
+            error.response?.data?.message || error.message
+          }`
+        );
+      } else {
+        setDeleteAndEditError("Failed to edit report. Please try again later.");
+      }
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -279,41 +296,30 @@ const ReportsHistory: React.FC = () => {
                       <td className="px-2 md:px-4 py-4 md:py-5 text-sm font-medium text-gray-700">
                         <div className="inline-flex items-center gap-x-3">
                           <div className="flex items-center gap-x-2">
+                            <div className="w-20 h-14 md:w-40 md:h-20">
+                              <img
+                                className="object-cover rounded-md w-full h-full"
+                                src={report.image}
+                                alt={report.title}
+                              />
+                            </div>
                             {report.isEditing ? (
-                              <>
-                                <div className="w-20 h-14 md:w-40 md:h-20">
-                                  <img
-                                    className="object-cover rounded-md w-full h-full"
-                                    src={report.image}
-                                    alt={report.title}
-                                  />
-                                </div>
-                                <input
-                                  type="text"
-                                  value={report.title}
-                                  onChange={(e) =>
-                                    handleUpdateReport(
-                                      report.id,
-                                      "title",
-                                      e.target.value
-                                    )
-                                  }
-                                  className="border px-2 py-1 rounded lg:w-[300px] md:text-lg"
-                                />
-                              </>
+                              <input
+                                type="text"
+                                value={report.title}
+                                onChange={(e) =>
+                                  handleUpdateReport(
+                                    report.id,
+                                    "title",
+                                    e.target.value
+                                  )
+                                }
+                                className="border px-2 py-1 rounded lg:w-[300px] md:text-lg"
+                              />
                             ) : (
-                              <>
-                                <div className="w-20 h-14 md:w-40 md:h-20">
-                                  <img
-                                    className="object-cover rounded-md w-full h-full"
-                                    src={report.image}
-                                    alt={report.title}
-                                  />
-                                </div>
-                                <h2 className="font-medium md:text-lg w-[200px] md:w-[250px] lg:w-[300px] text-gray-800 overflow-hidden">
-                                  {report.title}
-                                </h2>
-                              </>
+                              <h2 className="font-medium md:text-lg w-[200px] md:w-[250px] lg:w-[300px] text-gray-800 overflow-hidden">
+                                {report.title}
+                              </h2>
                             )}
                           </div>
                         </div>

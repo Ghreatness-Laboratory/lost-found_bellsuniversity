@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Select, { components, OptionProps, SingleValue } from "react-select";
 import { FormData } from "../../types/reportForm.types";
 
@@ -40,6 +40,7 @@ const CustomOption = (props: OptionProps<Option>) => {
 };
 
 const ReportForm: React.FC<FormProps> = ({
+  displayReportPreview,
   setDisplayReportPreview,
   setFormData,
 }) => {
@@ -56,6 +57,17 @@ const ReportForm: React.FC<FormProps> = ({
   const [selectedOption, setSelectedOption] = useState<Option | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [errors, setErrors] = useState<FormError>({});
+
+  useEffect(() => {
+    if (displayReportPreview) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [displayReportPreview]);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -311,7 +323,7 @@ const ReportForm: React.FC<FormProps> = ({
         </div>
       </div>
 
-      <div className="relative flex flex-col gap-2 md:gap-4 my-2 md:my-4">
+      {/* <div className="relative flex flex-col gap-2 md:gap-4 my-2 md:my-4">
         <label className="text-base md:text-lg font-semibold">Status</label>
         <div>
           <div className="flex items-center gap-6">
@@ -356,7 +368,7 @@ const ReportForm: React.FC<FormProps> = ({
             </span>
           )}
         </div>
-      </div>
+      </div> */}
 
       <div className="relative w-full flex flex-col gap-2 md:gap-4 my-2 md:my-4">
         <label htmlFor="email" className="text-base md:text-lg font-semibold">

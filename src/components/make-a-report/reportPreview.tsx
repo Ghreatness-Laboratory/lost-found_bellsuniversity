@@ -186,7 +186,7 @@ const ReportPreview: React.FC<ReportPreviewProps> = ({
         <div className="p-6 space-y-4">
           <div className="text-center">
             <h3 className="text-xl font-semibold text-gray-800">{title}</h3>
-            <p className="text-gray-700">Status: {status}</p>
+            {/* <p className="text-gray-700">Status: {status}</p> */}
             <p className="text-gray-700">Location: {location}</p>
             {phone_number && (
               <p className="text-gray-600 mt-2">Contact: {phone_number}</p>
